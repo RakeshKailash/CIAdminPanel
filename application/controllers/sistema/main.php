@@ -10,53 +10,77 @@ class Main extends CI_Controller {
 		$this->load->model('sistema/usuario_model');
 		$this->load->model('sistema/secoes_model', 'secoes_sistema');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
+		$this->load->model('sistema/sessions_model');
+		
 	}
 
 	public function index() {
-		// $user_logged = $this->session->userdata();
-		// if (isset($user_logged['login']) && $user_logged['login'] != null) {
-		// 	$this->load->view('sistema/home', $user_logged);
-		// } else {
-		// 	redirect('/sistema/login');
-		// }
+		if (! $this->usuario_model->isLogged()) {
+			return redirect('sistema/login');
+		}
 
+		$data['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$data['secoes'] = $this->secoes_sistema->getInfo();
+		$data['registro'] = $this->secoes_sistema->getInfo(1)[0];
+
+		$this->load->view('sistema/home', $data);
+	}
+
+	public function login ()
+	{
+		$this->load->view('sistema/login');
+	}
+
+	public function logar ()
+	{
 		if ($this->usuario_model->isLogged()) {
-			$this->load->view('sistema/home');
-		} else {
+			return redirect('sistema');
+		}
+
+		$this->load->view('sistema/login');
+
+		$user = $this->input->post('login');
+		$password = $this->input->post('senha');
+		// $details = null;
+
+		if ($user == null || $password == null) {
+			return redirect('sistema/login');
+		}
+
+		$login = $this->usuario_model->login($user, $password);
+
+		if (isset($login['error'])) {
+			$message = "Erro";
+
+			switch ($login['error']) {
+				case 1:
+				$message = "Usuário não encontrado";
+				break;
+				case 2:
+				$message = "A Senha digitada está incorreta";
+				break;
+				default:
+				$message = "Erro desconhecido, tente novamente";
+				break;
+			}
+
+			$this->session->set_flashdata('error', "<p>".$message."</p>");
 			redirect('sistema/login');
 		}
+
+		$data = $this->session->userdata();
+		return redirect('sistema');
 	}
 
-	public function login() {
+	public function logout()
+	{
+		$data['id_secao'] = $this->session->session_id;
+		$data['id_usuario'] = $_SESSION['id'];
+		$data['login'] = $_SESSION['login'];
+		$data['inicio'] = $_SESSION['inicio'];
 
-		if ($this->usuario_model->isLogged()) {
-			redirect('sistema');
-		} else {
-			$this->load->view('sistema/login');
+		$this->sessions_model->insert($data);
 
-			$user = $this->input->post('login');
-			$password = $this->input->post('senha');
-			$details = null;
-
-			if ($user != null && $password != null) {
-				$login = $this->usuario_model->login($user, $password);
-
-				if ($login != false) {
-					$data = $this->session->userdata();
-					redirect('sistema');
-				} else {
-					$details = array('error' => "<p>Erro no login</p>");
-					$this->load->view('sistema/login', $details);
-				}
-
-			} else {
-				$this->load->view('sistema/login');
-			}
-		}
-
-	}
-
-	public function logout() {
 		$this->session->sess_destroy();
 		redirect('/sistema/login');
 	}

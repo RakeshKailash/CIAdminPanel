@@ -7,6 +7,7 @@ class Main extends CI_Controller {
 		$this->load->database();
 		$this->load->model('site/secoes_model', 'secoes_site');
 		$this->load->model('site/secoes_model', 'secoes_site');
+		$this->load->model('site/imagens_model', 'imagens_site');
 	}
 
 	public function index ()

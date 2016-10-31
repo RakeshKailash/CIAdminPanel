@@ -221,6 +221,10 @@
 	setTarget('#img_select_galeria', '#imagens_galeria');
 	// /Editar Imagens
 
+	// Editar Serviços
+	setTarget('#select_img', '#imagem');
+	// /Editar Serviços
+
 	// Editar Contato
 	setTarget('#select_img_contato', '#imagem_contato');
 	// /Editar Contato
@@ -228,6 +232,40 @@
 	$(document).ready(function() {
 		$(":input").inputmask();
 	});
+
+	$('.popover_element').popover({
+		placement: function (context, source) {
+			var position = $(source).offset();
+
+			if (position.left > 515)
+			{
+				return 'left';
+			}
+
+			if (position.left < 515)
+			{
+				if (position.left < 30) {
+					if (position.top < 110) {
+						return 'bottom';
+					}
+
+					return 'top';
+				}
+
+				return 'right';
+			}
+
+			if (position.top < 110)
+			{
+				return 'bottom';
+			}
+
+			return 'top';
+		}
+	});
+
+	$('[data-toggle="popover"]').popover();
+
 </script>
 <!-- /Meu JS -->
 

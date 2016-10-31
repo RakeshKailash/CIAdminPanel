@@ -10,47 +10,49 @@ class Empresa extends CI_Controller {
 		$this->load->model('sistema/usuario_model');
 		$this->load->model('sistema/imagens_model');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
+		if (! $this->usuario_model->isLogged()) {
+			return redirect('sistema/login');
+		}
 	}
 
 	public function index() 
 	{
-		if ($this->usuario_model->isLogged()) {
-			$this->load->view('sistema/editar_empresa');
-		} else {
-			redirect('sistema/login');
-		}
+		redirect('sistema/empresa/editar');
 	}
 
 	public function editar ()
 	{
-		if ($this->usuario_model->isLogged()) {
-			$this->load->view('sistema/editar_empresa');
+		$info['registro'] = $this->secoes_sistema->getInfo(3)[0];
+		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$info['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$this->load->view('sistema/empresa/editar', $info);
+	}
 
-			$campo = 'imagem';
+	public function update()
+	{
+		$campo = 'imagem';
 
-			if ($this->input->post('has_img') == "false") {
-				$campo = null;
-			}
+		$has_img = !! $this->input->post('has_img');
 
-			$upload_result = $this->imagens_model->replaceSectionImg(3, $campo);
+		if (! $has_img) {
+			$campo = null;
+		}
 
-			$dados['conteudo'] = $this->input->post('conteudo');
-		// $dados['imagem'] = $upload_result['imagem']['id'] != null ? $upload_result['imagem']['id'] : null;
-			$dados['icone'] = $this->input->post('icone');
+		$upload_result = $this->imagens_model->replaceSectionImg(3, $campo);
 
-			if ($dados['conteudo'] != null || $dados['icone'] != null) {
-				$this->secoes_sistema->update($dados, 3);
+		$dados['conteudo'] = $this->input->post('conteudo');
+		$dados['icone'] = $this->input->post('icone');
 
-				$atualizacao['titulo'] = "Seção 'Empresa' alterada";
-				$atualizacao['usuario'] = $_SESSION['id'];
-				$atualizacao['tipo'] = "Alteração de Conteúdo";
+		if ($dados['conteudo'] != null || $dados['icone'] != null) {
+			$this->secoes_sistema->update($dados, 3);
 
-				$this->atualizacoes_sistema->insert($atualizacao);
+			$atualizacao['titulo'] = "Seção 'Empresa' alterada";
+			$atualizacao['usuario'] = $_SESSION['id'];
+			$atualizacao['tipo'] = "Alteração de Conteúdo";
 
-				redirect('/sistema/empresa/editar');
-			}
-		} else {
-			redirect('sistema/login');
+			$this->atualizacoes_sistema->insert($atualizacao);
+
+			redirect('/sistema/empresa/editar');
 		}
 	}
 

@@ -37,7 +37,7 @@
 
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url('css/style.css'); ?>">
 
-		<script > var base_url = "<?=base_url()?>";</script>
+		<script> var base_url = "<?=base_url()?>";</script>
 
 
 

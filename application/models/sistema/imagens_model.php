@@ -7,10 +7,11 @@ class Imagens_model extends CI_Model {
 		$this->load->database();
 	}
 
-	public function replaceSectionImg ($secao=1, $campo=null) {
+	public function replaceSectionImg ($secao=1, $campo=null)
+	{
 
 		$caminho_pasta = str_replace('\\', "/", FCPATH);
-		if ($campo != null) {
+		if ($campo) {
 
 			$config_upload['upload_path'] = $caminho_pasta . 'images/uploads';
 			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -20,7 +21,7 @@ class Imagens_model extends CI_Model {
 
 			$this->load->library('upload', $config_upload);
 
-			if (!($this->upload->do_upload($campo))) {
+			if (! $this->upload->do_upload($campo)) {
 				return $this->upload->display_errors();
 			} else {
 				$info_img = $this->upload->data();
@@ -34,7 +35,6 @@ class Imagens_model extends CI_Model {
 		$this->db->join('secoes', "secoes.id = $secao AND imagens.id = secoes.imagem");
 
 		$img_anterior = $this->db->get()->result()[0];
-
 
 		unlink($caminho_pasta . $img_anterior->caminho);
 
@@ -58,7 +58,8 @@ class Imagens_model extends CI_Model {
 		return $info_retorno;
 	}
 
-	public function fillGallery ($campo=null) {
+	public function fillGallery ($campo=null)
+	{
 
 		$caminho_pasta = str_replace('\\', "/", FCPATH);
 
@@ -72,6 +73,10 @@ class Imagens_model extends CI_Model {
 
 		$count = count($_FILES[$campo]['name']);
 
+		if ($count <= 0) {
+			return array("ABC");
+		}
+
 		for ($i = 0; $i < $count; $i++) {
 			$_FILES['imagem_up']['name'] = $_FILES[$campo]['name'][$i];
 			$_FILES['imagem_up']['type'] = $_FILES[$campo]['type'][$i];
@@ -79,25 +84,34 @@ class Imagens_model extends CI_Model {
 			$_FILES['imagem_up']['error'] = $_FILES[$campo]['error'][$i];
 			$_FILES['imagem_up']['size'] = $_FILES[$campo]['size'][$i];
 
-			if ($this->upload->do_upload('imagem_up')) {
-				// $info_img[$i] = $this->upload->data();
-
-				$data['nome'] = $this->upload->data('file_name');
-				$data['caminho'] = 'images/uploads/gallery/' . $this->upload->data('file_name');
-				$data['tamanho'] = $this->upload->data('file_size');
-
-				$this->db->insert('galeria', $data);
+			if (!$this->upload->do_upload('imagem_up')) {
+				return $this->upload->display_errors('<p>', '</p>');
 			}
+
+			$data['nome'] = $this->upload->data('file_name');
+			$data['caminho'] = 'images/uploads/gallery/' . $this->upload->data('file_name');
+			$data['tamanho'] = $this->upload->data('file_size');
+
+			$this->db->insert('galeria', $data);
 		}
 
 		return $this->getGalleryContent();
 	}
 
-	public function getGalleryContent () {
-		$this->db->select('id, caminho');
+	public function getGalleryContent ()
+	{
+		$this->db->select('id, titulo, texto, caminho');
 		$imagens = $this->db->get('galeria')->result();
 
 		return $imagens;
+	}
+
+	public function getSingleImg ($id=1)
+	{
+		$this->db->where('id', $id);
+		$result = $this->db->get('galeria')->result()[0];
+
+		return $result;
 	}
 
 

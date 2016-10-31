@@ -139,7 +139,7 @@ $imagem = $registro->caminho != null ? ("<img src='" . base_url($registro->camin
 									<li>
 										<div class="text-center">
 											<a>
-												<strong>Ver todas as Atualizações</strong>
+												<strong>Ver todas as Modificações</strong>
 												<i class="fa fa-angle-right"></i>
 											</a>
 										</div>

@@ -14,11 +14,6 @@ if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 	<div class="conteudo_secao <?php echo $tamanho_conteudo; ?>">
 		<?php echo $secao_info->conteudo ?>
 	</div>
-
-	<?php if (isset($secao_info->caminho) && $secao_info->caminho != null) : ?>
-		<div class="conteudo_secao <?php echo $tamanho_conteudo; ?>" style="background-image: url(<?php echo base_url($secao_info->caminho); ?>);">
-		</div>
-	<?php endif; ?>
 </div>
 
 <?php $this->load->view('footer'); ?>
