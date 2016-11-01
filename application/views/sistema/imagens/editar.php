@@ -274,7 +274,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 								<h5>Clique nas imagens para editar suas informações.</h5>
 								<button type="button" class="btn btn-danger" id="botao_delete_multiple" style="display: none;">Deletar Múltiplas</button>
 								<div class="x_content">
-									<form action="javascript:void(0)" method="post" accept-charset="utf-8">
+									<!-- <form action="javascript:void(0)" method="post" accept-charset="utf-8"> -->
 										<div class="galeria_imagens">
 
 											<div class="row">
@@ -288,7 +288,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 											</div>
 
 										</div>
-									</form>
+									<!-- </form> -->
 								</div>
 							</div>
 						</div>
