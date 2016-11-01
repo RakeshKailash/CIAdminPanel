@@ -32,8 +32,5 @@ class Main extends CI_Controller {
 		$this->load->view('site/imagens');
 	}
 
-	public function contato ()
-	{
-		$this->load->view('site/contato');
-	}
+	
 }

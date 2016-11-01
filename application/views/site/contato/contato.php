@@ -17,7 +17,7 @@ if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 		echo $secao_info->conteudo;
 		if ($contato->has_form)
 		{
-			$this->load->view('site/form_email');
+			$this->load->view('site/contato/form_email');
 		}
 		?>
 

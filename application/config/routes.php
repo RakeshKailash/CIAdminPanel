@@ -53,8 +53,9 @@ $route['default_controller'] = 'site/main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['site'] = 'site/main';
-$route['site/(:any)'] = 'site/main/$1';
-$route['site/(:any)/(:any)'] = 'site/main/$1/$2';
+// $route['site/(:any)'] = 'site/$1';
+// $route['site/(:any)'] = 'site/main/$1';
+// $route['site/(:any)/(:any)'] = 'site/main/$1/$2';
 
 $route['sistema'] = 'sistema/main';
 $route['sistema/login'] = 'sistema/main/login';
