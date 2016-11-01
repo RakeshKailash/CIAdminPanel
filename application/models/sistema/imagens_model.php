@@ -13,7 +13,7 @@ class Imagens_model extends CI_Model {
 		$caminho_pasta = str_replace('\\', "/", FCPATH);
 		if ($campo) {
 
-			$config_upload['upload_path'] = $caminho_pasta . 'images/uploads';
+			$config_upload['upload_path'] = $caminho_pasta . 'images/uploads/sections/';
 			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
 			$config_upload['max_size'] = '5120';
 			$config_upload['max_width'] = '0';
@@ -40,7 +40,7 @@ class Imagens_model extends CI_Model {
 
 		$info_retorno['imagem']['nome'] = $info_img['file_name'];
 		$info_retorno['imagem']['tamanho'] = $info_img['file_size'];
-		$info_retorno['imagem']['caminho'] = $info_img['file_name'] != null ? ('images/uploads/' . $info_img['file_name']) : null;
+		$info_retorno['imagem']['caminho'] = $info_img['file_name'] != null ? ('images/uploads/sections/' . $info_img['file_name']) : null;
 
 		$data_insert = array('nome' => $info_img['file_name'], 'tamanho' => $info_img['file_size'], 'caminho' => $info_retorno['imagem']['caminho']);
 

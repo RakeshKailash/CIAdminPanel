@@ -6,7 +6,7 @@ $this->load->view('header', $info);
 ?>
 
 <div class="container_secao">
-	<div id="container_img_home" style="background-image: url(<?php echo base_url() . 'images/uploads/mountain.jpg' ?>);">
+	<div id="container_img_home" style="background-image: url(<?php echo base_url() . 'images/uploads/sections/mountain.jpg' ?>);">
 	</div>
 	
 </div>

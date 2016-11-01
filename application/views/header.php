@@ -14,9 +14,9 @@
 	<link href="<?php echo base_url('fonts/css/font-awesome.min.css'); ?>" rel="stylesheet">
 
 
-	<?php if ($cabecalho['header'] == 'sistema') : ?>
 		<link href="<?php echo base_url('css/bootstrap.min.css'); ?>" rel="stylesheet">
 		<link href="<?php echo base_url('css/animate.min.css'); ?>" rel="stylesheet">
+	<?php if ($cabecalho['header'] == 'sistema') : ?>
 		<!-- Custom styling plus plugins -->
 		<link href="<?php echo base_url('css/custom.css'); ?>" rel="stylesheet">
 		<link href="<?php echo base_url('css/icheck/flat/green.css'); ?>" rel="stylesheet" />
@@ -24,6 +24,7 @@
 		<link href="<?php echo base_url('css/floatexamples.css'); ?>" rel="stylesheet" type="text/css" />
 		<script src="<?php echo base_url('js/nprogress.js'); ?>"></script>
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+	<?php endif; ?>
 		<!-- editor -->
 		<link href="<?php echo base_url('css/editor/external/google-code-prettify/prettify.css'); ?>" rel="stylesheet">
 		<link href="<?php echo base_url('css/editor/index.css'); ?>" rel="stylesheet">
@@ -32,8 +33,6 @@
 		<!-- switchery -->
 		<link rel="stylesheet" href="<?php echo base_url('css/switchery/switchery.min.css'); ?>" />
 
-
-	<?php endif; ?>
 
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url('css/style.css'); ?>">
 
