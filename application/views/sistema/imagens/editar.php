@@ -272,23 +272,21 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<div class="x_panel" id="conteudo_galeria">
 								<h2>Prévia da Galeria</h2>
 								<h5>Clique nas imagens para editar suas informações.</h5>
-								<button type="button" class="btn btn-danger" id="botao_delete_multiple" style="display: none;">Deletar Múltiplas</button>
+								<a href="javascript:void(0)" class="excluir_multiplas_link"><button type="button" class="btn btn-danger" id="botao_delete_multiple" style="display: none;">Deletar Múltiplas</button></a>
 								<div class="x_content">
-									<!-- <form action="javascript:void(0)" method="post" accept-charset="utf-8"> -->
-										<div class="galeria_imagens">
+									<div class="galeria_imagens">
 
-											<div class="row">
-												<?php foreach ($imagens_galeria as $imagem_galeria) : ?>
-													<div class="col-xs-12 col-md-3">
-														<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?php echo $imagem_galeria->id; ?>">
-															<img src="<?php echo base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar"><a href="<?php echo base_url('sistema/imagens/excluir/' . $imagem_galeria->id) ?>"><span class="glyphicon glyphicon-remove icon_img_gallery"></span></a><a href="javascript:void(0)" class="checks_deletar_galeria"><input type="checkbox" name="multiple_delete" value="<?=$imagem_galeria->id; ?>" class="flat" /></a>
-														</a>
-													</div>
-												<?php endforeach; ?>
-											</div>
-
+										<div class="row">
+											<?php foreach ($imagens_galeria as $imagem_galeria) : ?>
+												<div class="col-xs-12 col-md-3">
+													<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?php echo $imagem_galeria->id; ?>">
+														<img src="<?php echo base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar"><a href="<?php echo base_url('sistema/imagens/excluir/' . $imagem_galeria->id) ?>"><span class="glyphicon glyphicon-remove icon_img_gallery"></span></a><a href="javascript:void(0)" class="checks_deletar_galeria"><input type="checkbox" name="multiple_delete" value="<?=$imagem_galeria->id; ?>" class="flat" /></a>
+													</a>
+												</div>
+											<?php endforeach; ?>
 										</div>
-									<!-- </form> -->
+
+									</div>
 								</div>
 							</div>
 						</div>
@@ -301,15 +299,24 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 	<script type="text/javascript">
 
 		$(".flat").on('ifChanged', function () {
-			if ( $(".flat:checked").length > 0 ) {
+			if ( $(".flat:checked").length > 1 ) {
+				$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + getMultipleImages());
 				$("#botao_delete_multiple").css('display', 'block');
-				console.log("Maior");
 			} else {
-
+				$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
 				$("#botao_delete_multiple").css('display', 'none');
-				console.log("Menor");
 			}
 		});
+
+		function getMultipleImages () {
+			var imagens_deletar = [];
+
+			$(".flat:checked").each(function () {
+				imagens_deletar.push($(this).val());
+			});
+
+			return imagens_deletar.join('_');
+		};
 
 		$("#remove_img").click(function () {
 			$("#img_selecionada").html("Ainda não existe uma imagem para esta categoria");

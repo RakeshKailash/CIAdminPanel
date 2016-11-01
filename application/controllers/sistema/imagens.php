@@ -97,62 +97,94 @@ class Imagens extends CI_Controller {
 		redirect('/sistema/imagens/editar');
 	}
 
-	public function excluir ($id=null) 
+	public function excluir ($ids=null) 
 	{
-		if($id == null)
+		if($ids == null)
 		{
 			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");
 			redirect('sistema/imagens/editar');
 		}
 
-		$this->db->select('nome, caminho');
-		$this->db->where('id', $id);
-		$imagem = $this->db->get('galeria')->result()[0];
-
-		if (! $imagem)
+		if (strpos($ids, "_") !== false)
 		{
-			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");
-			redirect('sistema/imagens/editar');
+			$ids = explode("_", $ids);
+		} else {
+			$ids = array(0 => $ids);
 		}
 
-		$caminho_pasta = str_replace('\\', "/", FCPATH);
+		foreach ($ids as $id) {
+			$this->db->select('nome, caminho');
+			$this->db->where('id', $id);
+			$imagem = $this->db->get('galeria')->result()[0];
 
-		if(! unlink($caminho_pasta . $imagem->caminho))
-		{
-			$this->session->set_flashdata('error', "<p>Erro ao excluir a imagem ". $imagem->nome .". Tente novamente!</p>");
-			redirect('sistema/imagens/editar');
+			if (! $imagem)
+			{
+				$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");
+				redirect('sistema/imagens/editar');
+			}
+
+			$caminho_pasta = str_replace('\\', "/", FCPATH);
+
+			if(! unlink($caminho_pasta . $imagem->caminho))
+			{
+				$this->session->set_flashdata('error', "<p>Erro ao excluir a imagem ". $imagem->nome .". Tente novamente!</p>");
+				redirect('sistema/imagens/editar');
+			}
+
+			if(! $this->db->delete('galeria', array('id' => $id)))
+			{
+				$this->session->set_flashdata('error', "<p>Erro ao excluir a imagem " . $imagem->nome . ". Tente novamente!</p>");
+				redirect('sistema/imagens/editar');
+			}
+
+			$imagens = $this->db->get('galeria')->result();
+
+			$data['conteudo'] = "<div class='galeria_imagens_site'>";
+
+			foreach ($imagens as $imagemB) {
+				$data['conteudo'] .= "<div class='container_img_gallery'><img src='".base_url($imagemB->caminho)."' class='img_gallery' /></div>";
+			}
+
+			$data['conteudo'] .= "</div>";
+
+			$this->db->where('id', 4);
+			$this->db->update('secoes', $data);
+
+			$atualizacao['titulo'] = "Seção 'Imagens' alterada";
+			$atualizacao['usuario'] = $_SESSION['id'];
+			$atualizacao['tipo'] = "Exclusão de Imagens";
+
+			$this->atualizacoes_sistema->insert($atualizacao);
+
 		}
 
-		if(! $this->db->delete('galeria', array('id' => $id)))
-		{
-			$this->session->set_flashdata('error', "<p>Erro ao excluir a imagem " . $imagem->nome . ". Tente novamente!</p>");
-			redirect('sistema/imagens/editar');
-		}
-
-		$imagens = $this->db->get('galeria')->result();
-
-		$data['conteudo'] = "<div class='galeria_imagens_site'>";
-
-		foreach ($imagens as $imagemB) {
-			$data['conteudo'] .= "<div class='container_img_gallery'><img src='".base_url($imagemB->caminho)."' class='img_gallery' /></div>";
-		}
-
-		$data['conteudo'] .= "</div>";
-
-		$this->db->where('id', 4);
-		$this->db->update('secoes', $data);
-
-		$atualizacao['titulo'] = "Seção 'Imagens' alterada";
-		$atualizacao['usuario'] = $_SESSION['id'];
-		$atualizacao['tipo'] = "Exclusão de Imagens";
-
-		$this->atualizacoes_sistema->insert($atualizacao);
-
-
-		$this->session->set_flashdata('success', "<p>Imagem " . $imagem->nome . " excluída com sucesso!</p>");
+		$this->session->set_flashdata('success', "<p>Exclusão realizada com sucesso!</p>");
 		redirect('sistema/imagens/editar');
 
 	}
+
+	// public function excluir_multiplas ($imagens=null)
+	// {
+	// 	if ($imagens == null)
+	// 	{
+	// 		$this->session->set_flashdata('warning', "<p>Nenhuma imagem selecionada. Selecione imagens para excluir!</p>");
+	// 		redirect('sistema/imagens/editar');
+	// 	}
+
+	// 	$imagens = explode("_", $imagens);
+
+	// 	foreach ($imagens as $imagemId)
+	// 	{
+	// 		if (! $this->excluir($imagemId))
+	// 		{
+	// 			$this->session->set_flashdata('error', "<p>Não foi possível excluir uma ou mais imagens selecionadas!</p>");
+	// 			return redirect('sistema/imagens/editar');
+	// 		}
+	// 	}
+
+	// 	$this->session->set_flashdata('success', "<p>Imagens excluídas com sucesso!</p>");
+	// 	redirect('sistema/imagens/editar');
+	// }
 
 	public function getInfo($id=null)
 	{
