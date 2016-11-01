@@ -272,7 +272,16 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<div class="x_panel" id="conteudo_galeria">
 								<h2>Prévia da Galeria</h2>
 								<h5>Clique nas imagens para editar suas informações.</h5>
-								<a href="javascript:void(0)" class="excluir_multiplas_link"><button type="button" class="btn btn-danger" id="botao_delete_multiple" style="display: none;">Deletar Múltiplas</button></a>
+								<h5>Utilize o "x" para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
+
+								<div class="col-md-12 col-sm-12 col-xs-12" id="select_full_gallery_div">
+									<input type="checkbox" name="select_full_gallery" id="select_full_gallery" value="1" class="flat" />
+									<label for="select_full_gallery">Selecionar todas as imagens</label>
+								</div>
+
+								<div class="col-md-12 col-sm-12 col-xs-12" id="excluir_multiplas_div" style="display: none;">
+									<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-danger" id="botao_delete_multiple">Deletar Múltiplas</button></a><label class="excluir_multiplas_legenda"></label>
+								</div>
 								<div class="x_content">
 									<div class="galeria_imagens">
 
@@ -280,7 +289,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 											<?php foreach ($imagens_galeria as $imagem_galeria) : ?>
 												<div class="col-xs-12 col-md-3">
 													<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?php echo $imagem_galeria->id; ?>">
-														<img src="<?php echo base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar"><a href="<?php echo base_url('sistema/imagens/excluir/' . $imagem_galeria->id) ?>"><span class="glyphicon glyphicon-remove icon_img_gallery"></span></a><a href="javascript:void(0)" class="checks_deletar_galeria"><input type="checkbox" name="multiple_delete" value="<?=$imagem_galeria->id; ?>" class="flat" /></a>
+														<img src="<?php echo base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar"><a href="<?php echo base_url('sistema/imagens/excluir/' . $imagem_galeria->id) ?>"><span class="glyphicon glyphicon-remove icon_img_gallery"></span></a><a href="javascript:void(0)" class="checks_deletar_galeria"><input type="checkbox" name="multiple_delete" value="<?=$imagem_galeria->id; ?>" class="flat imagem_galeria_check" /></a>
 													</a>
 												</div>
 											<?php endforeach; ?>
@@ -298,24 +307,62 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 	<script type="text/javascript">
 
-		$(".flat").on('ifChanged', function () {
+		$(".flat.imagem_galeria_check").on('ifChanged', function () {
 			if ( $(".flat:checked").length > 1 ) {
-				$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + getMultipleImages());
-				$("#botao_delete_multiple").css('display', 'block');
+				var imagens = getMultipleImages();
+
+				$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+				$(".excluir_multiplas_legenda").html(imagens['mensagem']);
+				$("#excluir_multiplas_div").css('display', 'block');
 			} else {
 				$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
-				$("#botao_delete_multiple").css('display', 'none');
+				$("#excluir_multiplas_div").css('display', 'none');
 			}
 		});
 
-		function getMultipleImages () {
-			var imagens_deletar = [];
+		$("#select_full_gallery").on('ifChecked', function () {
+			$(".flat").prop('checked', true);
+			$(".icheckbox_flat-green").addClass('checked');
 
-			$(".flat:checked").each(function () {
+			var imagens = getMultipleImages();
+
+			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
+			$("#excluir_multiplas_div").css('display', 'block');
+		});
+
+		$("#select_full_gallery").on('ifUnchecked', function () {
+			$(".flat").prop('checked', false);
+			$(".icheckbox_flat-green").removeClass('checked');
+
+			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+			$("#excluir_multiplas_div").css('display', 'none');
+		});
+
+		function getMultipleImages () {
+			var imagens_deletar = []
+			, mensagem
+			, retorno = []
+			;
+
+			$(".flat.imagem_galeria_check:checked").each(function () {
 				imagens_deletar.push($(this).val());
 			});
 
-			return imagens_deletar.join('_');
+			if (imagens_deletar.length == $(".flat.imagem_galeria_check").length) {
+				mensagem = "Todas as " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
+				$("#select_full_gallery").prop('checked', true);
+				$("#select_full_gallery_div > .icheckbox_flat-green").addClass('checked');
+			} else {
+				mensagem = imagens_deletar.length + " de " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
+				$("#select_full_gallery").prop('checked', false);
+				$("#select_full_gallery_div > .icheckbox_flat-green").removeClass('checked');
+			}
+
+			retorno['ids'] = imagens_deletar.join('_');
+			retorno['mensagem'] = mensagem;
+
+			return retorno;
 		};
 
 		$("#remove_img").click(function () {
