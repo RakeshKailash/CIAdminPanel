@@ -30,9 +30,9 @@ class Atualizacoes_model extends CI_Model {
 
 	}
 
-	function retrieve ($id=null, $limit=null) {
-
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, usuarios.nome, usuarios.imagem');
+	function retrieve ($id=null, $limit=null)
+	{
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
 		$this->db->order_by('id', 'DESC');
@@ -55,7 +55,34 @@ class Atualizacoes_model extends CI_Model {
 		}
 
 		return $atualizacoes->result();
+	}
 
+	function retrieveUnviewed ($limit=null)
+	{
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, usuarios.nome, usuarios.imagem');
+		$this->db->from('atualizacoes');
+		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
+		$this->db->order_by('id', 'DESC');
+
+		if ($limit != null) 
+		{
+			$this->db->limit($limit);
+		}
+
+		$conditions = array(
+			'atualizacoes.id' => $id,
+			'atualizacoes.visualizada' => 'false'
+			);
+		$this->db->where($conditions);
+
+		$atualizacoes = $this->db->get();
+
+		if ( ! $atualizacoes )
+		{
+			return null;
+		}
+
+		return $atualizacoes->result();
 	}
 
 }

@@ -114,5 +114,74 @@ class Imagens_model extends CI_Model {
 		return $result;
 	}
 
+	public function download ($images=null)
+	{
+		if ($images === null)
+		{
+			return array('warning' => 'error', 'mensagem' => "Nenhuma imagem selecionada para download.", 'link' => null);
+		}
 
+		$ids = $images;
+		$this->db->select('nome');
+		$this->db->where_in('id', $ids);
+		$imagesDb = $this->db->get('galeria')->result();
+
+		// return $imagesDb;
+
+		$caminho_imgs = str_replace('\\', "/", FCPATH) . 'images/uploads/gallery/';
+		$caminho_pasta = str_replace('\\', "/", FCPATH) . 'files/user_download/';
+
+		$zip_name =  'Imagens sistema '.date('d-m-Y H_i\h', time()).'.zip';
+
+		$zip = new ZipArchive;
+		$zip->open(($caminho_pasta . $zip_name), ZipArchive::CREATE);
+
+
+		foreach ($imagesDb as $imagem)
+		{
+
+			if (! ($handle = opendir($caminho_imgs)))
+			{
+				return array('status' => 'error', 'mensagem' => "Erro ao preparar imagens para download.", 'link' => null);
+			}
+
+			while (false !== ($entry = readdir($handle)))
+			{
+				if ($entry == $imagem->nome)
+				{
+					if (! file_exists($caminho_imgs . $entry))
+					{
+						return array('status' => 'error', 'mensagem' => "Erro ao preparar imagens para download.", 'link' => null);
+					}
+
+					$zip->addFile(($caminho_imgs . $entry), $entry);
+				}
+			}
+
+			closedir($handle);
+		}
+
+		$zip->close();
+
+		header('Content-type: application/zip');
+		header('Content-Disposition: attachment; filename="' . $zip_name . '"');
+		header("Content-length: " . filesize($caminho_pasta . $zip_name));
+		readfile($caminho_pasta . $zip_name);
+
+		$data['nome'] = $zip_name;
+		$data['caminho'] = $caminho_pasta . $zip_name;
+		$data['tamanho'] = filesize($data['caminho']);
+		$data['idArquivos'] = implode('|', $images);
+		$data['dataDownload'] = time();
+		$data['idUsuario'] = $_SESSION['id'];
+
+		if (! $this->db->insert('arquivos_download', $data))
+		{
+			return false;
+		}
+
+		$idArquivo = $this->db->insert_id();
+
+		unlink($caminho_pasta . $zip_name);
+	}
 }

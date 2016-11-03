@@ -398,3 +398,22 @@
 	display: inline-block;
 	transition: all linear 0.2s;
 }
+
+.atualizacao-visualizada-true {
+
+}
+
+.atualizacao-visualizada-false {
+	background: #BFBFBF !important;
+	border-top: 1px solid #ccc !important;
+	border-bottom: 1px solid #9C9C9C !important;
+}
+
+.atualizacao-visualizada-false a:hover {
+	background: #BFBFBF !important;	
+}
+
+.atualizacoes_site_lista.msg_list li {
+	margin: 0;
+	width: 100% !important;
+}

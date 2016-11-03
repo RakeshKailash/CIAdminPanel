@@ -23,10 +23,11 @@ class Imagens extends CI_Controller {
 
 	public function editar ()
 	{
-		$info['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed()
 		$info['registro'] = $this->secoes_sistema->getInfo(4)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
-		$info['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['imagens_galeria'] = $this->imagens_model->getGalleryContent();
 
 		$this->load->view('sistema/imagens/editar', $info);
@@ -151,41 +152,17 @@ class Imagens extends CI_Controller {
 			$this->db->where('id', 4);
 			$this->db->update('secoes', $data);
 
-			$atualizacao['titulo'] = "Seção 'Imagens' alterada";
-			$atualizacao['usuario'] = $_SESSION['id'];
-			$atualizacao['tipo'] = "Exclusão de Imagens";
-
-			$this->atualizacoes_sistema->insert($atualizacao);
-
 		}
+
+		$atualizacao['titulo'] = "Seção 'Imagens' alterada";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Exclusão de Imagens| ID: $ids";
+
+		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata('success', "<p>Exclusão realizada com sucesso!</p>");
 		redirect('sistema/imagens/editar');
-
 	}
-
-	// public function excluir_multiplas ($imagens=null)
-	// {
-	// 	if ($imagens == null)
-	// 	{
-	// 		$this->session->set_flashdata('warning', "<p>Nenhuma imagem selecionada. Selecione imagens para excluir!</p>");
-	// 		redirect('sistema/imagens/editar');
-	// 	}
-
-	// 	$imagens = explode("_", $imagens);
-
-	// 	foreach ($imagens as $imagemId)
-	// 	{
-	// 		if (! $this->excluir($imagemId))
-	// 		{
-	// 			$this->session->set_flashdata('error', "<p>Não foi possível excluir uma ou mais imagens selecionadas!</p>");
-	// 			return redirect('sistema/imagens/editar');
-	// 		}
-	// 	}
-
-	// 	$this->session->set_flashdata('success', "<p>Imagens excluídas com sucesso!</p>");
-	// 	redirect('sistema/imagens/editar');
-	// }
 
 	public function getInfo($id=null)
 	{
@@ -193,4 +170,23 @@ class Imagens extends CI_Controller {
 
 		echo json_encode($imagem);
 	}
+
+	public function download($images=null)
+	{
+		if ($images === null)
+		{
+			$this->session->set_flashdata('warning', "Nenhuma imagem selecionada para download.");
+			redirect('sistema');
+		}
+
+		$images = explode("_", $images);
+		$resultado = $this->imagens_model->download($images);
+
+		$atualizacao['titulo'] = "Arquivo de download gerado";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Gerado arquivo '.rar' de Download para seção 'Imagens'";
+
+		$this->atualizacoes_sistema->insert($atualizacao);
+	}
+
 }

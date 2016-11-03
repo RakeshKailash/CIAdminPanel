@@ -8,7 +8,7 @@
 			<div class="modal-body" id="atualizacoes_modal_body" style="overflow: auto; height: 400px; padding: 0;">
 				<ul class="list-unstyled msg_list" id="lista_att">
 					<?php foreach ($todasAtualizacoes as $atualizacaoItem) : ?>
-						<li>
+						<li class="atualizacao-visualizada-<?=$atualizacaoItem->visualizada;?>">
 							<a>
 								<span class="image">
 									<img src="<?php echo base_url("images/uploads/profile/$atualizacaoItem->imagem"); ?>" alt="Imagem de Perfil" />

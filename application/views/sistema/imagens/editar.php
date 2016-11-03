@@ -108,9 +108,9 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									<i class="fa fa-wrench"></i>
 
 								</a>
-								<ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+								<ul class="dropdown-menu list-unstyled msg_list animated fadeInDown atualizacoes_site_lista" role="menu">
 									<?php foreach ($atualizacoes as $atualizacao) : ?>
-										<li>
+										<li class="atualizacao-visualizada-<?=$atualizacao->visualizada;?>">
 											<a>
 												<span class="image">
 													<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
@@ -285,7 +285,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12" id="excluir_multiplas_div" style="display: none;">
-									<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-danger" id="botao_delete_multiple">Deletar Múltiplas</button></a><label class="excluir_multiplas_legenda"></label>
+									<br>
+									<label class="excluir_multiplas_legenda"></label> <br>
+									<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-danger" id="botao_delete_multiple">Excluir Múltiplas</button></a>
+									<a href="javascript:void(0)" class="download_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-primary" id="botao_download_multiple">Baixar Múltiplas</button></a>
 								</div>
 								<div class="x_content">
 									<div class="galeria_imagens">
@@ -317,10 +320,12 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 				var imagens = getMultipleImages();
 
 				$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+				$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
 				$(".excluir_multiplas_legenda").html(imagens['mensagem']);
 				$("#excluir_multiplas_div").css('display', 'block');
 			} else {
 				$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+				$(".download_multiplas_link").prop('href', 'javascript:void(0)');
 				$("#excluir_multiplas_div").css('display', 'none');
 			}
 		});
@@ -332,6 +337,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			var imagens = getMultipleImages();
 
 			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+			$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
 			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
 			$("#excluir_multiplas_div").css('display', 'block');
 		});
@@ -341,34 +347,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			$(".icheckbox_flat-green").removeClass('checked');
 
 			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+			$(".download_multiplas_link").prop('href', 'javascript:void(0)');
 			$("#excluir_multiplas_div").css('display', 'none');
 		});
 
-		function getMultipleImages () {
-			var imagens_deletar = []
-			, mensagem
-			, retorno = []
-			;
-
-			$(".flat.imagem_galeria_check:checked").each(function () {
-				imagens_deletar.push($(this).val());
-			});
-
-			if (imagens_deletar.length == $(".flat.imagem_galeria_check").length) {
-				mensagem = "Todas as " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
-				$("#select_full_gallery").prop('checked', true);
-				$("#select_full_gallery_div > .icheckbox_flat-green").addClass('checked');
-			} else {
-				mensagem = imagens_deletar.length + " de " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
-				$("#select_full_gallery").prop('checked', false);
-				$("#select_full_gallery_div > .icheckbox_flat-green").removeClass('checked');
-			}
-
-			retorno['ids'] = imagens_deletar.join('_');
-			retorno['mensagem'] = mensagem;
-
-			return retorno;
-		};
 
 		$("#remove_img").click(function () {
 			$("#img_selecionada").html("Ainda não existe uma imagem para esta categoria");
@@ -430,6 +412,32 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 		$("#open_att_modal").click(function () {
 			$("#atualizacoes_modal").modal('show');
 		});
+
+		function getMultipleImages () {
+			var imagens_deletar = []
+			, mensagem
+			, retorno = []
+			;
+
+			$(".flat.imagem_galeria_check:checked").each(function () {
+				imagens_deletar.push($(this).val());
+			});
+
+			if (imagens_deletar.length == $(".flat.imagem_galeria_check").length) {
+				mensagem = "Todas as " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
+				$("#select_full_gallery").prop('checked', true);
+				$("#select_full_gallery_div > .icheckbox_flat-green").addClass('checked');
+			} else {
+				mensagem = imagens_deletar.length + " de " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
+				$("#select_full_gallery").prop('checked', false);
+				$("#select_full_gallery_div > .icheckbox_flat-green").removeClass('checked');
+			}
+
+			retorno['ids'] = imagens_deletar.join('_');
+			retorno['mensagem'] = mensagem;
+
+			return retorno;
+		};
 
 		function formatSizeNumber (num) {
 			var retorno;
