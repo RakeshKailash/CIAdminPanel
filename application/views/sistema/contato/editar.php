@@ -202,7 +202,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<div class="form-group">
 											<label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">E-mail <span class="required">*</span></label> 
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input id="email" class="form-control col-md-7 col-xs-12" required="required">
+												<input id="email" class="form-control col-md-7 col-xs-12" name="email" required="required" value="<?php echo $contato->email ?>">
 											</div>
 										</div>
 										<div class="form-group">

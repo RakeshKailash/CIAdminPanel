@@ -1,7 +1,12 @@
 <?php
 $info['title'] = array('Sistema', 'Editar Imagens');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
+
+$atualiz['todasAtualizacoes'] = $todasAtualizacoes;
+
 $this->load->view('header', $info);
+$this->load->view('sistema/atualizacoes', $atualiz);
+
 
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
@@ -121,7 +126,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										</li>
 									<?php endforeach; ?>
 									<li>
-										<div class="text-center">
+										<div class="text-center" id="open_att_modal">
 											<a>
 												<strong>Ver todas as Modificações</strong>
 												<i class="fa fa-angle-right"></i>
@@ -420,6 +425,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 				$("#img_full_modal").modal('show');
 			});
 
+		});
+
+		$("#open_att_modal").click(function () {
+			$("#atualizacoes_modal").modal('show');
 		});
 
 		function formatSizeNumber (num) {

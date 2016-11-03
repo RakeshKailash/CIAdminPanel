@@ -23,6 +23,7 @@ class Imagens extends CI_Controller {
 
 	public function editar ()
 	{
+		$info['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
 		$info['registro'] = $this->secoes_sistema->getInfo(4)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
 		$info['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
