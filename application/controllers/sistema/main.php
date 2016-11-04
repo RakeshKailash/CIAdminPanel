@@ -14,7 +14,8 @@ class Main extends CI_Controller {
 		
 	}
 
-	public function index() {
+	public function index ()
+	{
 		if (! $this->usuario_model->isLogged()) {
 			return redirect('sistema/login');
 		}
@@ -72,7 +73,7 @@ class Main extends CI_Controller {
 		return redirect('sistema');
 	}
 
-	public function logout()
+	public function logout ()
 	{
 		$data['id_secao'] = $this->session->session_id;
 		$data['id_usuario'] = $_SESSION['id'];
@@ -83,6 +84,27 @@ class Main extends CI_Controller {
 
 		$this->session->sess_destroy();
 		redirect('/sistema/login');
+	}
+
+	public function viewUpdate ($id=null)
+	{
+		if ($id === null)
+		{
+			$retorno = (object) array('count' => null);
+			echo json_encode($retorno);
+		}
+
+		$this->db->set('visualizada', 'true');
+		$this->db->where('id', $id);
+		if (! $this->db->update('atualizacoes'))
+		{
+			$retorno = (object) array('count' => null);
+			echo json_encode($retorno);
+		}
+
+		$count = count($this->atualizacoes_sistema->retrieveUnviewed());
+		$retorno = (object) array('count' => $count);
+		echo json_encode($retorno);
 	}
 
 }

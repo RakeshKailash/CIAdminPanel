@@ -25,7 +25,7 @@ class Imagens extends CI_Controller {
 	{
 		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
-		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed()
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['registro'] = $this->secoes_sistema->getInfo(4)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
 		$info['imagens_galeria'] = $this->imagens_model->getGalleryContent();

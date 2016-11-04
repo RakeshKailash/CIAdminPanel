@@ -2,7 +2,7 @@
 $info['title'] = array('Sistema', 'Editar Imagens');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 
-$atualiz['todasAtualizacoes'] = $todasAtualizacoes;
+$atualiz['todasAtualizacoes'] = $atualizacoes['todasAtualizacoes'];
 
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualiz);
@@ -106,11 +106,11 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<li role="presentation" class="dropdown">
 								<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
 									<i class="fa fa-wrench"></i>
-
+									<span class="count-update-badge badge bg-green"><?=count($atualizacoes['naoVisualizadas']) ?></span>
 								</a>
 								<ul class="dropdown-menu list-unstyled msg_list animated fadeInDown atualizacoes_site_lista" role="menu">
-									<?php foreach ($atualizacoes as $atualizacao) : ?>
-										<li class="atualizacao-visualizada-<?=$atualizacao->visualizada;?>">
+									<?php foreach ($atualizacoes['todasAtualizacoes'] as $atualizacao) : ?>
+										<li class="atualizacao-visualizada-<?=$atualizacao->visualizada;?>" data-id="<?=$atualizacao->id;?>">
 											<a>
 												<span class="image">
 													<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
@@ -314,6 +314,28 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 	</div>
 
 	<script type="text/javascript">
+
+	$(".atualizacao-visualizada-false").hover(function () {
+		var idUpd = $(this).data('id')
+		, url = base_url + 'sistema/main/viewUpdate/' + idUpd
+		;
+
+		$.get(url, function (retorno) {
+			retorno = JSON.parse(retorno);
+
+			if (retorno.count > 0) {
+				$(".count-update-badge").html(retorno.count);	
+				$(".count-update-badge").css('display', 'inline-block');
+			} else {
+				$(".count-update-badge").css('display', 'none');
+			}
+
+			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').addClass('atualizacao-visualizada-true');
+			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').removeClass('atualizacao-visualizada-false');
+
+		});
+
+	});
 
 		$(".flat.imagem_galeria_check").on('ifChanged', function () {
 			if ( $(".flat:checked").length > 1 ) {

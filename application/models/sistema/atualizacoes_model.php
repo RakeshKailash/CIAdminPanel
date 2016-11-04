@@ -69,11 +69,7 @@ class Atualizacoes_model extends CI_Model {
 			$this->db->limit($limit);
 		}
 
-		$conditions = array(
-			'atualizacoes.id' => $id,
-			'atualizacoes.visualizada' => 'false'
-			);
-		$this->db->where($conditions);
+		$this->db->where('atualizacoes.visualizada', 'false');
 
 		$atualizacoes = $this->db->get();
 
