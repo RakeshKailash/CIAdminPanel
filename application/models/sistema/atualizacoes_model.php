@@ -32,7 +32,7 @@ class Atualizacoes_model extends CI_Model {
 
 	function retrieve ($id=null, $limit=null)
 	{
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, usuarios.nome, usuarios.imagem');
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
 		$this->db->order_by('id', 'DESC');
@@ -47,19 +47,26 @@ class Atualizacoes_model extends CI_Model {
 			$this->db->where('atualizacoes.id', $id);
 		}
 
-		$atualizacoes = $this->db->get();
+		$atualizacoes = $this->db->get()->result();
 
 		if ( ! $atualizacoes )
 		{
 			return null;
 		}
 
-		return $atualizacoes->result();
+		foreach ($atualizacoes as &$atualizacao) {
+			if ($atualizacao->usuario === $_SESSION['id'])
+			{
+				$atualizacao->visualizada = 'true';
+			}
+		}
+
+		return $atualizacoes;
 	}
 
 	function retrieveUnviewed ($limit=null)
 	{
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, usuarios.nome, usuarios.imagem');
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
 		$this->db->order_by('id', 'DESC');
@@ -70,15 +77,23 @@ class Atualizacoes_model extends CI_Model {
 		}
 
 		$this->db->where('atualizacoes.visualizada', 'false');
+		$this->db->where('atualizacoes.usuario !=', $_SESSION['id']);
 
-		$atualizacoes = $this->db->get();
+		$atualizacoes = $this->db->get()->result();
 
 		if ( ! $atualizacoes )
 		{
 			return null;
 		}
 
-		return $atualizacoes->result();
+		// foreach ($atualizacoes as &$atualizacao) {
+		// 	if ($atualizacao->usuario === $_SESSION['id'])
+		// 	{
+		// 		$atualizacao->visualizada = 'true';
+		// 	}
+		// }
+
+		return $atualizacoes;
 	}
 
 }

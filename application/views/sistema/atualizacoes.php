@@ -3,12 +3,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Modificações <span class="badge bg-green"><?=count($todasAtualizacoes);?> até Hoje</span></h4>
+				<h4 class="modal-title"><?=count($todasAtualizacoes);?> Modificações <span class="badge bg-green count-update-badge-modal"><?=(count($naoVisualizadas) > 0 ? count($naoVisualizadas) . ' novas' : null);?></span></h4>
 			</div>
 			<div class="modal-body" id="atualizacoes_modal_body" style="overflow: auto; height: 400px; padding: 0;">
 				<ul class="list-unstyled msg_list" id="lista_att">
 					<?php foreach ($todasAtualizacoes as $atualizacaoItem) : ?>
-						<li class="atualizacao-visualizada-<?=$atualizacaoItem->visualizada;?>">
+						<li class="atualizacao-visualizada-<?=$atualizacaoItem->visualizada;?>" data-id="<?=$atualizacaoItem->id;?>">
 							<a>
 								<span class="image">
 									<img src="<?php echo base_url("images/uploads/profile/$atualizacaoItem->imagem"); ?>" alt="Imagem de Perfil" />
@@ -24,22 +24,6 @@
 						</li>
 					<?php endforeach; ?>
 				</ul>
-<!-- 				<table class="table">
-					<tr>
-						<td style="border-top: none;">Data</td>
-						<td style="border-top: none;">Título da Atualização</td>
-						<td style="border-top: none;">Tipo</td>
-						<td style="border-top: none;">Usuário</td>
-					</tr>
-					<?php foreach ($todasAtualizacoes as $atualizacaoItem) : ?>
-						<tr>
-							<td><?php echo date('d/m/Y\  H:i\h', $atualizacaoItem->data); ?></td>
-							<td><?php echo $atualizacaoItem->titulo; ?></td>
-							<td><?php echo $atualizacaoItem->tipo; ?></td>
-							<td><?php echo $atualizacaoItem->nome; ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</table> -->
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

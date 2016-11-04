@@ -1,11 +1,8 @@
 <?php
 $info['title'] = array('Sistema', 'Editar Imagens');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
-
-$atualiz['todasAtualizacoes'] = $atualizacoes['todasAtualizacoes'];
-
 $this->load->view('header', $info);
-$this->load->view('sistema/atualizacoes', $atualiz);
+$this->load->view('sistema/atualizacoes', $atualizacoes);
 
 
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
@@ -106,10 +103,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<li role="presentation" class="dropdown">
 								<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
 									<i class="fa fa-wrench"></i>
-									<span class="count-update-badge badge bg-green"><?=count($atualizacoes['naoVisualizadas']) ?></span>
+									<span class="count-update-badge badge bg-green"><?=(count($atualizacoes['naoVisualizadas']) > 0 ? count($atualizacoes['naoVisualizadas']) : null)?></span>
 								</a>
 								<ul class="dropdown-menu list-unstyled msg_list animated fadeInDown atualizacoes_site_lista" role="menu">
-									<?php foreach ($atualizacoes['todasAtualizacoes'] as $atualizacao) : ?>
+									<?php foreach ($atualizacoes['limitadas'] as $atualizacao) : ?>
 										<li class="atualizacao-visualizada-<?=$atualizacao->visualizada;?>" data-id="<?=$atualizacao->id;?>">
 											<a>
 												<span class="image">
@@ -315,6 +312,16 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 	<script type="text/javascript">
 
+	$(document).ready(function () {
+		if (($(".count-update-badge").html()) == null) {
+			$(".count-update-badge").css('display', 'none');
+		}
+
+		if (($(".count-update-badge-modal").html()) == null) {
+			$(".count-update-badge-modal").css('display', 'none');
+		}
+	});
+
 	$(".atualizacao-visualizada-false").hover(function () {
 		var idUpd = $(this).data('id')
 		, url = base_url + 'sistema/main/viewUpdate/' + idUpd
@@ -324,10 +331,13 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			retorno = JSON.parse(retorno);
 
 			if (retorno.count > 0) {
-				$(".count-update-badge").html(retorno.count);	
+				$(".count-update-badge").html(retorno.count);
 				$(".count-update-badge").css('display', 'inline-block');
+				$(".count-update-badge-modal").html(retorno.count + " novas");
+				$(".count-update-badge-modal").css('display', 'inline-block');
 			} else {
 				$(".count-update-badge").css('display', 'none');
+				$(".count-update-badge-modal").css('display', 'none');
 			}
 
 			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').addClass('atualizacao-visualizada-true');
