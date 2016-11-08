@@ -80,9 +80,8 @@ class Main extends CI_Controller {
 		$data['login'] = $_SESSION['login'];
 		$data['inicio'] = $_SESSION['inicio'];
 
-		$this->sessions_model->insert($data);
+		$this->usuario_model->logout($data);
 
-		$this->session->sess_destroy();
 		redirect('/sistema/login');
 	}
 
@@ -94,7 +93,19 @@ class Main extends CI_Controller {
 			echo json_encode($retorno);
 		}
 
-		$this->db->set('visualizada', 'true');
+		$update = $this->db->select('visualizada')->where('id', $id)->get('atualizacoes')->result()[0]->visualizada;
+
+		print_r($update);
+
+		if (strstr($update, '|'))
+		{
+			$updateArray = explode('|', $update);
+			$status = in_array($_SESSION['id'], $update) ? null : ('|' . $_SESSION['id']);
+		} else {
+			$status = ($update === $_SESSION['id']) ? null : ('|' . $_SESSION['id']);
+		}
+
+		$this->db->set('visualizada', ($update . $status));
 		$this->db->where('id', $id);
 		if (! $this->db->update('atualizacoes'))
 		{

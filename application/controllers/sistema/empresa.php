@@ -49,6 +49,7 @@ class Empresa extends CI_Controller {
 			$atualizacao['titulo'] = "Seção 'Empresa' alterada";
 			$atualizacao['usuario'] = $_SESSION['id'];
 			$atualizacao['tipo'] = "Alteração de Conteúdo";
+			
 
 			$this->atualizacoes_sistema->insert($atualizacao);
 

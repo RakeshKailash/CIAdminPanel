@@ -75,6 +75,7 @@ class Contato extends CI_Controller {
 			$atualizacao['titulo'] = "Seção 'Contato' alterada";
 			$atualizacao['usuario'] = $_SESSION['id'];
 			$atualizacao['tipo'] = "Alteração de Informações/Conteúdo";
+			
 
 			$this->atualizacoes_sistema->insert($atualizacao);
 

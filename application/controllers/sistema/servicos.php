@@ -51,6 +51,7 @@ class Servicos extends CI_Controller {
 			$atualizacao['titulo'] = "Seção 'Serviços' alterada";
 			$atualizacao['usuario'] = $_SESSION['id'];
 			$atualizacao['tipo'] = "Alteração de Conteúdo";
+			
 
 			$this->atualizacoes_sistema->insert($atualizacao);
 		}

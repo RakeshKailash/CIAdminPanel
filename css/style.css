@@ -403,14 +403,22 @@
 	border-bottom: 1px solid #ddd;
 }
 
+.atualizacao-visualizada-false:first-child {
+	border-top: none !important;
+}
+
+.atualizacao-visualizada-false:last-child {
+	border-bottom: none !important;
+}
+
 .atualizacao-visualizada-false {
-	background: #BFBFBF !important;
-	border-top: 1px solid #ccc !important;
-	border-bottom: 1px solid #9C9C9C !important;
+	background: #DEDEDE !important;
+	border-top: 1px solid #ececec !important;
+	border-bottom: 1px solid #D5D5D5 !important;
 }
 
 .atualizacao-visualizada-false a:hover {
-	background: #BFBFBF !important;	
+	background: #DEDEDE !important;	
 }
 
 .atualizacoes_site_lista.msg_list li {

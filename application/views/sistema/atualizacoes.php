@@ -7,22 +7,22 @@
 			</div>
 			<div class="modal-body" id="atualizacoes_modal_body" style="overflow: auto; height: 400px; padding: 0;">
 				<ul class="list-unstyled msg_list" id="lista_att">
-					<?php foreach ($todasAtualizacoes as $atualizacaoItem) : ?>
-						<li class="atualizacao-visualizada-<?=$atualizacaoItem->visualizada;?>" data-id="<?=$atualizacaoItem->id;?>">
+					<?php if ($todasAtualizacoes) : foreach ($todasAtualizacoes as $atualizacaoItem) : ?>
+						<li class="atualizacao-visualizada-<?=$atualizacaoItem->status?>" data-id="<?=$atualizacaoItem->id;?>">
 							<a>
 								<span class="image">
 									<img src="<?php echo base_url("images/uploads/profile/$atualizacaoItem->imagem"); ?>" alt="Imagem de Perfil" />
 								</span>
 								<span>
 									<span><?php echo $atualizacaoItem->nome; ?></span>
-									<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', $atualizacaoItem->data); ?></span>
+									<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', strtotime($atualizacaoItem->data)); ?></span>
 								</span>
 								<span class="message">
 									<?php echo $atualizacaoItem->titulo . ": " . $atualizacaoItem->tipo; ?>
 								</span>
 							</a>
 						</li>
-					<?php endforeach; ?>
+					<?php endforeach; endif; ?>
 				</ul>
 			</div>
 			<div class="modal-footer">

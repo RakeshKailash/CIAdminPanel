@@ -106,22 +106,22 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									<span class="count-update-badge badge bg-green"><?=(count($atualizacoes['naoVisualizadas']) > 0 ? count($atualizacoes['naoVisualizadas']) : null)?></span>
 								</a>
 								<ul class="dropdown-menu list-unstyled msg_list animated fadeInDown atualizacoes_site_lista" role="menu">
-									<?php foreach ($atualizacoes['limitadas'] as $atualizacao) : ?>
-										<li class="atualizacao-visualizada-<?=$atualizacao->visualizada;?>" data-id="<?=$atualizacao->id;?>">
+									<?php if ($atualizacoes['limitadas']) : foreach ($atualizacoes['limitadas'] as $atualizacao) : ?>
+										<li class="atualizacao-visualizada-<?=$atualizacao->status;?>" data-id="<?=$atualizacao->id;?>">
 											<a>
 												<span class="image">
 													<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
 												</span>
 												<span>
 													<span><?php echo $atualizacao->nome; ?></span>
-													<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', $atualizacao->data); ?></span>
+													<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', strtotime($atualizacao->data)); ?></span>
 												</span>
 												<span class="message">
 													<?php echo $atualizacao->titulo; ?>
 												</span>
 											</a>
 										</li>
-									<?php endforeach; ?>
+									<?php endforeach; endif; ?>
 									<li>
 										<div class="text-center" id="open_att_modal">
 											<a>

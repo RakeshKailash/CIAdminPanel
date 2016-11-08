@@ -30,7 +30,7 @@ class Usuario_model extends CI_Model {
 			'senha' => $user_info['senha']
 			));
 
-		$this->db->select('id, nome, login, email, imagem');
+		$this->db->select('id, nome, login, email, imagem, ultimoAcesso');
 
 		$result = $this->db->get('usuarios')->result_array()[0];
 		$result['inicio'] = time();
@@ -57,7 +57,28 @@ class Usuario_model extends CI_Model {
 		}
 		
 		return false;
+	}
 
+	public function logout ($data=null)
+	{
+		if ($data === null)
+		{
+			$this->session->sess_destroy();
+			return false;
+		}
+
+		if (! $this->sessions_model->insert($data))
+		{
+			$this->session->sess_destroy();
+			return false;
+		}
+
+		$this->db->set('ultimoAcesso', date("Y-m-d H:i:s", time()));
+		$this->db->where('id', $_SESSION['id']);
+		$this->db->update('usuarios');
+
+		$this->session->sess_destroy();
+		return true;
 	}
 
 }

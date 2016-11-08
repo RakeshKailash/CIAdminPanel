@@ -17,8 +17,6 @@ class Atualizacoes_model extends CI_Model {
 			return false;
 		}
 
-		$data['data'] = time();
-
 		$insert = $this->db->insert('atualizacoes', $data);
 
 		if ( ! $insert )
@@ -32,7 +30,7 @@ class Atualizacoes_model extends CI_Model {
 
 	function retrieve ($id=null, $limit=null)
 	{
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
 		$this->db->order_by('id', 'DESC');
@@ -49,16 +47,13 @@ class Atualizacoes_model extends CI_Model {
 
 		$atualizacoes = $this->db->get()->result();
 
-		if ( ! $atualizacoes )
+		if ( ! $atualizacoes || ! $atualizacoes[0]->titulo )
 		{
 			return null;
 		}
 
 		foreach ($atualizacoes as &$atualizacao) {
-			if ($atualizacao->usuario === $_SESSION['id'])
-			{
-				$atualizacao->visualizada = 'true';
-			}
+			$atualizacao->status = ($atualizacao->data > $_SESSION['ultimoAcesso'] && $atualizacao->usuario != $_SESSION['id']) ? 'false' : 'true';
 		}
 
 		return $atualizacoes;
@@ -66,32 +61,30 @@ class Atualizacoes_model extends CI_Model {
 
 	function retrieveUnviewed ($limit=null)
 	{
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.visualizada, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
-		$this->db->order_by('id', 'DESC');
+		$this->db->order_by('atualizacoes.id', 'DESC');
 
 		if ($limit != null) 
 		{
 			$this->db->limit($limit);
 		}
 
-		$this->db->where('atualizacoes.visualizada', 'false');
-		$this->db->where('atualizacoes.usuario !=', $_SESSION['id']);
+		// $this->db->where('atualizacoes.visualizada', 'false');
+		$this->db->where('atualizacoes.data >', $_SESSION['ultimoAcesso']);
+		$this->db->where_not_in('atualizacoes.usuario', $_SESSION['id']);
 
 		$atualizacoes = $this->db->get()->result();
 
-		if ( ! $atualizacoes )
+		if ( ! $atualizacoes || ! $atualizacoes[0]->titulo )
 		{
 			return null;
 		}
 
-		// foreach ($atualizacoes as &$atualizacao) {
-		// 	if ($atualizacao->usuario === $_SESSION['id'])
-		// 	{
-		// 		$atualizacao->visualizada = 'true';
-		// 	}
-		// }
+		foreach ($atualizacoes as &$atualizacao) {
+			$atualizacao->status = 'false';
+		}
 
 		return $atualizacoes;
 	}
