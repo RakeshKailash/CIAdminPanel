@@ -25,11 +25,13 @@ class Contato extends CI_Controller {
 
 	public function editar ()
 	{
+		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['registro'] = $this->secoes_sistema->getInfo(5)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$info['imagens_galeria'] = $this->imagens_model->getGalleryContent();
 		$info['contato'] = $this->contatos_model->retrieve(1);
-		$info['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
-
 		$this->load->view('sistema/contato/editar', $info);
 	}
 

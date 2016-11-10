@@ -11,6 +11,7 @@ class Main extends CI_Controller {
 		$this->load->model('sistema/secoes_model', 'secoes_sistema');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
 		$this->load->model('sistema/sessions_model');
+		$this->load->model('sistema/analise_model', 'analise_sistema');
 		
 	}
 
@@ -20,11 +21,16 @@ class Main extends CI_Controller {
 			return redirect('sistema/login');
 		}
 
-		$data['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
-		$data['secoes'] = $this->secoes_sistema->getInfo();
-		$data['registro'] = $this->secoes_sistema->getInfo(1)[0];
+		$views = $this->analise_sistema->retrieveLast();
 
-		$this->load->view('sistema/home', $data);
+		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
+		$info['registro'] = $this->secoes_sistema->getInfo(1)[0];
+		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$info['views'] = $views;
+
+		$this->load->view('sistema/home', $info);
 	}
 
 	public function login ()
@@ -75,7 +81,6 @@ class Main extends CI_Controller {
 
 	public function logout ()
 	{
-		$data['id_secao'] = $this->session->session_id;
 		$data['id_usuario'] = $_SESSION['id'];
 		$data['login'] = $_SESSION['login'];
 		$data['inicio'] = $_SESSION['inicio'];

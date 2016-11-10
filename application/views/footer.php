@@ -47,10 +47,124 @@
 <!-- bootstrap progress js -->
 <script src="<?php echo base_url('js/progressbar/bootstrap-progressbar.min.js'); ?>"></script>
 <script src="<?php echo base_url('js/nicescroll/jquery.nicescroll.min.js'); ?>"></script>
+<!-- flot js -->
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.pie.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.orderBars.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.time.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/date.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.spline.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.stack.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/curvedLines.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/flot/jquery.flot.resize.js'); ?>"></script>
+<!-- echart -->
+<script src="<?=base_url('js/echart/echarts-all.js')?>"></script>
+<script src="<?=base_url('js/echart/green.js')?>"></script>
 
 <!-- /Importar JS Aqui -->
 
 <!-- Demais Scripts -->
+<script type="text/javascript">
+	var myChart = echarts.init(document.getElementById('echart_line'), theme);
+	myChart.setOption({
+		title: {
+			text: 'Acessos na Última Semana',
+			subtext: 'Acompanhe o número de acessos ao seu site dia-a-dia'
+		},
+		tooltip: {
+			trigger: 'axis'
+		},
+		legend: {
+			data: ['Acessos no dia']
+		},
+		calculable: false,
+		xAxis: [{
+			type: 'category',
+			boundaryGap: false,
+			data: lastWeekJS,
+			axisLabel:{interval: 0}
+		}],
+		yAxis: [{
+			type: 'value',
+			min: 0,
+			max: limitValue
+		}],
+		series: [{
+			name: 'Acessos no dia',
+			type: 'line',
+			smooth: true,
+			itemStyle: {
+				normal: {
+					areaStyle: {
+						type: 'line'
+					},
+					lineStyle: {
+						type: 'dotted'
+					}
+				}
+			},
+			data: viewsLastWeek
+		}]
+	});
+
+	var myChart = echarts.init(document.getElementById('echart_bar_horizontal'), theme);
+	myChart.setOption({
+		title: {
+			text: 'Acessos Totais por Seção',
+			subtext: 'Descubra a popularidade de cada seção do seu site'
+		},
+		tooltip: {
+			trigger: 'axis'
+		},
+		legend: {
+			data: ['Acessos no total'],
+			x: 'right'
+		},
+		calculable: false,
+		xAxis: [{
+			type: 'value',
+			boundaryGap: [0, 0.01],
+			min: 0,
+			max: 100
+		}],
+		yAxis: [{
+			type: 'category',
+			data: ['Contato', 'Imagens', 'Empresa', 'Serviços', 'Home']
+		}],
+		series: [{
+			name: 'Acessos no total',
+			type: 'bar',
+			data: [10, 5, 3, 1, 7]
+		}]
+	});
+
+	var myChart = echarts.init(document.getElementById('echart_pie'), theme);
+	myChart.setOption({
+		title: {
+			text: 'Acessos Hoje',
+			subtext: 'Monitore os acessos ao seu site no dia de hoje'
+		},
+		tooltip: {
+			trigger: 'item',
+			formatter: "{a} : {c}"
+		},
+		legend: {
+			x: 'center',
+			y: 'bottom'
+		},
+		calculable: false,
+		series: [{
+			name: "Acessos até Agora",
+			type: 'gauge',
+			radius: '70%',
+			data: [{
+				value: 30,
+				name: 'Acessos Hoje'
+			}]
+		}]
+	});
+</script>
+
 <!-- form validation -->
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -266,8 +380,180 @@
 
 	$('[data-toggle="popover"]').popover();
 
-</script>
-<!-- /Meu JS -->
+	$(document).ready(function () {
+		if (($(".count-update-badge").html()) == null) {
+			$(".count-update-badge").css('display', 'none');
+		}
 
-</body>
-</html>
+		if (($(".count-update-badge-modal").html()) == null) {
+			$(".count-update-badge-modal").css('display', 'none');
+		}
+	});
+
+	$(".atualizacao-visualizada-false").hover(function () {
+		var idUpd = $(this).data('id')
+		, url = base_url + 'sistema/main/viewUpdate/' + idUpd
+		;
+
+		$.get(url, function (retorno) {
+			retorno = JSON.parse(retorno);
+
+			if (retorno.count > 0) {
+				$(".count-update-badge").html(retorno.count);
+				$(".count-update-badge").css('display', 'inline-block');
+				$(".count-update-badge-modal").html(retorno.count + " novas");
+				$(".count-update-badge-modal").css('display', 'inline-block');
+			} else {
+				$(".count-update-badge").css('display', 'none');
+				$(".count-update-badge-modal").css('display', 'none');
+			}
+
+			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').addClass('atualizacao-visualizada-true');
+			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').removeClass('atualizacao-visualizada-false');
+
+		});
+
+	});
+
+	$(".flat.imagem_galeria_check").on('ifChanged', function () {
+		if ( $(".flat:checked").length > 1 ) {
+			var imagens = getMultipleImages();
+
+			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+			$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
+			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
+			$("#excluir_multiplas_div").css('display', 'block');
+		} else {
+			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+			$(".download_multiplas_link").prop('href', 'javascript:void(0)');
+			$("#excluir_multiplas_div").css('display', 'none');
+		}
+	});
+
+	$("#select_full_gallery").on('ifChecked', function () {
+		$(".flat").prop('checked', true);
+		$(".icheckbox_flat-green").addClass('checked');
+
+		var imagens = getMultipleImages();
+
+		$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+		$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
+		$(".excluir_multiplas_legenda").html(imagens['mensagem']);
+		$("#excluir_multiplas_div").css('display', 'block');
+	});
+
+	$("#select_full_gallery").on('ifUnchecked', function () {
+		$(".flat").prop('checked', false);
+		$(".icheckbox_flat-green").removeClass('checked');
+
+		$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+		$(".download_multiplas_link").prop('href', 'javascript:void(0)');
+		$("#excluir_multiplas_div").css('display', 'none');
+	});
+
+
+	$("#remove_img").click(function () {
+		$("#img_selecionada").html("Ainda não existe uma imagem para esta categoria");
+		$("#has_img").val("false");
+	});
+
+	$("#editor").blur(function () {
+		$("#descr").html($("#editor").html());
+	});
+
+
+
+	$("#imagens_galeria").change(function () {
+		var label_text = []
+		, arquivos = $("#imagens_galeria")[0].files
+		, texto_imgs = "<h4>" + arquivos.length
+		;
+
+		for (var i = 0; i < arquivos.length; i++) {
+			label_text.push("&bull; " + arquivos[i].name);
+		}
+
+		if (arquivos.length > 1) {
+			texto_imgs +=" imagens selecionadas: </h4>";
+		} else {
+			texto_imgs +=" imagem selecionada: </h4>";
+		}
+
+		$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>" + texto_imgs + label_text.join("<br />") + "</label>");
+			// $("#has_img").val("true");
+		});
+
+	$("#btn_reset_form").click(function () {
+		location.reload();
+	});
+
+	$(".miniatura_galeria_sistema").click(function () {
+
+		var id = $(this).data('id');
+		var url = base_url + 'sistema/imagens/getInfo/'+id;
+		$.get(url, function(retorno) {
+			retorno = JSON.parse(retorno);
+
+			$("#titulo_img_modal").val(retorno.titulo);
+			$("#legenda_img_modal").html(retorno.texto);
+			$("#id_img_modal").val(retorno.id);
+			$("#img_modal_full").attr('src', base_url + retorno.caminho);
+
+			var caminho_imagem = base_url + retorno.caminho;
+			$("#nome_imagem_modal").html(retorno.nome);
+			$("#caminho_imagem_modal").html("<a href=" + caminho_imagem + ">"+ caminho_imagem +"</a>");
+			$("#tamanho_imagem_modal").html(formatSizeNumber(retorno.tamanho));
+
+			$("#img_full_modal").modal('show');
+		});
+
+	});
+
+	$(".open_att_modal").click(function () {
+		$(".atualizacoes_modal").modal('show');
+	});
+
+	function getMultipleImages () {
+		var imagens_deletar = []
+		, mensagem
+		, retorno = []
+		;
+
+		$(".flat.imagem_galeria_check:checked").each(function () {
+			imagens_deletar.push($(this).val());
+		});
+
+		if (imagens_deletar.length == $(".flat.imagem_galeria_check").length) {
+			mensagem = "Todas as " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
+			$("#select_full_gallery").prop('checked', true);
+			$("#select_full_gallery_div > .icheckbox_flat-green").addClass('checked');
+		} else {
+			mensagem = imagens_deletar.length + " de " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
+			$("#select_full_gallery").prop('checked', false);
+			$("#select_full_gallery_div > .icheckbox_flat-green").removeClass('checked');
+		}
+
+		retorno['ids'] = imagens_deletar.join('_');
+		retorno['mensagem'] = mensagem;
+
+		return retorno;
+	};
+
+	function formatSizeNumber (num) {
+		var retorno;
+				// (retorno.tamanho / 1024).toFixed(2) + "Mb"
+				num = parseFloat(num);
+				if (num > 1024) {
+					retorno = (num / 1024).toFixed(2) + "Mb";
+					return retorno;
+				}
+
+				retorno = (num).toFixed(0) + "Kb";
+				return retorno;
+			}
+
+		</script>
+		<!-- /Meu JS -->
+
+	</body>
+	</html>

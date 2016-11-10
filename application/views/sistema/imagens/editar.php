@@ -4,7 +4,6 @@ $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
 
-
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
@@ -123,7 +122,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										</li>
 									<?php endforeach; endif; ?>
 									<li>
-										<div class="text-center" id="open_att_modal">
+										<div class="text-center open_att_modal">
 											<a>
 												<strong>Ver todas as Modificações</strong>
 												<i class="fa fa-angle-right"></i>
@@ -309,181 +308,5 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			</div>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-
-	$(document).ready(function () {
-		if (($(".count-update-badge").html()) == null) {
-			$(".count-update-badge").css('display', 'none');
-		}
-
-		if (($(".count-update-badge-modal").html()) == null) {
-			$(".count-update-badge-modal").css('display', 'none');
-		}
-	});
-
-	$(".atualizacao-visualizada-false").hover(function () {
-		var idUpd = $(this).data('id')
-		, url = base_url + 'sistema/main/viewUpdate/' + idUpd
-		;
-
-		$.get(url, function (retorno) {
-			retorno = JSON.parse(retorno);
-
-			if (retorno.count > 0) {
-				$(".count-update-badge").html(retorno.count);
-				$(".count-update-badge").css('display', 'inline-block');
-				$(".count-update-badge-modal").html(retorno.count + " novas");
-				$(".count-update-badge-modal").css('display', 'inline-block');
-			} else {
-				$(".count-update-badge").css('display', 'none');
-				$(".count-update-badge-modal").css('display', 'none');
-			}
-
-			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').addClass('atualizacao-visualizada-true');
-			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').removeClass('atualizacao-visualizada-false');
-
-		});
-
-	});
-
-		$(".flat.imagem_galeria_check").on('ifChanged', function () {
-			if ( $(".flat:checked").length > 1 ) {
-				var imagens = getMultipleImages();
-
-				$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
-				$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
-				$(".excluir_multiplas_legenda").html(imagens['mensagem']);
-				$("#excluir_multiplas_div").css('display', 'block');
-			} else {
-				$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
-				$(".download_multiplas_link").prop('href', 'javascript:void(0)');
-				$("#excluir_multiplas_div").css('display', 'none');
-			}
-		});
-
-		$("#select_full_gallery").on('ifChecked', function () {
-			$(".flat").prop('checked', true);
-			$(".icheckbox_flat-green").addClass('checked');
-
-			var imagens = getMultipleImages();
-
-			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
-			$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
-			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
-			$("#excluir_multiplas_div").css('display', 'block');
-		});
-
-		$("#select_full_gallery").on('ifUnchecked', function () {
-			$(".flat").prop('checked', false);
-			$(".icheckbox_flat-green").removeClass('checked');
-
-			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
-			$(".download_multiplas_link").prop('href', 'javascript:void(0)');
-			$("#excluir_multiplas_div").css('display', 'none');
-		});
-
-
-		$("#remove_img").click(function () {
-			$("#img_selecionada").html("Ainda não existe uma imagem para esta categoria");
-			$("#has_img").val("false");
-		});
-
-		$("#editor").blur(function () {
-			$("#descr").html($("#editor").html());
-		});
-
-
-
-		$("#imagens_galeria").change(function () {
-			var label_text = []
-			, arquivos = $("#imagens_galeria")[0].files
-			, texto_imgs = "<h4>" + arquivos.length
-			;
-
-			for (var i = 0; i < arquivos.length; i++) {
-				label_text.push("&bull; " + arquivos[i].name);
-			}
-
-			if (arquivos.length > 1) {
-				texto_imgs +=" imagens selecionadas: </h4>";
-			} else {
-				texto_imgs +=" imagem selecionada: </h4>";
-			}
-
-			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>" + texto_imgs + label_text.join("<br />") + "</label>");
-			// $("#has_img").val("true");
-		});
-
-		$("#btn_reset_form").click(function () {
-			location.reload();
-		});
-
-		$(".miniatura_galeria_sistema").click(function () {
-
-			var id = $(this).data('id');
-			var url = base_url + 'sistema/imagens/getInfo/'+id;
-			$.get(url, function(retorno) {
-				retorno = JSON.parse(retorno);
-
-				$("#titulo_img_modal").val(retorno.titulo);
-				$("#legenda_img_modal").html(retorno.texto);
-				$("#id_img_modal").val(retorno.id);
-				$("#img_modal_full").attr('src', base_url + retorno.caminho);
-
-				var caminho_imagem = base_url + retorno.caminho;
-				$("#nome_imagem_modal").html(retorno.nome);
-				$("#caminho_imagem_modal").html("<a href=" + caminho_imagem + ">"+ caminho_imagem +"</a>");
-				$("#tamanho_imagem_modal").html(formatSizeNumber(retorno.tamanho));
-
-				$("#img_full_modal").modal('show');
-			});
-
-		});
-
-		$("#open_att_modal").click(function () {
-			$("#atualizacoes_modal").modal('show');
-		});
-
-		function getMultipleImages () {
-			var imagens_deletar = []
-			, mensagem
-			, retorno = []
-			;
-
-			$(".flat.imagem_galeria_check:checked").each(function () {
-				imagens_deletar.push($(this).val());
-			});
-
-			if (imagens_deletar.length == $(".flat.imagem_galeria_check").length) {
-				mensagem = "Todas as " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
-				$("#select_full_gallery").prop('checked', true);
-				$("#select_full_gallery_div > .icheckbox_flat-green").addClass('checked');
-			} else {
-				mensagem = imagens_deletar.length + " de " + $(".flat.imagem_galeria_check").length + " imagens selecionadas.";
-				$("#select_full_gallery").prop('checked', false);
-				$("#select_full_gallery_div > .icheckbox_flat-green").removeClass('checked');
-			}
-
-			retorno['ids'] = imagens_deletar.join('_');
-			retorno['mensagem'] = mensagem;
-
-			return retorno;
-		};
-
-		function formatSizeNumber (num) {
-			var retorno;
-				// (retorno.tamanho / 1024).toFixed(2) + "Mb"
-				num = parseFloat(num);
-				if (num > 1024) {
-					retorno = (num / 1024).toFixed(2) + "Mb";
-					return retorno;
-				}
-
-				retorno = (num).toFixed(0) + "Kb";
-				return retorno;
-			}
-
-		</script>
 
 		<?php $this->load->view('footer') ?>

@@ -22,9 +22,11 @@ class Empresa extends CI_Controller {
 
 	public function editar ()
 	{
+		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['registro'] = $this->secoes_sistema->getInfo(3)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
-		$info['atualizacoes'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$this->load->view('sistema/empresa/editar', $info);
 	}
 

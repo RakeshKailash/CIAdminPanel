@@ -2,8 +2,13 @@
 $info['title'] = array('Sistema', 'Editar Serviços');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 $this->load->view('header', $info);
+$this->load->view('sistema/atualizacoes', $atualizacoes);
 
 $imagem = $registro->caminho != null ? ("<img src='" . base_url($registro->caminho) . "' class='preview_img_form' />") : "<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>";
+
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+$success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
+$warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 ?>
 
@@ -100,27 +105,27 @@ $imagem = $registro->caminho != null ? ("<img src='" . base_url($registro->camin
 							<li role="presentation" class="dropdown">
 								<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
 									<i class="fa fa-wrench"></i>
-
+									<span class="count-update-badge badge bg-green"><?=(count($atualizacoes['naoVisualizadas']) > 0 ? count($atualizacoes['naoVisualizadas']) : null)?></span>
 								</a>
-								<ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
-									<?php foreach ($atualizacoes as $atualizacao) : ?>
-										<li>
+								<ul class="dropdown-menu list-unstyled msg_list animated fadeInDown atualizacoes_site_lista" role="menu">
+									<?php if ($atualizacoes['limitadas']) : foreach ($atualizacoes['limitadas'] as $atualizacao) : ?>
+										<li class="atualizacao-visualizada-<?=$atualizacao->status;?>" data-id="<?=$atualizacao->id;?>">
 											<a>
 												<span class="image">
 													<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
 												</span>
 												<span>
 													<span><?php echo $atualizacao->nome; ?></span>
-													<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', $atualizacao->data); ?></span>
+													<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', strtotime($atualizacao->data)); ?></span>
 												</span>
 												<span class="message">
 													<?php echo $atualizacao->titulo; ?>
 												</span>
 											</a>
 										</li>
-									<?php endforeach; ?>
+									<?php endforeach; endif; ?>
 									<li>
-										<div class="text-center">
+										<div class="text-center open_att_modal">
 											<a>
 												<strong>Ver todas as Modificações</strong>
 												<i class="fa fa-angle-right"></i>
