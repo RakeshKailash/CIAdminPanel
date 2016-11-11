@@ -7,12 +7,13 @@ class Empresa extends CI_Controller {
 		$this->load->database();
 		$this->load->model('site/secoes_model', 'secoes_site');
 		$this->load->model('site/imagens_model', 'imagens_site');
-		// $this->load->model('site/contatos_model');
+		$this->load->model('site/analise_model', 'analise_site');
 	}
 
 	public function index ()
 	{
 		$this->load->view('site/empresa/empresa');
+		$this->analise_site->insert_access(3);
 	}
 
 }

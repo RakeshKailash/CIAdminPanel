@@ -1,7 +1,9 @@
 <?php
 $info['title'] = array('Sistema', 'Painel de Administração');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
-$info['views'] = $views;
+// $views;
+// $viewsToday;
+// $viewsSections;
 
 $lastWeek = array();
 $daysEn = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
@@ -180,7 +182,7 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 										<div id="echart_bar_horizontal" style="height:370px;"></div>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-4">
-										<div id="echart_pie" style="height:350px;"></div>
+										<div id="mainb" style="height:350px;"></div>
 									</div>
 								</div>
 							</div>
@@ -197,7 +199,11 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 	var lastWeekJS = <?=$lastWeek?>
 	, viewsLastWeek = <?=$viewsLastWeek?>
 	, limitValue = <?=$limitValue?>
+	, todaysViews = <?=json_encode($viewsToday)?>
+	, sectionsViews = <?=json_encode($viewsSections)?>
 	;
+
+	console.log(todaysViews);
 </script>
 
 <?php

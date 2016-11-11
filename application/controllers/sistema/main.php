@@ -21,14 +21,27 @@ class Main extends CI_Controller {
 			return redirect('sistema/login');
 		}
 
-		$views = $this->analise_sistema->retrieveLast();
+		// $viewsWeek = ;
+		// $viewsToday = ;
+		$today = date('Y-m-d', time());
 
 		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['registro'] = $this->secoes_sistema->getInfo(1)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
-		$info['views'] = $views;
+		$info['views'] = $this->analise_sistema->retrieveLast();
+		$info['viewsToday']['home'] = $this->analise_sistema->retrieveAllBy(array('dateYmd' => $today, 'section' => 1));
+		$info['viewsToday']['servicos'] = $this->analise_sistema->retrieveAllBy(array('dateYmd' => $today, 'section' => 2));
+		$info['viewsToday']['empresa'] = $this->analise_sistema->retrieveAllBy(array('dateYmd' => $today, 'section' => 3));
+		$info['viewsToday']['imagens'] = $this->analise_sistema->retrieveAllBy(array('dateYmd' => $today, 'section' => 4));
+		$info['viewsToday']['contato'] = $this->analise_sistema->retrieveAllBy(array('dateYmd' => $today, 'section' => 5));
+
+		$info['viewsSections']['home'] = $this->analise_sistema->retrieveAllBy(array('section' => 1));
+		$info['viewsSections']['servicos'] = $this->analise_sistema->retrieveAllBy(array('section' => 2));
+		$info['viewsSections']['empresa'] = $this->analise_sistema->retrieveAllBy(array('section' => 3));
+		$info['viewsSections']['imagens'] = $this->analise_sistema->retrieveAllBy(array('section' => 4));
+		$info['viewsSections']['contato'] = $this->analise_sistema->retrieveAllBy(array('section' => 5));
 
 		$this->load->view('sistema/home', $info);
 	}

@@ -117,7 +117,7 @@
 			trigger: 'axis'
 		},
 		legend: {
-			data: ['Acessos no total'],
+			data: ['Acessos à Seção'],
 			x: 'right'
 		},
 		calculable: false,
@@ -132,37 +132,101 @@
 			data: ['Contato', 'Imagens', 'Empresa', 'Serviços', 'Home']
 		}],
 		series: [{
-			name: 'Acessos no total',
+			name: 'Acessos à Seção',
 			type: 'bar',
-			data: [10, 5, 3, 1, 7]
+			data: [sectionsViews.contato.count,
+					sectionsViews.imagens.count,
+					sectionsViews.empresa.count,
+					sectionsViews.servicos.count,
+					sectionsViews.home.count]
 		}]
 	});
 
-	var myChart = echarts.init(document.getElementById('echart_pie'), theme);
-	myChart.setOption({
+	var myChart9 = echarts.init(document.getElementById('mainb'), theme);
+	myChart9.setOption({
 		title: {
 			text: 'Acessos Hoje',
 			subtext: 'Monitore os acessos ao seu site no dia de hoje'
 		},
 		tooltip: {
-			trigger: 'item',
-			formatter: "{a} : {c}"
+			trigger: 'axis'
 		},
 		legend: {
-			x: 'center',
-			y: 'bottom'
+			data: ['Home', 'Serviços', 'Empresa', 'Imagens', 'Contato'],
+			x: 'right'
+		},
+		toolbox: {
+			show: false
 		},
 		calculable: false,
+		xAxis: [{
+			type: 'category',
+			data: ['Sex 11/11/2016'] //Get current day
+		}],
+		yAxis: [{
+			type: 'value',
+			max: 10 //Get value for max based on top value
+		}],
 		series: [{
-			name: "Acessos até Agora",
-			type: 'gauge',
-			radius: '70%',
-			data: [{
-				value: 30,
-				name: 'Acessos Hoje'
-			}]
-		}]
+			name: 'Home',
+			type: 'bar',
+			data: [todaysViews.home.count],
+			markLine: {
+				data: [{
+					type: 'max',
+					name: 'Acessos'
+				}],
+				symbolSize: [6, 4]
+			}
+		}, {
+			name: 'Serviços',
+			type: 'bar',
+			data: [todaysViews.servicos.count],
+			markLine: {
+				data: [{
+					type: 'max',
+					name: 'Acessos'
+				}],
+				symbolSize: [6, 4]
+			}
+		}, {
+			name: 'Empresa',
+			type: 'bar',
+			data: [todaysViews.empresa.count],
+			markLine: {
+				data: [{
+					type: 'max',
+					name: 'Acessos'
+				}],
+				symbolSize: [6, 4]
+			}
+		}, {
+			name: 'Imagens',
+			type: 'bar',
+			data: [todaysViews.imagens.count],
+			markLine: {
+				data: [{
+					type: 'max',
+					name: 'Acessos'
+				}],
+				symbolSize: [6, 4]
+			}
+		}, {
+			name: 'Contato',
+			type: 'bar',
+			data: [todaysViews.contato.count],
+			markLine: {
+				data: [{
+					type: 'max',
+					name: 'Acessos'
+				}],
+				symbolSize: [6, 4]
+			}
+		}
+
+		]
 	});
+
 </script>
 
 <!-- form validation -->
