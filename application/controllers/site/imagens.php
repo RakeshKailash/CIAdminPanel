@@ -12,7 +12,9 @@ class Imagens extends CI_Controller {
 
 	public function index ()
 	{
-		$this->load->view('site/imagens/imagens');
+		$info['itens'] = $this->secoes_site->getSections();
+		$info['secao_info'] = $this->secoes_site->getSections(4)[0];
+		$this->load->view('site/imagens/imagens', $info);
 		$this->analise_site->insert_access(4);
 	}
 

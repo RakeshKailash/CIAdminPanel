@@ -1,8 +1,8 @@
 <?php
 $info['title'] = array('Lorem Ipsum', 'Serviços');
 $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
+$info['itens'] = $itens;
 $this->load->view('header', $info);
-$secao_info = $this->secoes_site->getSections(2)[0];
 $tamanho_conteudo = 'conteudo_inteiro';
 if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 	$tamanho_conteudo = 'conteudo_metade';

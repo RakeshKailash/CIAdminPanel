@@ -12,7 +12,9 @@ class Servicos extends CI_Controller {
 
 	public function index ()
 	{
-		$this->load->view('site/servicos/servicos');
+		$info['secao_info'] = $this->secoes_site->getSections(2)[0];
+		$info['itens'] = $this->secoes_site->getSections();
+		$this->load->view('site/servicos/servicos', $info);
 		$this->analise_site->insert_access(2);
 	}
 

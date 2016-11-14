@@ -72,7 +72,8 @@
 			subtext: 'Acompanhe o número de acessos ao seu site dia-a-dia'
 		},
 		tooltip: {
-			trigger: 'axis'
+			trigger: 'axis',
+			formatter: "{b}: {c} acessos"
 		},
 		legend: {
 			data: ['Acessos no dia']
@@ -107,40 +108,84 @@
 		}]
 	});
 
-	var myChart = echarts.init(document.getElementById('echart_bar_horizontal'), theme);
+	// var myChart = echarts.init(document.getElementById('echart_bar_horizontal'), theme);
+	// myChart.setOption({
+	// 	title: {
+	// 		text: 'Acessos Totais por Seção',
+	// 		subtext: 'Descubra a popularidade de cada seção do seu site'
+	// 	},
+	// 	tooltip: {
+	// 		trigger: 'axis'
+	// 	},
+	// 	legend: {
+	// 		data: ['Acessos à Seção'],
+	// 		x: 'right'
+	// 	},
+	// 	calculable: false,
+	// 	xAxis: [{
+	// 		type: 'value',
+	// 		boundaryGap: [0, 0.01],
+	// 		min: 0,
+	// 		max: 100
+	// 	}],
+	// 	yAxis: [{
+	// 		type: 'category',
+	// 		data: ['Contato', 'Imagens', 'Empresa', 'Serviços', 'Home']
+	// 	}],
+	// 	series: [{
+	// 		name: 'Acessos à Seção',
+	// 		type: 'bar',
+	// 		data: [sectionsViews.contato.count,
+	// 				sectionsViews.imagens.count,
+	// 				sectionsViews.empresa.count,
+	// 				sectionsViews.servicos.count,
+	// 				sectionsViews.home.count]
+	// 	}]
+	// });
+
+	var myChart = echarts.init(document.getElementById('echart_pie'), theme);
 	myChart.setOption({
 		title: {
 			text: 'Acessos Totais por Seção',
 			subtext: 'Descubra a popularidade de cada seção do seu site'
 		},
 		tooltip: {
-			trigger: 'axis'
+			trigger: 'item',
+			formatter: "{a} <br/>Acessos a \"{b}\" : {c} ({d}%)"
 		},
 		legend: {
-			data: ['Acessos à Seção'],
-			x: 'right'
-		},
-		calculable: false,
-		xAxis: [{
-			type: 'value',
-			boundaryGap: [0, 0.01],
-			min: 0,
-			max: 100
-		}],
-		yAxis: [{
-			type: 'category',
-			data: ['Contato', 'Imagens', 'Empresa', 'Serviços', 'Home']
-		}],
-		series: [{
-			name: 'Acessos à Seção',
-			type: 'bar',
-			data: [sectionsViews.contato.count,
-					sectionsViews.imagens.count,
-					sectionsViews.empresa.count,
-					sectionsViews.servicos.count,
-					sectionsViews.home.count]
-		}]
-	});
+        x: 'center',
+        y: 'bottom',
+        data: ['Home', 'Serviços', 'Empresa', 'Imagens', 'Contato']
+    },
+    calculable: false,
+    series: [{
+    	name: 'Total de Acessos ao Site: 159',
+    	type: 'pie',
+    	radius: '55%',
+        center: ['50%', '48%'], //left,top
+        data: [{
+        	value: sectionsViews.home.count,
+        	name: 'Home'
+        },
+        {
+        	value: sectionsViews.servicos.count,
+        	name: 'Serviços'
+        },
+        {
+        	value: sectionsViews.empresa.count,
+        	name: 'Empresa'
+        },
+        {
+        	value: sectionsViews.imagens.count,
+        	name: 'Imagens'
+        },
+        {
+        	value: sectionsViews.contato.count,
+        	name: 'Contato'
+        }]
+    }]
+});
 
 	var myChart9 = echarts.init(document.getElementById('mainb'), theme);
 	myChart9.setOption({
@@ -149,7 +194,8 @@
 			subtext: 'Monitore os acessos ao seu site no dia de hoje'
 		},
 		tooltip: {
-			trigger: 'axis'
+			trigger: 'item',
+			formatter: "Acessos hoje a {a}: {c}"
 		},
 		legend: {
 			data: ['Home', 'Serviços', 'Empresa', 'Imagens', 'Contato'],
@@ -161,227 +207,225 @@
 		calculable: false,
 		xAxis: [{
 			type: 'category',
-			data: ['Sex 11/11/2016'] //Get current day
+			data: [currentDay] //Get current day
 		}],
 		yAxis: [{
-			type: 'value',
-			max: 10 //Get value for max based on top value
-		}],
-		series: [{
-			name: 'Home',
-			type: 'bar',
-			data: [todaysViews.home.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Serviços',
-			type: 'bar',
-			data: [todaysViews.servicos.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Empresa',
-			type: 'bar',
-			data: [todaysViews.empresa.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Imagens',
-			type: 'bar',
-			data: [todaysViews.imagens.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Contato',
-			type: 'bar',
-			data: [todaysViews.contato.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}
-
-		]
-	});
-
-</script>
-
-<!-- form validation -->
-<script type="text/javascript">
-	$(document).ready(function() {
-		$.listen('parsley:field:validate', function() {
-			validateFront();
+			type: 'value'
+			 //Get value for max based on top value
+			}],
+			series: [{
+				name: 'Home',
+				type: 'bar',
+				data: [todaysViews.home.count],
+				markLine: {
+					data: [{
+						type: 'max',
+						name: 'Acessos'
+					}],
+					symbolSize: [6, 4]
+				}
+			}, {
+				name: 'Serviços',
+				type: 'bar',
+				data: [todaysViews.servicos.count],
+				markLine: {
+					data: [{
+						type: 'max',
+						name: 'Acessos'
+					}],
+					symbolSize: [6, 4]
+				}
+			}, {
+				name: 'Empresa',
+				type: 'bar',
+				data: [todaysViews.empresa.count],
+				markLine: {
+					data: [{
+						type: 'max',
+						name: 'Acessos'
+					}],
+					symbolSize: [6, 4]
+				}
+			}, {
+				name: 'Imagens',
+				type: 'bar',
+				data: [todaysViews.imagens.count],
+				markLine: {
+					data: [{
+						type: 'max',
+						name: 'Acessos'
+					}],
+					symbolSize: [6, 4]
+				}
+			}, {
+				name: 'Contato',
+				type: 'bar',
+				data: [todaysViews.contato.count],
+				markLine: {
+					data: [{
+						type: 'max',
+						name: 'Acessos'
+					}],
+					symbolSize: [6, 4]
+				}
+			}]
 		});
-		$('#demo-form .btn').on('click', function() {
-			$('#demo-form').parsley().validate();
-			validateFront();
-		});
-		var validateFront = function() {
-			if (true === $('#demo-form').parsley().isValid()) {
-				$('.bs-callout-info').removeClass('hidden');
-				$('.bs-callout-warning').addClass('hidden');
-			} else {
-				$('.bs-callout-info').addClass('hidden');
-				$('.bs-callout-warning').removeClass('hidden');
-			}
-		};
-	});
 
-	$(document).ready(function() {
-		$.listen('parsley:field:validate', function() {
-			validateFront();
-		});
-		$('#demo-form2 .btn').on('click', function() {
-			$('#demo-form2').parsley().validate();
-			validateFront();
-		});
-		var validateFront = function() {
-			if (true === $('#demo-form2').parsley().isValid()) {
-				$('.bs-callout-info').removeClass('hidden');
-				$('.bs-callout-warning').addClass('hidden');
-			} else {
-				$('.bs-callout-info').addClass('hidden');
-				$('.bs-callout-warning').removeClass('hidden');
-			}
-		};
-	});
-	try {
-		hljs.initHighlightingOnLoad();
-	} catch (err) {}
-</script>
-<!-- /form validation -->
-<!-- editor -->
-<script>
-	$(document).ready(function() {
-		$('.xcxc').click(function() {
-			$('#descr').val($('#editor').html());
-		});
-	});
+	</script>
 
-	$(function() {
-		function initToolbarBootstrapBindings() {
-			var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-			'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-			'Times New Roman', 'Verdana'
-			],
-			fontTarget = $('[title=Font]').siblings('.dropdown-menu');
-			$.each(fonts, function(idx, fontName) {
-				fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+	<!-- form validation -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$.listen('parsley:field:validate', function() {
+				validateFront();
 			});
-			$('a[title]').tooltip({
-				container: 'body'
+			$('#demo-form .btn').on('click', function() {
+				$('#demo-form').parsley().validate();
+				validateFront();
 			});
-			$('.dropdown-menu input').click(function() {
-				return false;
-			})
-			.change(function() {
-				$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
-			})
-			.keydown('esc', function() {
-				this.value = '';
-				$(this).change();
-			});
+			var validateFront = function() {
+				if (true === $('#demo-form').parsley().isValid()) {
+					$('.bs-callout-info').removeClass('hidden');
+					$('.bs-callout-warning').addClass('hidden');
+				} else {
+					$('.bs-callout-info').addClass('hidden');
+					$('.bs-callout-warning').removeClass('hidden');
+				}
+			};
+		});
 
-			$('[data-role=magic-overlay]').each(function() {
-				var overlay = $(this),
-				target = $(overlay.data('target'));
-				overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+		$(document).ready(function() {
+			$.listen('parsley:field:validate', function() {
+				validateFront();
 			});
-			if ("onwebkitspeechchange" in document.createElement("input")) {
-				var editorOffset = $('#editor').offset();
-				$('#voiceBtn').css('position', 'absolute').offset({
-					top: editorOffset.top,
-					left: editorOffset.left + $('#editor').innerWidth() - 35
+			$('#demo-form2 .btn').on('click', function() {
+				$('#demo-form2').parsley().validate();
+				validateFront();
+			});
+			var validateFront = function() {
+				if (true === $('#demo-form2').parsley().isValid()) {
+					$('.bs-callout-info').removeClass('hidden');
+					$('.bs-callout-warning').addClass('hidden');
+				} else {
+					$('.bs-callout-info').addClass('hidden');
+					$('.bs-callout-warning').removeClass('hidden');
+				}
+			};
+		});
+		try {
+			hljs.initHighlightingOnLoad();
+		} catch (err) {}
+	</script>
+	<!-- /form validation -->
+	<!-- editor -->
+	<script>
+		$(document).ready(function() {
+			$('.xcxc').click(function() {
+				$('#descr').val($('#editor').html());
+			});
+		});
+
+		$(function() {
+			function initToolbarBootstrapBindings() {
+				var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+				'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+				'Times New Roman', 'Verdana'
+				],
+				fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+				$.each(fonts, function(idx, fontName) {
+					fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
 				});
+				$('a[title]').tooltip({
+					container: 'body'
+				});
+				$('.dropdown-menu input').click(function() {
+					return false;
+				})
+				.change(function() {
+					$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+				})
+				.keydown('esc', function() {
+					this.value = '';
+					$(this).change();
+				});
+
+				$('[data-role=magic-overlay]').each(function() {
+					var overlay = $(this),
+					target = $(overlay.data('target'));
+					overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+				});
+				if ("onwebkitspeechchange" in document.createElement("input")) {
+					var editorOffset = $('#editor').offset();
+					$('#voiceBtn').css('position', 'absolute').offset({
+						top: editorOffset.top,
+						left: editorOffset.left + $('#editor').innerWidth() - 35
+					});
+				} else {
+					$('#voiceBtn').hide();
+				}
+			};
+
+			function showErrorAlert(reason, detail) {
+				var msg = '';
+				if (reason === 'unsupported-file-type') {
+					msg = "Unsupported format " + detail;
+				} else {
+					console.log("error uploading file", reason, detail);
+				}
+				$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+					'<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+			};
+			initToolbarBootstrapBindings();
+			$('#editor').wysiwyg({
+				fileUploadError: showErrorAlert
+			});
+			window.prettyPrint && prettyPrint();
+		});
+	</script>
+	<!-- /editor -->
+	<!-- /Demais Scripts -->
+
+	<!-- Meu JS -->
+	<script type="text/javascript" charset="utf-8" async defer>
+		var icones = ['arrow-circle-down', 'arrow-circle-left', 'arrow-circle-right',
+		'arrow-circle-up', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'bolt', 'briefcase', 'building', 'building-o',
+		'bus', 'car', 'caret-down', 'caret-left', 'caret-right', 'caret-up', 'check', 'check-circle', 'check-circle-o', 'chevron-circle-down', 'chevron-circle-left', 'chevron-circle-right', 'chevron-circle-up', 'desktop', 'envelope', 'exclamation-triangle', 'home', 'lightbulb-o', 'motorcycle', 'question', 'question-circle', 'shopping-bag', 'shopping-basket', 'star', 'star-o', 'sun-o', 'truck', 'user'];
+
+		$(".botao_menu_mobile").click(function() {
+			if ($(".menu_mobile").hasClass('menu_visible')) {
+				$(".menu_mobile").addClass('menu_hidden');
+				$(".menu_mobile").removeClass('menu_visible');
 			} else {
-				$('#voiceBtn').hide();
+				$(".menu_mobile").addClass('menu_visible');
+				$(".menu_mobile").removeClass('menu_hidden');
 			}
+		});
+
+		$(document).ready(function () {
+			adjustElements();
+
+			var icon_selector = [];
+
+			for (var k = 0; k < icones.length; k++) {
+				icon_selector.push("<i class='fa fa-"+icones[k]+" icone_seletor' data-value='"+icones[k]+"'></i>");
+			}
+
+			$(".select_icon").html(icon_selector.join(""));
+			$(".icone_seletor").click(function () {
+				$("#input_icone").val($(this).data('value'));
+				$(".previa_icone").attr('class', 'fa fa-' + $(this).data('value') + ' previa_icone');
+			});
+
+		});
+
+		window.onresize = function () {
+			adjustElements();
 		};
 
-		function showErrorAlert(reason, detail) {
-			var msg = '';
-			if (reason === 'unsupported-file-type') {
-				msg = "Unsupported format " + detail;
-			} else {
-				console.log("error uploading file", reason, detail);
-			}
-			$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
-				'<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
-		};
-		initToolbarBootstrapBindings();
-		$('#editor').wysiwyg({
-			fileUploadError: showErrorAlert
-		});
-		window.prettyPrint && prettyPrint();
-	});
-</script>
-<!-- /editor -->
-<!-- /Demais Scripts -->
 
-<!-- Meu JS -->
-<script type="text/javascript" charset="utf-8" async defer>
-	var icones = ['arrow-circle-down', 'arrow-circle-left', 'arrow-circle-right',
-	'arrow-circle-up', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'bolt', 'briefcase', 'building', 'building-o',
-	'bus', 'car', 'caret-down', 'caret-left', 'caret-right', 'caret-up', 'check', 'check-circle', 'check-circle-o', 'chevron-circle-down', 'chevron-circle-left', 'chevron-circle-right', 'chevron-circle-up', 'desktop', 'envelope', 'exclamation-triangle', 'home', 'lightbulb-o', 'motorcycle', 'question', 'question-circle', 'shopping-bag', 'shopping-basket', 'star', 'star-o', 'sun-o', 'truck', 'user'];
-
-	$(".botao_menu_mobile").click(function() {
-		if ($(".menu_mobile").hasClass('menu_visible')) {
-			$(".menu_mobile").addClass('menu_hidden');
-			$(".menu_mobile").removeClass('menu_visible');
-		} else {
-			$(".menu_mobile").addClass('menu_visible');
-			$(".menu_mobile").removeClass('menu_hidden');
-		}
-	});
-
-	$(document).ready(function () {
-		adjustElements();
-
-		var icon_selector = [];
-
-		for (var k = 0; k < icones.length; k++) {
-			icon_selector.push("<i class='fa fa-"+icones[k]+" icone_seletor' data-value='"+icones[k]+"'></i>");
-		}
-
-		$(".select_icon").html(icon_selector.join(""));
-		$(".icone_seletor").click(function () {
-			$("#input_icone").val($(this).data('value'));
-			$(".previa_icone").attr('class', 'fa fa-' + $(this).data('value') + ' previa_icone');
-		});
-
-	});
-
-	window.onresize = function () {
-		adjustElements();
-	};
-
-
-	function adjustElements () {
-		$(".container_secao").css('height', (window.innerHeight - 60) + "px");
-		$("#img_servicos").css('height', (($("#secao_servicos").outerHeight() / 100) * 50) + "px");
+		function adjustElements () {
+		// $(".container_secao").css('height', (window.innerHeight - 50) + "px");
+		// $("#img_servicos").css('height', (($("#secao_servicos").outerHeight() / 100) * 50) + "px");
 	}
 
 	function setTarget (from, to, event) {

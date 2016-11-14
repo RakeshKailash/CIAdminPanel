@@ -12,7 +12,10 @@ class Empresa extends CI_Controller {
 
 	public function index ()
 	{
-		$this->load->view('site/empresa/empresa');
+		$info['itens'] = $this->secoes_site->getSections();
+		$info['secao_info'] = $this->secoes_site->getSections(3)[0];
+
+		$this->load->view('site/empresa/empresa', $info);
 		$this->analise_site->insert_access(3);
 	}
 

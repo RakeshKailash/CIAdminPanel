@@ -157,9 +157,9 @@
 
 .container_secao {
 	width: 100%;
-	height: auto;
+	height: 100%;
 	position: absolute;
-	margin-top: 60px;
+	padding-top: 50px;
 	left: 0;
 	z-index: 21;
 }

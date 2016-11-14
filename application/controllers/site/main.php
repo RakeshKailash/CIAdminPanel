@@ -13,24 +13,11 @@ class Main extends CI_Controller {
 
 	public function index ()
 	{
-		$this->load->view('site/home');
+		$info['itens'] = $this->secoes_site->getSections();
+		$info['secao_info'] = $this->secoes_site->getSections(1)[0];
+
+		$this->load->view('site/home', $info);
 		$this->analise_site->insert_access(1);
 	}
-
-	public function servicos ()
-	{
-		$this->load->view('site/servicos');
-	}
-
-	public function empresa ()
-	{
-		$this->load->view('site/empresa');
-	}
-
-	public function imagens ()
-	{
-		$this->load->view('site/imagens');
-	}
-
 	
 }

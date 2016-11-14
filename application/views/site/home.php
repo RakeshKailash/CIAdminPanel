@@ -1,7 +1,7 @@
 <?php
 $info['title'] = array('Lorem Ipsum', 'Home');
-// $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
 $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
+$info['itens'] = $itens;
 $this->load->view('header', $info);
 ?>
 

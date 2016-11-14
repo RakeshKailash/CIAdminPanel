@@ -10,8 +10,10 @@ $daysEn = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
 $daysPt = array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab');
 $viewsLastWeek = array();
 
+$formatData = count($views->count) > 10 ? "d/m" : "D d/m/Y";
+
 for ($i=0; $i < count($views->count); $i++) {
-	$day = str_replace($daysEn, $daysPt, date("D d/m/Y", strtotime($views->list[$i])));
+	$day = str_replace($daysEn, $daysPt, date($formatData, strtotime($views->list[$i])));
 	array_push($lastWeek, $day);
 	$viewsLW = $views->count[$i];
 	array_push($viewsLastWeek, $viewsLW);
@@ -20,6 +22,8 @@ for ($i=0; $i < count($views->count); $i++) {
 $lastWeek = json_encode($lastWeek);
 $viewsLastWeek = json_encode($viewsLastWeek);
 $limitValue = $views->limitValue;
+$currentday = str_replace($daysEn, $daysPt, date("D d/m/Y", time()));
+
 
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
@@ -179,7 +183,7 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 										<div id="echart_line" style="height:350px;"></div>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-4">
-										<div id="echart_bar_horizontal" style="height:370px;"></div>
+										<div id="echart_pie" style="height:350px;"></div>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-4">
 										<div id="mainb" style="height:350px;"></div>
@@ -201,6 +205,7 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 	, limitValue = <?=$limitValue?>
 	, todaysViews = <?=json_encode($viewsToday)?>
 	, sectionsViews = <?=json_encode($viewsSections)?>
+	, currentDay = <?=json_encode($currentday)?>
 	;
 
 	console.log(todaysViews);

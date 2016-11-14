@@ -6,7 +6,7 @@
 	<!-- Meta, title, CSS, favicons, etc. -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	
 	<title><?php echo $title[1] ?> - Projeto CI</title>
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto:400,500,700" rel="stylesheet"> 
@@ -46,8 +46,6 @@
 	<?php 
 
 	if ($cabecalho['menu'] != null && $cabecalho['header'] == 'site') {
-		echo "<div id='cabecalho'> <p id='titulo_site'>Lorem Ipsum</p>";
 		$this->load->view($cabecalho['menu']);
-		echo "</div>";
 	}
 	?>

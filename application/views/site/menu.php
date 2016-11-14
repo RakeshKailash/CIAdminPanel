@@ -1,46 +1,17 @@
-<?php 
-$itens = $this->secoes_site->getSections();
-?>
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<a class="navbar-brand" href="<?=base_url('site');?>">Lorem Ipsum</a>
+		</div>
 
-<ul class="menu_cabecalho hide-sm">
-	<?php foreach ($itens as $item): ?>
-		<li class="item_menu_cabecalho">
-			<a href="<?php echo base_url('site/' . $item->link); ?>">
-				<?php if ($item->icone != null) : ?>
-					<i class="fa fa-<?php echo $item->icone; ?>" aria-hidden="true"></i>
-				<?php endif;
-				echo $item->nome; ?>
-			</a>
-		</li>
-	<?php endforeach; ?>
-</ul>
-
-<span class="botao_menu_mobile hide-l"><i class="fa fa-bars" aria-hidden="true"></i></span>
-
-<ul class="menu_mobile hide-l menu_hidden">
-	<li class="item_menu_mobile">
-		<a href="<?php echo base_url('site'); ?>" title="">
-			Home<i class="fa fa-home" aria-hidden="true"></i>
-		</a>
-	</li>
-	<li class="item_menu_mobile">
-		<a href="<?php echo base_url('site/servicos'); ?>" title="">
-			Serviços<i class="fa fa-desktop" aria-hidden="true"></i>
-		</a>
-	</li>
-	<li class="item_menu_mobile">
-		<a href="<?php echo base_url('site/empresa'); ?>" title="">
-			Empresa<i class="fa fa-building" aria-hidden="true"></i>
-		</a>
-	</li>
-	<li class="item_menu_mobile">
-		<a href="<?php echo base_url('site/imagens'); ?>" title="">
-			Imagens<i class="fa fa-picture-o" aria-hidden="true"></i>
-		</a>
-	</li>
-	<li class="item_menu_mobile">
-		<a href="<?php echo base_url('site/contato'); ?>" title="">
-			Contato<i class="fa fa-envelope" aria-hidden="true"></i>
-		</a>
-	</li>
-</ul>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+			<?php foreach ($itens as $item): ?>
+					<li><a href="<?=base_url('site/' . $item->link);?>"><?=$item->nome?></a></li>
+				<?php endforeach ?>
+			</ul>			
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
