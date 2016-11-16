@@ -14,6 +14,7 @@ class Imagens extends CI_Controller {
 	{
 		$info['itens'] = $this->secoes_site->getSections();
 		$info['secao_info'] = $this->secoes_site->getSections(4)[0];
+		$info['imagens'] = $this->imagens_site->getGalleryContent();
 		$this->load->view('site/imagens/imagens', $info);
 		$this->analise_site->insert_access(4);
 	}

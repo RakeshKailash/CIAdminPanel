@@ -33,6 +33,40 @@
 	<!-- switchery -->
 	<link rel="stylesheet" href="<?php echo base_url('css/switchery/switchery.min.css'); ?>" />
 
+	<?php if ($cabecalho['header'] != 'sistema') : ?>
+
+	<!-- Template CSS Files
+        ================================================== -->
+        <!-- Ionicons Fonts Css -->
+        <link rel="stylesheet" href="<?=base_url('css/ionicons.min.css');?>">
+        <!-- animate css -->
+        <link rel="stylesheet" href="<?=base_url('css/animate.css');?>">
+        <!-- Hero area slider css-->
+        <link rel="stylesheet" href="<?=base_url('css/slider.css');?>">
+        <!-- owl craousel css -->
+        <link rel="stylesheet" href="<?=base_url('css/owl.carousel.css');?>">
+        <link rel="stylesheet" href="<?=base_url('css/owl.theme.css');?>">
+        <link rel="stylesheet" href="<?=base_url('css/jquery.fancybox.css');?>">
+        <!-- template main css file -->
+        <link rel="stylesheet" href="<?=base_url('css/main.css');?>">
+        <!-- responsive css -->
+        <link rel="stylesheet" href="<?=base_url('css/responsive.css');?>">
+
+        <!-- Template Javascript Files
+        ================================================== -->
+        <!-- modernizr js -->
+        <script src="<?=base_url('js/vendor/modernizr-2.6.2.min.js');?>"></script>
+        <!-- owl carouserl js -->
+        <script src="<?=base_url('js/owl.carousel.min.js');?>"></script>
+        <!-- wow js -->
+        <script src="<?=base_url('js/wow.min.js');?>"></script>
+        <!-- slider js -->
+        <script src="<?=base_url('js/slider.js');?>"></script>
+        <script src="<?=base_url('js/jquery.fancybox.js');?>"></script>
+        <!-- template main js -->
+        <script src="<?=base_url('js/main.js');?>"></script>
+
+    <?php endif; ?>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('css/style.css'); ?>">
 

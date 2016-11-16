@@ -28,7 +28,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 					<!-- menu prile quick info -->
 					<div class="profile">
 						<div class="profile_pic">
-							<img src="<?=base_url('images/uploads/profile/image.jpg'); ?>" alt="..." class="img-circle profile_img">
+							<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem']); ?>" alt="..." class="img-circle profile_img">
 						</div>
 						<div class="profile_info">
 							<span>Bem-vindo,</span>
@@ -84,7 +84,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 						<ul class="nav navbar-nav navbar-right">
 							<li class="">
 								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<img src="<?php echo base_url('images/uploads/profile/image.jpg'); ?>" alt=""><?php echo $_SESSION['nome'] ?>
+									<img src="<?php echo base_url('images/uploads/profile/' . $_SESSION['imagem']); ?>" alt=""><?php echo $_SESSION['nome'] ?>
 									<span class=" fa fa-angle-down"></span>
 								</a>
 								<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">

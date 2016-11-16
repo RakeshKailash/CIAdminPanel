@@ -108,41 +108,6 @@
 		}]
 	});
 
-	// var myChart = echarts.init(document.getElementById('echart_bar_horizontal'), theme);
-	// myChart.setOption({
-	// 	title: {
-	// 		text: 'Acessos Totais por Seção',
-	// 		subtext: 'Descubra a popularidade de cada seção do seu site'
-	// 	},
-	// 	tooltip: {
-	// 		trigger: 'axis'
-	// 	},
-	// 	legend: {
-	// 		data: ['Acessos à Seção'],
-	// 		x: 'right'
-	// 	},
-	// 	calculable: false,
-	// 	xAxis: [{
-	// 		type: 'value',
-	// 		boundaryGap: [0, 0.01],
-	// 		min: 0,
-	// 		max: 100
-	// 	}],
-	// 	yAxis: [{
-	// 		type: 'category',
-	// 		data: ['Contato', 'Imagens', 'Empresa', 'Serviços', 'Home']
-	// 	}],
-	// 	series: [{
-	// 		name: 'Acessos à Seção',
-	// 		type: 'bar',
-	// 		data: [sectionsViews.contato.count,
-	// 				sectionsViews.imagens.count,
-	// 				sectionsViews.empresa.count,
-	// 				sectionsViews.servicos.count,
-	// 				sectionsViews.home.count]
-	// 	}]
-	// });
-
 	var myChart = echarts.init(document.getElementById('echart_pie'), theme);
 	myChart.setOption({
 		title: {
@@ -154,15 +119,15 @@
 			formatter: "{a} <br/>Acessos a \"{b}\" : {c} ({d}%)"
 		},
 		legend: {
-        x: 'center',
-        y: 'bottom',
-        data: ['Home', 'Serviços', 'Empresa', 'Imagens', 'Contato']
-    },
-    calculable: false,
-    series: [{
-    	name: 'Total de Acessos ao Site: 159',
-    	type: 'pie',
-    	radius: '55%',
+			x: 'center',
+			y: 'bottom',
+			data: ['Home', 'Serviços', 'Empresa', 'Imagens', 'Contato']
+		},
+		calculable: false,
+		series: [{
+			name: 'Total de Acessos ao Site: 159',
+			type: 'pie',
+			radius: '55%',
         center: ['50%', '48%'], //left,top
         data: [{
         	value: sectionsViews.home.count,
@@ -315,6 +280,7 @@
 		try {
 			hljs.initHighlightingOnLoad();
 		} catch (err) {}
+
 	</script>
 	<!-- /form validation -->
 	<!-- editor -->
@@ -615,6 +581,14 @@
 			$("#img_full_modal").modal('show');
 		});
 
+	});
+
+	$(window).scroll(function () {
+		if ($(document).scrollTop() >= 50) {
+			$(".navbar.navbar-default.navbar-fixed-top").css('background-color', "rgba(255, 255, 255, 0.8)");
+		} else {
+			$(".navbar-fixed-top").css('background-color', 'rgba(255, 255, 255, 1)');
+		}
 	});
 
 	$(".open_att_modal").click(function () {

@@ -9,20 +9,44 @@ if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 }
 ?>
 <div class="container_secao" id="secao_servicos">
-	<p class="titulo_secao"><i class="fa fa-<?php echo $secao_info->icone; ?>" aria-hidden="true"></i> Empresa</p>
+	<section class="global-page-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block">
+						<h2>Empresa</h2>
+						<ol class="breadcrumb">
+							<li>
+								<a href="<?=base_url('site');?>">
+									<i class="ion-ios-home"></i>
+									Home
+								</a>
+							</li>
+							<li class="active">Empresa</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>   
+	</section><!--/#Page header-->
 
-	<div class="conteudo_secao <?php echo $tamanho_conteudo; ?>" id="conteudo_servicos">
-		<?php echo $secao_info->conteudo ?>
-	</div>
-
-	<?php if (isset($secao_info->caminho) && $secao_info->caminho != null) : ?>
-		<div class="conteudo_secao <?php echo $tamanho_conteudo; ?>" id="img_servicos" style="background-image: url(<?php echo base_url($secao_info->caminho); ?>);">
+	<section id="service-page" class="pages service-page">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="block">
+						<?php echo $secao_info->conteudo ?>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="block">
+						<img class="img-responsive" src="<?=base_url($secao_info->caminho);?>" alt="">
+					</div>
+				</div>
+			</div>
 		</div>
-	<?php endif; ?>
+	</section>
 
-	<div class="conteudo_inteiro">
-		<?php $this->load->view('site/comentarios') ?>
-	</div>
 </div>
 
 <?php $this->load->view('footer'); ?>

@@ -3,6 +3,10 @@
 	padding: 0;
 }
 
+html, body {
+	height: 100%;
+}
+
 /* Helpers */
 
 @media screen and (min-width: 993px) {
@@ -36,6 +40,20 @@
 }
 
 /* End Helpers */
+
+.navbar-header .navbar-brand {
+	padding: 15px 15px;
+}
+
+.navbar.navbar-default.navbar-fixed-top {
+	background-color: rgba(255, 255, 255, 1);
+	transition: all linear 0.5s;
+}
+
+.navbar.navbar-default.navbar-fixed-top:hover {
+	background-color: rgba(255, 255, 255, 1) !important;
+	transition: all linear 0.3s;
+}
 
 #cabecalho {
 	width: 100%;
