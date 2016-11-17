@@ -27,6 +27,11 @@ html, body {
 	.hide-l, .hide-s, .hide-sl {
 		display: block;
 	}
+
+	.gallery {
+		padding: 20px;
+		padding-top: 100px;
+	}
 }
 
 @media screen and (max-width: 662px) {
@@ -36,6 +41,13 @@ html, body {
 
 	.hide-ml, .hide-m, .hide-l {
 		display: block;
+	}
+}
+
+@media screen and (max-width: 578px) {
+	.gallery {
+		padding: 0;
+		padding-top: 100px;
 	}
 }
 

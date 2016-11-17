@@ -7,6 +7,9 @@ $tamanho_conteudo = 'conteudo_inteiro';
 if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 	$tamanho_conteudo = 'conteudo_metade';
 }
+
+$countImg = 0;
+
 ?>
 <div class="container_secao" id="secao_servicos">
 	<section class="global-page-header">
@@ -34,10 +37,17 @@ if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 		<div class="container">
 			<div class="row">
 				<?php foreach ($imagens as $imagem): ?>
+					<?php
+					if ($countImg == 3)
+					{
+						echo "</div><div class='row'>";
+						$countImg = 0;
+					}
+					?>
 					<div class="col-sm-4 col-xs-12">
 						<figure class="wow fadeInLeft animated portfolio-item animated" data-wow-duration="500ms" data-wow-delay="0ms" style="visibility: visible; animation-duration: 300ms; -webkit-animation-duration: 300ms; animation-delay: 0ms; -webkit-animation-delay: 0ms; animation-name: fadeInLeft; -webkit-animation-name: fadeInLeft;">
 							<div class="img-wrapper">
-								<img src="<?=base_url($imagem->caminho);?>" class="img-responsive" alt="this is a title">
+								<img src="<?=base_url($imagem->caminho);?>" class="img-responsive">
 								<div class="overlay">
 									<div class="buttons">
 										<a rel="gallery" class="fancybox" href="<?=base_url($imagem->caminho);?>">Demo</a>
@@ -46,6 +56,7 @@ if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 							</div>
 						</figure>
 					</div>
+					<?php $countImg++; ?>
 				<?php endforeach ?>
 			</div>
 		</div>
