@@ -48,37 +48,31 @@ class Contato extends CI_Controller {
 		$celular = $this->input->post('celular');
 		$email = $this->input->post('email');
 		$telefone = $this->input->post('telefone');
-		
-		$texto_contato = "<div id='contato_div'><p>Telefone: " . str_replace('_', '', $telefone) . "</p>";
-
-		
-		if ($celular) {
-			$texto_contato .= "<p>Celular: " . str_replace('_', '', $celular) . "</p>";
-		}
-
-		$texto_contato .= "<p>E-mail: " . $email . "</p>";
-		$texto_contato .= "</div>";
+		$whatsapp = $this->input->post('whatsapp');
+		$endereco = $this->input->post('endereco');
+		$has_form = !! $this->input->post('form_email');
+		$has_map = !! $this->input->post('map_google');
 
 		$dados['telefone'] = str_replace(array('(', ')', '_', '-', ' '), "", $telefone);
 		$dados['celular'] = str_replace(array('(', ')', '_', '-', ' '), "", $celular);
+		$dados['whatsapp'] = str_replace(array('(', ')', '_', '-', ' ', '+'), "", $whatsapp);
+		$dados['address'] = $endereco;
 		$dados['email'] = $email;
-
-		$dados_secao['conteudo'] = $texto_contato;
-		
-		$has_form = !! $this->input->post('form_email');
-		
 		$dados['has_form'] = $has_form ? $has_form : '0';
+		$dados['has_map'] = $has_map ? $has_map : '0';
 
-		if ($dados['telefone'] != null || $dados['has_form'] != null || $dados['celular'] != null || $dados['email'] != null) {
+		$dados_secao['conteudo'] = 'Conteudo';
+
+		if ($dados['telefone'] != null && $dados['email'] != null) {
 			$this->contatos_model->update($dados);
-
+			print_r("Passou dos contatos");
 			$this->secoes_sistema->update($dados_secao, 5);
+			print_r("Passou da secao");
 
 			$atualizacao['titulo'] = "Seção 'Contato' alterada";
 			$atualizacao['usuario'] = $_SESSION['id'];
 			$atualizacao['tipo'] = "Alteração de Informações/Conteúdo";
 			
-
 			$this->atualizacoes_sistema->insert($atualizacao);
 
 		}

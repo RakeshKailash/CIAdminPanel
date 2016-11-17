@@ -6,7 +6,8 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 
 $imagem = $registro->caminho != null ? ("<img src='" . base_url($registro->caminho) . "' class='preview_img_form' />") : "<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>";
 
-$checkStatus = $contato->has_form ? 'checked' : '';
+$checkForm = $contato->has_form ? 'checked' : '';
+$checkMap = $contato->has_map ? 'checked' : '';
 
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
@@ -207,8 +208,36 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 											</div>
 										</div>
 										<div class="form-group">
-											<input type="checkbox" name="form_email" id="form_email" value="1" class="flat" <?php echo $checkStatus; ?> />
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" style="padding: 3px 10px;">Formulário de Contato</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input type="checkbox" name="form_email" id="form_email" value="1" class="flat" <?php echo $checkForm; ?> />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="whatsapp">Whatsapp</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input class="form-control" id="whatsapp" name="whatsapp" data-inputmask="'mask': '+9999 99999-9999'" type="text" value="<?php echo $contato->whatsapp ?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="endereco">Endereço</span>
+											</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input class="form-control" id="endereco" name="endereco" type="text" value="<?php echo $contato->address;?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" style="padding: 3px 10px;">Mapa do Google</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input type="checkbox" name="map_google" id="map_google" value="1" class="flat" <?php echo $checkMap; ?> />
+											</div>
+										</div>
+										<div id="map-group" class="form-group <?=($checkMap == 'checked') ? 'map-visible' : 'map-hidden';?>">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" style="padding: 3px 10px;">Preview do Mapa</label>
+											<div class="map col-md-6 col-sm-6 col-xs-12">
+												<iframe width="100%" height="400" id="mapa_preview" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCGFrB3MI-kCSz76Op_xBGnmB4qO3MguUI&q=<?=str_replace(' ', '+', $contato->address);?>" allowfullscreen></iframe>
+											</div>
 										</div>
 									</div>
 
@@ -228,22 +257,26 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 	</div>
 
 	<script type="text/javascript">
-		$("#remove_img_contato").click(function () {
-			$("#img_selecionada_contato").html("<label id='img_selecionada_contato' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
-			$("#has_img_contato").val("false");
+
+		$("#map_google").on('ifChecked', function () {
+			$("#mapa_preview").attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyCGFrB3MI-kCSz76Op_xBGnmB4qO3MguUI&q=" + ($("#endereco").val()).replace(' ', '+'));
+			$("#map-group").addClass('map-visible');
+			$("#map-group").removeClass('map-hidden');
 		});
 
-		$("#editor").blur(function () {
-			$("#descr").html($("#editor").html());
-		});
-
-		$("#imagem_contato").change(function () {
-			$("#img_selecionada_contato").html("<label id='img_selecionada_contato' for='imagem'>Imagem selecionada: " + $("#imagem_contato").val() + "</label>");
-			$("#has_img_contato").val("true");
+		$("#map_google").on('ifUnchecked', function () {
+			$("#map-group").addClass('map-hidden');
+			$("#map-group").removeClass('map-visible');
 		});
 
 		$("#btn_reset_contato").click(function () {
 			location.reload();
+		});
+
+		$("#endereco").keypress(function () {
+			if ($("#map_google").prop('checked')) {
+				$("#mapa_preview").attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyCGFrB3MI-kCSz76Op_xBGnmB4qO3MguUI&q=" + ($("#endereco").val()).replace(' ', '+'));
+			}
 		});
 
 	</script>

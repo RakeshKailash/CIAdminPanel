@@ -61,10 +61,6 @@ $countImg = 0;
 			</div>
 		</div>
 	</section>
-
-	<div class="conteudo_secao <?php echo $tamanho_conteudo; ?>">
-		<?php echo $secao_info->conteudo ?>
-	</div>
 </div>
 
 <?php $this->load->view('footer'); ?>

@@ -10,7 +10,7 @@ class Imagens_model extends CI_Model {
 	public function replaceSectionImg ($secao=1, $campo=null)
 	{
 
-		$caminho_pasta = str_replace('\\', "/", FCPATH);
+		$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
 		if ($campo) {
 
 			$config_upload['upload_path'] = $caminho_pasta . 'images/uploads/sections/';
@@ -18,14 +18,16 @@ class Imagens_model extends CI_Model {
 			$config_upload['max_size'] = '5120';
 			$config_upload['max_width'] = '0';
 			$config_upload['max_height'] = '0';
+			$config_upload['encrypt_name'] = true;
 
 			$this->load->library('upload', $config_upload);
 
 			if (! $this->upload->do_upload($campo)) {
-				return $this->upload->display_errors();
-			} else {
-				$info_img = $this->upload->data();
+				throw new UploadImagensException($this->upload->display_errors());
 			}
+
+			$info_img = $this->upload->data();
+		
 		} else {
 			$info_img = array('file_name' => null, 'file_size' => 0);
 		}
@@ -68,6 +70,7 @@ class Imagens_model extends CI_Model {
 		$config_upload['max_size'] = '50000';
 		$config_upload['max_width'] = '0';
 		$config_upload['max_height'] = '0';
+		$config_upload['encrypt_name'] = true;
 
 		$this->load->library('upload', $config_upload);
 
@@ -85,7 +88,7 @@ class Imagens_model extends CI_Model {
 			$_FILES['imagem_up']['size'] = $_FILES[$campo]['size'][$i];
 
 			if (!$this->upload->do_upload('imagem_up')) {
-				return $this->upload->display_errors('<p>', '</p>');
+				 return array('status' => 'error', 'mensagem' => $this->upload->display_errors());
 			}
 
 			$data['nome'] = $this->upload->data('file_name');

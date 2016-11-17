@@ -9,6 +9,14 @@ html, body {
 
 /* Helpers */
 
+.map-visible {
+
+}
+
+.map-hidden {
+	display: none;
+}
+
 @media screen and (min-width: 993px) {
 	.hide-l, .hide-ml, .hide-sl {
 		display: none !important;
@@ -455,4 +463,8 @@ html, body {
 .atualizacoes_site_lista.msg_list li {
 	margin: 0;
 	width: 100% !important;
+}
+
+.atualizacoes_site_lista li:last-child {
+	background: #fff;
 }

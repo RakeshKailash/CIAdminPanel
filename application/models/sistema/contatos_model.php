@@ -31,9 +31,7 @@ class Contatos_model extends CI_Model
 
 		$sets = array();
 		foreach ($data as $key => $value) {
-			if ($value != null) {
 				$sets[$key] = $value;
-			}
 		}
 
 		$this->db->where('id', $id);
