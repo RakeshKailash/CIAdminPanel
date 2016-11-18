@@ -413,29 +413,54 @@ html, body {
 }
 
 .icon_img_gallery {
-	color: #D33734;
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
 	font-size: 16pt;
 	position: absolute;
-	top: 10px;
 	right: 22px;
 	cursor: pointer;
 	transition: all linear 0.2s;
 }
 
-.icon_img_gallery:hover  {
+.icon_img_gallery.icon_img_delete:hover  {
 	color: #BA413F;
 	text-shadow: 0 4px 0 rgba(0, 0, 0, 0.6);
 }
 
+.icon_img_gallery.icon_img_save:hover  {
+	color: #68A54A;
+	text-shadow: 0 4px 0 rgba(0, 0, 0, 0.6);
+}
+
+.icon_img_save {
+	color: #86cc68;
+	top: 65px;
+}
+
+.icon_img_delete {
+	color: #D33734;
+	top: 35px;
+}
+
 .checks_deletar_galeria {
 	position: absolute;
-	top: 35px;
+	top: 10px;
 	right: 23px;
 	width: 20px;
 	height: 20px;
 	display: inline-block;
 	transition: all linear 0.2s;
+}
+
+.icon_inline {
+	vertical-align: text-top;
+}
+
+.icon_inline.icone_delete {
+	color: #D33734;
+}
+
+.icon_inline.icone_save {
+	color: #86CC68;
 }
 
 .atualizacao-visualizada-true {

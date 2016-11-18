@@ -97,7 +97,7 @@ class Imagens extends CI_Controller {
 
 		
 
-$this->atualizacoes_sistema->insert($atualizacao);
+		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata('success', "<p>Imagem atualizada com sucesso!</p>");
 		redirect('/sistema/imagens/editar');
@@ -164,7 +164,7 @@ $this->atualizacoes_sistema->insert($atualizacao);
 
 		
 
-$this->atualizacoes_sistema->insert($atualizacao);
+		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata('success', "<p>Exclusão realizada com sucesso!</p>");
 		redirect('sistema/imagens/editar');
@@ -194,7 +194,7 @@ $this->atualizacoes_sistema->insert($atualizacao);
 
 		
 
-$this->atualizacoes_sistema->insert($atualizacao);
+		$this->atualizacoes_sistema->insert($atualizacao);
 	}
 
 }

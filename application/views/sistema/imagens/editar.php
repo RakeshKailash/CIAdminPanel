@@ -20,7 +20,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 				<div class="left_col scroll-view">
 
 					<div class="navbar nav_title" style="border: 0;">
-						<a href="javascript:void(0)" class="site_title"><i class="fa fa-dashboard"></i> <span><?php echo "Projeto CI" ?></span></a>
+						<a href="javascript:void(0)" class="site_title"><i class="fa fa-dashboard"></i> <span><?="Projeto CI" ?></span></a>
 					</div>
 					<div class="clearfix"></div>
 
@@ -32,7 +32,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 						</div>
 						<div class="profile_info">
 							<span>Bem-vindo,</span>
-							<h2><?php echo $_SESSION['nome']; ?></h2>
+							<h2><?=$_SESSION['nome']; ?></h2>
 						</div>
 					</div>
 					<!-- /menu prile quick info -->
@@ -57,7 +57,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									if ($secao_info->nome != 'Home') :
 										?>
 
-									<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
+									<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?=$secao_info->icone; ?>"> </i> <?=$secao_info->nome ?> </a></li>
 
 								<?php endif;
 								endforeach; ?>
@@ -84,7 +84,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 						<ul class="nav navbar-nav navbar-right">
 							<li class="">
 								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<img src="<?php echo base_url('images/uploads/profile/' . $_SESSION['imagem']); ?>" alt=""><?php echo $_SESSION['nome'] ?>
+									<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem']); ?>" alt=""><?=$_SESSION['nome'] ?>
 									<span class=" fa fa-angle-down"></span>
 								</a>
 								<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
@@ -109,14 +109,14 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<li class="atualizacao-visualizada-<?=$atualizacao->status;?>" data-id="<?=$atualizacao->id;?>">
 											<a>
 												<span class="image">
-													<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
+													<img src="<?=base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
 												</span>
 												<span>
-													<span><?php echo $atualizacao->nome; ?></span>
-													<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', strtotime($atualizacao->data)); ?></span>
+													<span><?=$atualizacao->nome; ?></span>
+													<span class="time"><?=date('d/m/Y\, \à\s H:i\h', strtotime($atualizacao->data)); ?></span>
 												</span>
 												<span class="message">
-													<?php echo $atualizacao->titulo; ?>
+													<?=$atualizacao->titulo; ?>
 												</span>
 											</a>
 										</li>
@@ -198,7 +198,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 													</div>
 													<div class="x_content">
 														<br />
-														<form action="<?php echo base_url('sistema/imagens/update') ?>" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
+														<form action="<?=base_url('sistema/imagens/update') ?>" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
 															<div class="form-group">
 																<label for="titulo"  class="control-label col-md-3 col-sm-3 col-xs-12">Título</label>
 																<div class="col-md-6 col-sm-6 col-xs-12">
@@ -234,7 +234,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
-								<form action="<?php echo base_url('sistema/imagens/add'); ?>" method="post" enctype="multipart/form-data">
+								<form action="<?=base_url('sistema/imagens/add'); ?>" method="post" enctype="multipart/form-data">
 									<h2>Galeria de Imagens</h2>
 									<div class="x_content">
 										<br>
@@ -242,19 +242,19 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<?php if ($error) : ?>
 											<div class="alert alert-danger fade in">
 												<a href="#" class="close" data-dismiss="alert">×</a>
-												<strong>Erro!</strong> <?php echo $error; ?>
+												<strong>Erro!</strong> <?=$error; ?>
 											</div>
 										<?php endif; ?>
 										<?php if ($success) : ?>
 											<div class="alert alert-success fade in">
 												<a href="#" class="close" data-dismiss="alert">×</a>
-												<strong>Sucesso!</strong> <?php echo $success; ?>
+												<strong>Sucesso!</strong> <?=$success; ?>
 											</div>
 										<?php endif; ?>
 										<?php if ($warning) : ?>
 											<div class="alert alert-warning fade in">
 												<a href="#" class="close" data-dismiss="alert">×</a>
-												<strong>Atenção!</strong> <?php echo $warning; ?>
+												<strong>Atenção!</strong> <?=$warning; ?>
 											</div>
 										<?php endif; ?>
 
@@ -274,6 +274,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 								<h2>Prévia da Galeria</h2>
 								<h5>Clique nas imagens para editar suas informações.</h5>
 								<h5>Utilize o <span class="glyphicon glyphicon-remove" style="color: #D33734;"></span> para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
+								<h5>Utilize o <span class="glyphicon glyphicon-save" style="color: #86CC68;"></span> para baixar uma imagem, ou marque duas ou mais para baixar múltiplas.</h5>
 
 								<div class="col-md-12 col-sm-12 col-xs-12 <?=(count($imagens_galeria) > 0) ? 'element-visible' : 'element-hidden';?>" id="select_full_gallery_div">
 									<input type="checkbox" name="select_full_gallery" id="select_full_gallery" value="1" class="flat" />
@@ -283,8 +284,8 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 								<div class="col-md-12 col-sm-12 col-xs-12" id="excluir_multiplas_div" style="display: none;">
 									<br>
 									<label class="excluir_multiplas_legenda"></label> <br>
-									<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-danger" id="botao_delete_multiple">Excluir Múltiplas</button></a>
-									<a href="javascript:void(0)" class="download_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-primary" id="botao_download_multiple">Baixar Múltiplas</button></a>
+									<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-default" id="botao_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplas</button></a>
+									<a href="javascript:void(0)" class="download_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-default" id="botao_download_multiple"><span class="glyphicon glyphicon-save icon_inline icone_save"></span> Baixar Múltiplas</button></a>
 								</div>
 								<div class="x_content">
 									<div class="galeria_imagens">
@@ -292,8 +293,17 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<div class="row">
 											<?php foreach ($imagens_galeria as $imagem_galeria) : ?>
 												<div class="col-xs-12 col-md-3">
-													<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?php echo $imagem_galeria->id; ?>">
-														<img src="<?php echo base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar"><a href="<?php echo base_url('sistema/imagens/excluir/' . $imagem_galeria->id) ?>"><span class="glyphicon glyphicon-remove icon_img_gallery"></span></a><a href="javascript:void(0)" class="checks_deletar_galeria"><input type="checkbox" name="multiple_delete" value="<?=$imagem_galeria->id; ?>" class="flat imagem_galeria_check" /></a>
+													<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?=$imagem_galeria->id; ?>">
+														<img src="<?=base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar">
+														<a href="<?=base_url('sistema/imagens/excluir/' . $imagem_galeria->id)?>">
+															<span class="glyphicon glyphicon-remove icon_img_gallery icon_img_delete"></span>
+														</a>
+														<a href="<?=base_url('sistema/imagens/download/'. $imagem_galeria->id)?>">
+															<span class="glyphicon glyphicon-save icon_img_gallery icon_img_save"></span>
+														</a>
+														<a href="javascript:void(0)" class="checks_deletar_galeria">
+															<input type="checkbox" name="multiple_delete" value="<?=$imagem_galeria->id; ?>" class="flat imagem_galeria_check" />
+														</a>
 													</a>
 												</div>
 											<?php endforeach; ?>
@@ -309,4 +319,4 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 		</div>
 	</div>
 
-		<?php $this->load->view('footer') ?>
+	<?php $this->load->view('footer') ?>
