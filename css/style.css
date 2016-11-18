@@ -9,11 +9,11 @@ html, body {
 
 /* Helpers */
 
-.map-visible {
+.element-visible {
 
 }
 
-.map-hidden {
+.element-hidden {
 	display: none;
 }
 

@@ -51,7 +51,9 @@ class Contato extends CI_Controller {
 		$whatsapp = $this->input->post('whatsapp');
 		$endereco = $this->input->post('endereco');
 		$has_form = !! $this->input->post('form_email');
+		$contact_message = $this->input->post('contact_message');
 		$has_map = !! $this->input->post('map_google');
+		$map_message = $this->input->post('map_message');
 
 		$dados['telefone'] = str_replace(array('(', ')', '_', '-', ' '), "", $telefone);
 		$dados['celular'] = str_replace(array('(', ')', '_', '-', ' '), "", $celular);
@@ -59,7 +61,9 @@ class Contato extends CI_Controller {
 		$dados['address'] = $endereco;
 		$dados['email'] = $email;
 		$dados['has_form'] = $has_form ? $has_form : '0';
+		$dados['contact_message'] = $contact_message;
 		$dados['has_map'] = $has_map ? $has_map : '0';
+		$dados['map_message'] = $map_message;
 
 		$dados_secao['conteudo'] = 'Conteudo';
 

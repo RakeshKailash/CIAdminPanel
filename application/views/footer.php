@@ -54,6 +54,7 @@
 
 <!-- Demais Scripts -->
 <script type="text/javascript">
+
 	var myChart = echarts.init(document.getElementById('echart_line'), theme);
 	myChart.setOption({
 		title: {
@@ -139,7 +140,7 @@
         	name: 'Contato'
         }]
     }]
-});
+	});
 
 	var myChart9 = echarts.init(document.getElementById('mainb'), theme);
 	myChart9.setOption({
@@ -224,8 +225,7 @@
 				}
 			}]
 		});
-
-	</script>
+</script>
 
 	<!-- form validation -->
 	<script type="text/javascript">
