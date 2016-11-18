@@ -140,7 +140,7 @@
         	name: 'Contato'
         }]
     }]
-	});
+});
 
 	var myChart9 = echarts.init(document.getElementById('mainb'), theme);
 	myChart9.setOption({
@@ -225,7 +225,7 @@
 				}
 			}]
 		});
-</script>
+	</script>
 
 	<!-- form validation -->
 	<script type="text/javascript">
@@ -497,12 +497,12 @@
 		$(".flat").prop('checked', true);
 		$(".icheckbox_flat-green").addClass('checked');
 
-		var imagens = getMultipleImages();
+			var imagens = getMultipleImages();
 
-		$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
-		$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
-		$(".excluir_multiplas_legenda").html(imagens['mensagem']);
-		$("#excluir_multiplas_div").css('display', 'block');
+			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+			$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
+			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
+			$("#excluir_multiplas_div").css('display', 'block');
 	});
 
 	$("#select_full_gallery").on('ifUnchecked', function () {

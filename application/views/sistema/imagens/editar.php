@@ -273,9 +273,9 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<div class="x_panel" id="conteudo_galeria">
 								<h2>Prévia da Galeria</h2>
 								<h5>Clique nas imagens para editar suas informações.</h5>
-								<h5>Utilize o "x" para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
+								<h5>Utilize o <span class="glyphicon glyphicon-remove" style="color: #D33734;"></span> para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
 
-								<div class="col-md-12 col-sm-12 col-xs-12" id="select_full_gallery_div">
+								<div class="col-md-12 col-sm-12 col-xs-12 <?=(count($imagens_galeria) > 0) ? 'element-visible' : 'element-hidden';?>" id="select_full_gallery_div">
 									<input type="checkbox" name="select_full_gallery" id="select_full_gallery" value="1" class="flat" />
 									<label for="select_full_gallery">Selecionar todas as imagens</label>
 								</div>

@@ -223,6 +223,8 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										</div>
 										<div class="ln_solid"></div>
 										<h2>Formulário de Contato</h2>
+										<h5>Inclua um campo para que o usuário possa lhe enviar um e-mail através do site.</h5>
+										<h5>O e-mail usado para receber as mensagens é o que foi cadastrado no campo E-mail, acima.</h5>
 										<div class="form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" style="padding: 3px 10px;">Incluir</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
@@ -239,6 +241,8 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										</div>
 										<div class="ln_solid"></div>
 										<h2>Mapa do Google</h2>
+										<h5>Ative para incluir no site um mapa do Google, centralizado em seu endereço.</h5>
+										<h5>O mapa usará como base o Endereço fornecido nas Informações de Contato, acima.</h5>
 										<div class="form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12">Incluir</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
