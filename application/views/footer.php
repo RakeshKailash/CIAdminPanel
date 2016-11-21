@@ -497,12 +497,12 @@
 		$(".flat").prop('checked', true);
 		$(".icheckbox_flat-green").addClass('checked');
 
-			var imagens = getMultipleImages();
+		var imagens = getMultipleImages();
 
-			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
-			$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
-			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
-			$("#excluir_multiplas_div").css('display', 'block');
+		$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+		$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
+		$(".excluir_multiplas_legenda").html(imagens['mensagem']);
+		$("#excluir_multiplas_div").css('display', 'block');
 	});
 
 	$("#select_full_gallery").on('ifUnchecked', function () {
@@ -516,8 +516,18 @@
 
 
 	$("#remove_img").click(function () {
-		$("#img_selecionada").html("Ainda não existe uma imagem para esta categoria");
-		$("#has_img").val("false");
+		$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
+		$("#has_img").val("0");
+	});
+
+	$("#imagem").change(function () {
+		if (($("#imagem").val()).length > 0) {
+			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Imagem selecionada: " + $("#imagem").val() + "</label>");
+			$("#has_img").val("1");
+		} else {
+			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
+			$("#has_img").val("0");
+		}
 	});
 
 	$("#editor").blur(function () {
@@ -584,6 +594,41 @@
 		$(".atualizacoes_modal").modal('show');
 	});
 
+	/* Editar Contato */
+	$("#map_google").on('ifChecked', function () {
+		$("#mapa_preview").attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyCGFrB3MI-kCSz76Op_xBGnmB4qO3MguUI&q=" + ($("#endereco").val()).replace(' ', '+'));
+		$("#map-group").addClass('element-visible');
+		$("#map-group").removeClass('element-hidden');
+	});
+
+	$("#map_google").on('ifUnchecked', function () {
+		$("#map-group").addClass('element-hidden');
+		$("#map-group").removeClass('element-visible');
+	});
+
+	$("#form_email").on('ifUnchecked', function () {
+		$("#contact-group").addClass('element-hidden');
+		$("#contact-group").removeClass('element-visible');
+	});
+
+	$("#form_email").on('ifChecked', function () {
+		$("#contact-group").addClass('element-visible');
+		$("#contact-group").removeClass('element-hidden');
+	});
+
+	$("#btn_reset_contato").click(function () {
+		location.reload();
+	});
+
+	$("#endereco").keypress(function () {
+		if ($("#map_google").prop('checked')) {
+			$("#mapa_preview").attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyCGFrB3MI-kCSz76Op_xBGnmB4qO3MguUI&q=" + ($("#endereco").val()).replace(' ', '+'));
+		}
+	});
+
+	/* /EditarContato */
+
+	/* Minhas Funções */
 	function getMultipleImages () {
 		var imagens_deletar = []
 		, mensagem
@@ -612,18 +657,17 @@
 
 	function formatSizeNumber (num) {
 		var retorno;
-				// (retorno.tamanho / 1024).toFixed(2) + "Mb"
-				num = parseFloat(num);
-				if (num > 1024) {
-					retorno = (num / 1024).toFixed(2) + "Mb";
-					return retorno;
-				}
+		num = parseFloat(num);
+		if (num > 1024) {
+			retorno = (num / 1024).toFixed(2) + "Mb";
+			return retorno;
+		}
 
-				retorno = (num).toFixed(0) + "Kb";
-				return retorno;
-			}
-
-		</script>
-		<!-- /Meu JS -->
-	</body>
-	</html>
+		retorno = (num).toFixed(0) + "Kb";
+		return retorno;
+	}
+	/* /Minhas Funções */
+</script>
+<!-- /Meu JS -->
+</body>
+</html>

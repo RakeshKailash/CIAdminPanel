@@ -36,12 +36,18 @@ class Servicos extends CI_Controller {
 		$campo = 'imagem';
 
 		$has_img = !! $this->input->post('has_img');
+		$change_img = $has_img && ! empty($_FILES['imagem']['name']);
 
-		if (! $has_img) {
+		if (! $has_img)
+		{
 			$campo = null;
+			$this->imagens_model->replaceSectionImg(2, $campo);
 		}
 
-		$upload_result = $this->imagens_model->replaceSectionImg(2, $campo);
+		if ($has_img && $change_img)
+		{
+			$this->imagens_model->replaceSectionImg(2, $campo);
+		}
 
 		$dados['conteudo'] = $this->input->post('conteudo');
 		$dados['icone'] = $this->input->post('icone');

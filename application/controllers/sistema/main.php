@@ -12,7 +12,6 @@ class Main extends CI_Controller {
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
 		$this->load->model('sistema/sessions_model');
 		$this->load->model('sistema/analise_model', 'analise_sistema');
-		
 	}
 
 	public function index ()
@@ -21,8 +20,6 @@ class Main extends CI_Controller {
 			return redirect('sistema/login');
 		}
 
-		// $viewsWeek = ;
-		// $viewsToday = ;
 		$today = date('Y-m-d', time());
 
 		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();

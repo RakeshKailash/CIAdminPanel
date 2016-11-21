@@ -23,7 +23,7 @@ class Imagens_model extends CI_Model {
 			$this->load->library('upload', $config_upload);
 
 			if (! $this->upload->do_upload($campo)) {
-				throw new UploadImagensException($this->upload->display_errors());
+				throw new Exception($this->upload->display_errors());
 			}
 
 			$info_img = $this->upload->data();

@@ -69,9 +69,7 @@ class Contato extends CI_Controller {
 
 		if ($dados['telefone'] != null && $dados['email'] != null) {
 			$this->contatos_model->update($dados);
-			print_r("Passou dos contatos");
 			$this->secoes_sistema->update($dados_secao, 5);
-			print_r("Passou da secao");
 
 			$atualizacao['titulo'] = "Seção 'Contato' alterada";
 			$atualizacao['usuario'] = $_SESSION['id'];

@@ -30,7 +30,7 @@ class Usuario_model extends CI_Model {
 			'senha' => $user_info['senha']
 			));
 
-		$this->db->select('id, nome, login, email, imagem, ultimoAcesso');
+		$this->db->select('id, nome, login, email, imagem, ultimoAcesso, ultimaVerifNotif');
 
 		$result = $this->db->get('usuarios')->result_array()[0];
 		$result['inicio'] = time();
@@ -49,7 +49,7 @@ class Usuario_model extends CI_Model {
 		return $userdata;
 	}
 
-	public function isLogged()
+	public function isLogged ()
 	{
 		$user_logged = $this->session->userdata();
 		if (isset($user_logged['login']) && $user_logged['login'] != null) {

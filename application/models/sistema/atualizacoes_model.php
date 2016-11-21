@@ -72,7 +72,7 @@ class Atualizacoes_model extends CI_Model {
 		}
 
 		// $this->db->where('atualizacoes.visualizada', 'false');
-		$this->db->where('atualizacoes.data >', $_SESSION['ultimoAcesso']);
+		$this->db->where('atualizacoes.data >', $_SESSION['ultimaVerifNotif']);
 		$this->db->where_not_in('atualizacoes.usuario', $_SESSION['id']);
 
 		$atualizacoes = $this->db->get()->result();
@@ -87,6 +87,23 @@ class Atualizacoes_model extends CI_Model {
 		}
 
 		return $atualizacoes;
+	}
+
+	public function verifyNotification ($userId=null)
+	{
+		$userId = $userId == null ? $_SESSION['id'] : $userId;
+		$tempo = date("Y-m-d H:i:s", time());
+		$this->db->set('ultimaVerifNotif', $tempo);
+		$this->session->set_userdata('ultimaVerifNotif', $tempo);
+		$this->db->where('id', $userId);
+		
+		if (! $this->db->update('usuarios'))
+		{
+			return false;
+		}
+
+		return true;
+
 	}
 
 }
