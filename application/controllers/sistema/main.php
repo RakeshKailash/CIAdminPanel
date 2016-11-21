@@ -100,37 +100,10 @@ class Main extends CI_Controller {
 		redirect('/sistema/login');
 	}
 
-	public function viewUpdate ($id=null)
+	public function viewNotifications ()
 	{
-		if ($id === null)
-		{
-			$retorno = (object) array('count' => null);
-			echo json_encode($retorno);
-		}
-
-		$update = $this->db->select('visualizada')->where('id', $id)->get('atualizacoes')->result()[0]->visualizada;
-
-		print_r($update);
-
-		if (strstr($update, '|'))
-		{
-			$updateArray = explode('|', $update);
-			$status = in_array($_SESSION['id'], $update) ? null : ('|' . $_SESSION['id']);
-		} else {
-			$status = ($update === $_SESSION['id']) ? null : ('|' . $_SESSION['id']);
-		}
-
-		$this->db->set('visualizada', ($update . $status));
-		$this->db->where('id', $id);
-		if (! $this->db->update('atualizacoes'))
-		{
-			$retorno = (object) array('count' => null);
-			echo json_encode($retorno);
-		}
-
-		$count = count($this->atualizacoes_sistema->retrieveUnviewed());
-		$retorno = (object) array('count' => $count);
-		echo json_encode($retorno);
+		$result = $this->usuario_model->viewNotifications();
+		echo json_encode($result);
 	}
 
 }

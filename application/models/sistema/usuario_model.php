@@ -81,4 +81,21 @@ class Usuario_model extends CI_Model {
 		return true;
 	}
 
+	public function viewNotifications ()
+	{
+		$userId = $_SESSION['id'];
+		$tempo = date("Y-m-d H:i:s", time());
+		$this->db->set('ultimaVerifNotif', $tempo);
+		$this->session->set_userdata('ultimaVerifNotif', $tempo);
+		$this->db->where('id', $userId);
+		
+		if (! $this->db->update('usuarios'))
+		{
+			return array('status' => 'Erro');
+		}
+
+		return array('status' => 'Sucesso');
+
+	}
+
 }

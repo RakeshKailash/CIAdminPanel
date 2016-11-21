@@ -453,31 +453,6 @@
 		}
 	});
 
-	$(".atualizacao-visualizada-false").hover(function () {
-		var idUpd = $(this).data('id')
-		, url = base_url + 'sistema/main/viewUpdate/' + idUpd
-		;
-
-		$.get(url, function (retorno) {
-			retorno = JSON.parse(retorno);
-
-			if (retorno.count > 0) {
-				$(".count-update-badge").html(retorno.count);
-				$(".count-update-badge").css('display', 'inline-block');
-				$(".count-update-badge-modal").html(retorno.count + " novas");
-				$(".count-update-badge-modal").css('display', 'inline-block');
-			} else {
-				$(".count-update-badge").css('display', 'none');
-				$(".count-update-badge-modal").css('display', 'none');
-			}
-
-			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').addClass('atualizacao-visualizada-true');
-			$('.atualizacao-visualizada-false[data-id="'+idUpd+'"]').removeClass('atualizacao-visualizada-false');
-
-		});
-
-	});
-
 	$(".flat.imagem_galeria_check").on('ifChanged', function () {
 		if ( $(".flat:checked").length > 1 ) {
 			var imagens = getMultipleImages();
@@ -627,6 +602,11 @@
 	});
 
 	/* /EditarContato */
+
+	$("#notif_icon").click(function () {
+		var url = base_url + 'sistema/main/viewNotifications';
+		$.get(url);
+	});
 
 	/* Minhas Funções */
 	function getMultipleImages () {
