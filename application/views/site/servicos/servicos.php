@@ -3,10 +3,7 @@ $info['title'] = array('Lorem Ipsum', 'Serviços');
 $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
 $info['itens'] = $itens;
 $this->load->view('header', $info);
-$tamanho_conteudo = 'conteudo_inteiro';
-if (isset($secao_info->caminho) && $secao_info->caminho != null) {
-	$tamanho_conteudo = 'conteudo_metade';
-}
+$classe = $secao_info->caminho ? 'col-md-6' : 'col-md-12';
 ?>
 <div class="container_secao" id="secao_servicos">
 	<section class="global-page-header">
@@ -33,16 +30,18 @@ if (isset($secao_info->caminho) && $secao_info->caminho != null) {
 	<section id="service-page" class="pages service-page">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="<?=$classe;?>">
 					<div class="block">
 						<?php echo $secao_info->conteudo ?>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="block">
-						<img class="img-responsive" src="<?=base_url($secao_info->caminho);?>" alt="">
+				<?php if ($classe == 'col-md-6') : ?>
+					<div class="col-md-6">
+						<div class="block">
+							<img class="img-responsive" src="<?=base_url($secao_info->caminho);?>" alt="">
+						</div>
 					</div>
-				</div>
+				<?php endif ?>
 			</div>
 		</div>
 	</section>
