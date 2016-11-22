@@ -493,3 +493,7 @@ html, body {
 .atualizacoes_site_lista li:last-child {
 	background: #fff;
 }
+
+.container_graficos {
+	margin-bottom: 50px !important;
+}

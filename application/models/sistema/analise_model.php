@@ -92,8 +92,71 @@ class Analise_model extends CI_Model {
 		return (object) $result;
 	}
 
+	public function getBest($params=array('filter' => null, 'limit' => 5), $order = 'best')
+	{
+		if (! $params['filter'])
+		{
+			return array(null);
+		}
 
-	function translateDate ($dates='')
+		switch ($order) {
+			case 'best':
+				$order = 'DESC';
+				break;
+			
+			case 'worst':
+				$order = 'ASC';
+
+			default:
+				$order = 'DESC';
+				break;
+		}
+
+		switch ($params['filter']) {
+			case 'time':
+			$this->db->select("TIME_FORMAT(`data`, '%H:00h') AS `lista`, COUNT(`data`) AS `total`");
+			$this->db->group_by("TIME_FORMAT(`data`, '%H')");
+			break;
+
+			case 'weekDay':
+			$this->db->select("DATE_FORMAT(`data`, '%W') AS `lista`, COUNT(`data`) AS `total`");
+			$this->db->group_by("DATE_FORMAT(`data`, '%W')");
+			break;
+
+			case 'month':
+			$this->db->select("DATE_FORMAT(`data`, '%M') AS `lista`, COUNT(`data`) AS `total`");
+			$this->db->group_by("DATE_FORMAT(`data`, '%M')");
+			break;
+
+			case 'day':
+			$this->db->select("DATE_FORMAT(`data`, '%d') AS `lista`, COUNT(`data`) AS `total`");
+			$this->db->group_by("DATE_FORMAT(`data`, '%d')");
+			break;
+
+			case 'weekDay_time':
+			$this->db->select("DATE_FORMAT(`data`, '%W, %H:00h') AS `lista`, COUNT(`data`) AS `total`");
+			$this->db->group_by("DATE_FORMAT(`data`, '%W, %H')");
+			break;
+
+			default:
+			$this->db->select("DATE_FORMAT(`data`, '%d') AS `lista`, COUNT(`data`) AS `total`");
+			$this->db->group_by("DATE_FORMAT(`data`, '%d')");
+			break;
+		}
+
+		$this->db->limit($params['limit']);
+
+		$this->db->order_by("total " . $order);
+		$result = $this->db->get('acessos')->result();
+
+		foreach ($result as &$item) {
+			$item->lista = $this->translateDate($item->lista, 1);
+		}
+
+		return $result;
+	}
+
+	function translateDate ($dates='', $order=0)
 	{
 		$dates = array($dates);
 
@@ -107,8 +170,14 @@ class Analise_model extends CI_Model {
 		$months['pt'] = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
 
 		foreach ($dates as &$date) {
-			$date = str_replace($days['pt'], $days['en'], $date);
-			$date = str_replace($months['pt'], $months['en'], $date);
+			if ($order == 0)
+			{
+				$date = str_replace($days['pt'], $days['en'], $date);
+				$date = str_replace($months['pt'], $months['en'], $date);
+			} else {
+				$date = str_replace($days['en'], $days['pt'], $date);
+				$date = str_replace($months['en'], $months['pt'], $date);
+			}
 		}
 
 		return $dates;
