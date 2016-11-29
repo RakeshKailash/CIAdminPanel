@@ -171,15 +171,15 @@
 	var myChart4 = echarts.init(document.getElementById('mainb2'), theme);
 	myChart4.setOption({
 		title: {
-			text: 'Acessos Hoje',
-			subtext: 'Monitore os acessos ao seu site no dia de hoje'
+			text: 'Personalizadas',
+			subtext: 'Selecione os filtros e obtenha dados personalizados sobre o seu site'
 		},
 		tooltip: {
 			trigger: 'item',
-			formatter: "Acessos hoje a {a}: {c}"
+			formatter: "Acessos: {c}"
 		},
 		legend: {
-			data: ['Home', 'Serviços', 'Empresa', 'Imagens', 'Contato'],
+			data: ['Acessos'],
 			x: 'right'
 		},
 		toolbox: {
@@ -188,59 +188,15 @@
 		calculable: false,
 		xAxis: [{
 			type: 'category',
-			data: [currentDay]
+			data: ["Resultado"]
 		}],
 		yAxis: [{
 			type: 'value'
 		}],
 		series: [{
-			name: 'Home',
+			name: 'Acessos',
 			type: 'bar',
-			data: [todaysViews.home.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Serviços',
-			type: 'bar',
-			data: [todaysViews.servicos.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Empresa',
-			type: 'bar',
-			data: [todaysViews.empresa.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Imagens',
-			type: 'bar',
-			data: [todaysViews.imagens.count],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}, {
-			name: 'Contato',
-			type: 'bar',
-			data: [todaysViews.contato.count],
+			data: [views.count[0]],
 			markLine: {
 				data: [{
 					type: 'max',
@@ -249,4 +205,4 @@
 				symbolSize: [6, 4]
 			}
 		}]
-	});	
+	});

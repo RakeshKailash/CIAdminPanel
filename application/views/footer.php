@@ -52,166 +52,154 @@
 
 <script type="text/javascript" src="<?=base_url('js/site/graficos.js');?>"></script>
 
-
 <!-- /Importar JS Aqui -->
 
 <!-- Demais Scripts -->
 
-	<!-- form validation -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$.listen('parsley:field:validate', function() {
-				validateFront();
-			});
-			$('#demo-form .btn').on('click', function() {
-				$('#demo-form').parsley().validate();
-				validateFront();
-			});
-			var validateFront = function() {
-				if (true === $('#demo-form').parsley().isValid()) {
-					$('.bs-callout-info').removeClass('hidden');
-					$('.bs-callout-warning').addClass('hidden');
-				} else {
-					$('.bs-callout-info').addClass('hidden');
-					$('.bs-callout-warning').removeClass('hidden');
-				}
-			};
+<!-- form validation -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.listen('parsley:field:validate', function() {
+			validateFront();
 		});
-
-		$(document).ready(function() {
-			$.listen('parsley:field:validate', function() {
-				validateFront();
-			});
-			$('#demo-form2 .btn').on('click', function() {
-				$('#demo-form2').parsley().validate();
-				validateFront();
-			});
-			var validateFront = function() {
-				if (true === $('#demo-form2').parsley().isValid()) {
-					$('.bs-callout-info').removeClass('hidden');
-					$('.bs-callout-warning').addClass('hidden');
-				} else {
-					$('.bs-callout-info').addClass('hidden');
-					$('.bs-callout-warning').removeClass('hidden');
-				}
-			};
+		$('#demo-form .btn').on('click', function() {
+			$('#demo-form').parsley().validate();
+			validateFront();
 		});
-		try {
-			hljs.initHighlightingOnLoad();
-		} catch (err) {}
-
-	</script>
-	<!-- /form validation -->
-	<!-- editor -->
-	<script>
-		$(document).ready(function() {
-			$('.xcxc').click(function() {
-				$('#descr').val($('#editor').html());
-			});
-		});
-
-		$(function() {
-			function initToolbarBootstrapBindings() {
-				var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-				'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-				'Times New Roman', 'Verdana'
-				],
-				fontTarget = $('[title=Font]').siblings('.dropdown-menu');
-				$.each(fonts, function(idx, fontName) {
-					fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
-				});
-				$('a[title]').tooltip({
-					container: 'body'
-				});
-				$('.dropdown-menu input').click(function() {
-					return false;
-				})
-				.change(function() {
-					$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
-				})
-				.keydown('esc', function() {
-					this.value = '';
-					$(this).change();
-				});
-
-				$('[data-role=magic-overlay]').each(function() {
-					var overlay = $(this),
-					target = $(overlay.data('target'));
-					overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
-				});
-				if ("onwebkitspeechchange" in document.createElement("input")) {
-					var editorOffset = $('#editor').offset();
-					$('#voiceBtn').css('position', 'absolute').offset({
-						top: editorOffset.top,
-						left: editorOffset.left + $('#editor').innerWidth() - 35
-					});
-				} else {
-					$('#voiceBtn').hide();
-				}
-			};
-
-			function showErrorAlert(reason, detail) {
-				var msg = '';
-				if (reason === 'unsupported-file-type') {
-					msg = "Unsupported format " + detail;
-				} else {
-					console.log("error uploading file", reason, detail);
-				}
-				$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
-					'<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
-			};
-			initToolbarBootstrapBindings();
-			$('#editor').wysiwyg({
-				fileUploadError: showErrorAlert
-			});
-			window.prettyPrint && prettyPrint();
-		});
-	</script>
-	<!-- /editor -->
-	<!-- /Demais Scripts -->
-
-	<!-- Meu JS -->
-	<script type="text/javascript" charset="utf-8" async defer>
-		var icones = ['arrow-circle-down', 'arrow-circle-left', 'arrow-circle-right',
-		'arrow-circle-up', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'bolt', 'briefcase', 'building', 'building-o',
-		'bus', 'car', 'caret-down', 'caret-left', 'caret-right', 'caret-up', 'check', 'check-circle', 'check-circle-o', 'chevron-circle-down', 'chevron-circle-left', 'chevron-circle-right', 'chevron-circle-up', 'desktop', 'envelope', 'exclamation-triangle', 'home', 'lightbulb-o', 'motorcycle', 'question', 'question-circle', 'shopping-bag', 'shopping-basket', 'star', 'star-o', 'sun-o', 'truck', 'user'];
-
-		$(".botao_menu_mobile").click(function() {
-			if ($(".menu_mobile").hasClass('menu_visible')) {
-				$(".menu_mobile").addClass('menu_hidden');
-				$(".menu_mobile").removeClass('menu_visible');
+		var validateFront = function() {
+			if (true === $('#demo-form').parsley().isValid()) {
+				$('.bs-callout-info').removeClass('hidden');
+				$('.bs-callout-warning').addClass('hidden');
 			} else {
-				$(".menu_mobile").addClass('menu_visible');
-				$(".menu_mobile").removeClass('menu_hidden');
+				$('.bs-callout-info').addClass('hidden');
+				$('.bs-callout-warning').removeClass('hidden');
 			}
+		};
+	});
+
+	$(document).ready(function() {
+		$.listen('parsley:field:validate', function() {
+			validateFront();
 		});
-
-		$(document).ready(function () {
-			adjustElements();
-
-			var icon_selector = [];
-
-			for (var k = 0; k < icones.length; k++) {
-				icon_selector.push("<i class='fa fa-"+icones[k]+" icone_seletor' data-value='"+icones[k]+"'></i>");
+		$('#demo-form2 .btn').on('click', function() {
+			$('#demo-form2').parsley().validate();
+			validateFront();
+		});
+		var validateFront = function() {
+			if (true === $('#demo-form2').parsley().isValid()) {
+				$('.bs-callout-info').removeClass('hidden');
+				$('.bs-callout-warning').addClass('hidden');
+			} else {
+				$('.bs-callout-info').addClass('hidden');
+				$('.bs-callout-warning').removeClass('hidden');
 			}
+		};
+	});
+	try {
+		hljs.initHighlightingOnLoad();
+	} catch (err) {}
 
-			$(".select_icon").html(icon_selector.join(""));
-			$(".icone_seletor").click(function () {
-				$("#input_icone").val($(this).data('value'));
-				$(".previa_icone").attr('class', 'fa fa-' + $(this).data('value') + ' previa_icone');
+</script>
+<!-- /form validation -->
+<!-- editor -->
+<script>
+	$(document).ready(function() {
+		$('.xcxc').click(function() {
+			$('#descr').val($('#editor').html());
+		});
+	});
+
+	$(function() {
+		function initToolbarBootstrapBindings() {
+			var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+			'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+			'Times New Roman', 'Verdana'
+			],
+			fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+			$.each(fonts, function(idx, fontName) {
+				fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+			});
+			$('a[title]').tooltip({
+				container: 'body'
+			});
+			$('.dropdown-menu input').click(function() {
+				return false;
+			})
+			.change(function() {
+				$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+			})
+			.keydown('esc', function() {
+				this.value = '';
+				$(this).change();
 			});
 
-		});
-
-		window.onresize = function () {
-			adjustElements();
+			$('[data-role=magic-overlay]').each(function() {
+				var overlay = $(this),
+				target = $(overlay.data('target'));
+				overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+			});
+			if ("onwebkitspeechchange" in document.createElement("input")) {
+				var editorOffset = $('#editor').offset();
+				$('#voiceBtn').css('position', 'absolute').offset({
+					top: editorOffset.top,
+					left: editorOffset.left + $('#editor').innerWidth() - 35
+				});
+			} else {
+				$('#voiceBtn').hide();
+			}
 		};
 
+		function showErrorAlert(reason, detail) {
+			var msg = '';
+			if (reason === 'unsupported-file-type') {
+				msg = "Unsupported format " + detail;
+			} else {
+				console.log("error uploading file", reason, detail);
+			}
+			$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+				'<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+		};
+		initToolbarBootstrapBindings();
+		$('#editor').wysiwyg({
+			fileUploadError: showErrorAlert
+		});
+		window.prettyPrint && prettyPrint();
+	});
+</script>
+<!-- /editor -->
+<!-- /Demais Scripts -->
 
-		function adjustElements () {
-		// $(".container_secao").css('height', (window.innerHeight - 50) + "px");
-		// $("#img_servicos").css('height', (($("#secao_servicos").outerHeight() / 100) * 50) + "px");
-	}
+<!-- Meu JS -->
+<script type="text/javascript" charset="utf-8" async defer>
+	var icones = ['arrow-circle-down', 'arrow-circle-left', 'arrow-circle-right',
+	'arrow-circle-up', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'bolt', 'briefcase', 'building', 'building-o',
+	'bus', 'car', 'caret-down', 'caret-left', 'caret-right', 'caret-up', 'check', 'check-circle', 'check-circle-o', 'chevron-circle-down', 'chevron-circle-left', 'chevron-circle-right', 'chevron-circle-up', 'desktop', 'envelope', 'exclamation-triangle', 'home', 'lightbulb-o', 'motorcycle', 'question', 'question-circle', 'shopping-bag', 'shopping-basket', 'star', 'star-o', 'sun-o', 'truck', 'user'];
+
+	$(".botao_menu_mobile").click(function() {
+		if ($(".menu_mobile").hasClass('menu_visible')) {
+			$(".menu_mobile").addClass('menu_hidden');
+			$(".menu_mobile").removeClass('menu_visible');
+		} else {
+			$(".menu_mobile").addClass('menu_visible');
+			$(".menu_mobile").removeClass('menu_hidden');
+		}
+	});
+
+	$(document).ready(function () {
+
+		var icon_selector = [];
+
+		for (var k = 0; k < icones.length; k++) {
+			icon_selector.push("<i class='fa fa-"+icones[k]+" icone_seletor' data-value='"+icones[k]+"'></i>");
+		}
+
+		$(".select_icon").html(icon_selector.join(""));
+		$(".icone_seletor").click(function () {
+			$("#input_icone").val($(this).data('value'));
+			$(".previa_icone").attr('class', 'fa fa-' + $(this).data('value') + ' previa_icone');
+		});
+
+	});
 
 	function setTarget (from, to, event) {
 		if (event == null) {
@@ -436,6 +424,89 @@
 	$("#notif_icon").click(function () {
 		var url = base_url + 'sistema/main/viewNotifications';
 		$.get(url);
+	});
+
+	$(document).ready(function() {
+
+		var cb = function(start, end, label) {
+			$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+		}
+
+		$(document).ready(function() {
+			$('#reservation').daterangepicker({
+				opens: 'left',
+				format: 'DD/MM/YYYY',
+				ranges: {
+					'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+					'Últimos 15 dias': [moment().subtract(14, 'days'), moment()],
+					'Últimos 3 meses': [moment().subtract(3, 'month'), moment()],
+					'Este Ano': [moment().startOf('year'), moment()],
+					'Último Ano': [moment().subtract(1, 'year'), moment()]
+				}
+			},
+			function(start, end, label) {
+			});
+		});
+	});
+
+	$("#reservation").on("apply.daterangepicker", function () {
+		var valor = $("#reservation").val();
+		valor = valor.replace(/\//g, "_");
+		valor = valor.split(" - ");
+		var url = base_url + "sistema/Main/updateStatistics/" + valor[0] + "/" + valor[1];
+		$.get(url, function (retorno) {
+			retorno = JSON.parse(retorno);
+			console.log(retorno);
+
+			views = retorno.result;
+
+			if (retorno.result.list.length <= 0) {
+				views = {
+					'count': retorno.result.count,
+					'list': ""
+				};
+			}
+
+			myChart4.clear();
+			myChart4 = echarts.init(document.getElementById('mainb2'), theme);
+			myChart4.setOption({
+				title: {
+					text: 'Personalizadas',
+					subtext: 'Selecione os filtros e obtenha dados personalizados sobre o seu site'
+				},
+				tooltip: {
+					trigger: 'item',
+					formatter: "Acessos: {c}"
+				},
+				legend: {
+					data: ['Acessos'],
+					x: 'right'
+				},
+				toolbox: {
+					show: false
+				},
+				calculable: false,
+				xAxis: [{
+					type: 'category',
+					data: ["Resultado"]
+				}],
+				yAxis: [{
+					type: 'value'
+				}],
+				series: [{
+					name: 'Acessos',
+					type: 'bar',
+					data: [views.count],
+					markLine: {
+						data: [{
+							type: 'max',
+							name: 'Acessos'
+						}],
+						symbolSize: [6, 4]
+					}
+				}]
+			});
+		});
 	});
 
 	/* Minhas Funções */

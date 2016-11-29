@@ -27,6 +27,7 @@ $currentday = str_replace($daysEn, $daysPt, date("D d/m/Y", time()));
 
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
+
 ?>
 
 <body class="nav-md">
@@ -74,6 +75,41 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 									<div class="col-md-6 col-sm-6 col-xs-4 container_graficos">
 										<div id="mainb2" style="height:350px;"></div>
 									</div>
+									<div class="col-md-6 col-sm-6 col-xs-4">
+										<form data-parsley-validate class="form-horizontal form-label-left" action="javascript:void(0)" method="post" enctype="multipart/form-data" id="form_custom_filters">
+											<h4>Selecione os Filtros para as Estatísticas Personalizadas</h4>
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="filtros">Período: </label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<fieldset>
+														<div class="control-group">
+															<div class="controls">
+																<div class="input-prepend input-group">
+																	<span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+																	<input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="<?php echo date('d/m/Y' , time()) . ' - ' . date('d/m/Y' , time())?>" />
+																</div>
+															</div>
+														</div>
+													</fieldset>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12" for="filtros">Filtros Adicionais: </label>
+												<div class="col-md-9 col-sm-9 col-xs-12">
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" class="flat"> Por Seções
+														</label>
+													</div>
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" class="flat"> Por Hora
+														</label>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -93,10 +129,8 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 	, todaysViews = <?=json_encode($viewsToday)?>
 	, sectionsViews = <?=json_encode($viewsSections)?>
 	, currentDay = <?=json_encode($currentday)?>
+	, views = <?=json_encode($views)?>
 	;
 </script>
 
-<?php
-
-$this->load->view('footer') 
-?>
+<?php $this->load->view('footer'); ?>

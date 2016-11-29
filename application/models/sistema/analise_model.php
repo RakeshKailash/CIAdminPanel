@@ -59,7 +59,7 @@ class Analise_model extends CI_Model {
 				$this->db->where("DATE_FORMAT(`data`, '%w') = $value"); // By Day (week based number)
 				break;
 				case 'dateYmd':
-				$this->db->where("DATE_FORMAT(`data`, '%Y-%m-%d') = '$value'"); // By Day (week based number)
+				$this->db->where("DATE_FORMAT(`data`, '%Y-%m-%d') = '$value'"); // By Day, Month and Year
 				break;
 				case 'timeH':
 				$this->db->where("TIME_FORMAT(TIME(`data`), '%H') = '$value'"); // By Hour
@@ -68,18 +68,22 @@ class Analise_model extends CI_Model {
 				$this->db->where("TIME_FORMAT(TIME(`data`), '%i') = '$value'"); // By Minutes
 				break;
 				case 'times':
-				$this->db->where("TIME_FORMAT(TIME(`data`), '%s') = '$value'"); // By Hour
+				$this->db->where("TIME_FORMAT(TIME(`data`), '%s') = '$value'"); // By Seconds
 				break;
 				case 'timeHis':
-				$this->db->where("TIME_FORMAT(TIME(`data`), '%H:%i:%s') = '$value'"); // By Hour
+				$this->db->where("TIME_FORMAT(TIME(`data`), '%H:%i:%s') = '$value'"); // By Hour, Minutes and Seconds
 				break;
 				case 'section':
-				$this->db->where("idSecao = $value"); // By Hour
+				$this->db->where("idSecao = $value"); // By Section
 				break;
 				case 'origin':
-				$this->db->where("idOrigem = $value"); // By Hour
+				$this->db->where("idOrigem = $value"); // By Origin
+				break;
+				case 'custom':
+				$this->db->where($value); // By User Defined Condition
 				break;
 				default:
+				$this->db->where("idSecao = 1");
 				break;
 			}
 
@@ -103,7 +107,7 @@ class Analise_model extends CI_Model {
 			case 'best':
 				$order = 'DESC';
 				break;
-			
+
 			case 'worst':
 				$order = 'ASC';
 

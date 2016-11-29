@@ -106,4 +106,38 @@ class Main extends CI_Controller {
 		echo json_encode($result);
 	}
 
+	public function updateStatistics ($dataInicial, $dataFinal) {
+		// $datas = $this->input->post('reservation');
+
+		// if ($datas == null) {
+		// 	return false;
+		// }
+
+		$dataInicial = $this->formatDate($dataInicial);
+
+		$dataFinal = $this->formatDate($dataFinal);
+
+		// $datas = str_replace(array("_" ,"%20"), array("/" , " "), $datas);
+
+		// $datas = explode(" - ", $datas);
+
+		$result = array('status' => false, 'result' => null);
+
+		// foreach($datas as &$data) {
+		// 	$data = str_replace(array("/", " "), "-", $data);
+		// }
+
+		$result['result'] = $this->analise_sistema->retrieveAllBy(array('custom' => "`data` BETWEEN '".$dataInicial."' AND '".$dataFinal."'"));
+		$result['status'] = true;
+		$result['type'] = 'between';
+
+		echo json_encode($result);
+
+	}
+
+	private function formatDate($date)
+	{
+		return implode('-', array_reverse(explode('_', $date)));
+	}
+
 }
