@@ -4,6 +4,7 @@ $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
 $info['itens'] = $itens;
 $this->load->view('header', $info);
 $classe = $secao_info->caminho ? 'col-md-6' : 'col-md-12';
+$commentInfo['comentarios'] = $comentarios;
 ?>
 <div class="container_secao" id="secao_servicos">
 	<section class="global-page-header">
@@ -24,7 +25,7 @@ $classe = $secao_info->caminho ? 'col-md-6' : 'col-md-12';
 					</div>
 				</div>
 			</div>
-		</div>   
+		</div>
 	</section><!--/#Page header-->
 
 	<section id="service-page" class="pages service-page">
@@ -45,6 +46,8 @@ $classe = $secao_info->caminho ? 'col-md-6' : 'col-md-12';
 			</div>
 		</div>
 	</section>
+
+	<?php $this->load->view('site/common/comentarios', $commentInfo);?>
 
 </div>
 

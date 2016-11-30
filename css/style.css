@@ -17,6 +17,33 @@ html, body {
 	display: none;
 }
 
+.rounded-border {
+	border: 1px solid #ddd;
+	padding: 20px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+
+#limit_characters {
+	float: right;
+	color: #666;
+	font-weight: lighter;
+	font-size: 10pt;
+}
+
+label.col-md-12 {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+textarea.no-resize {
+	resize: none;
+}
+
+label.control-label.site-label, h2.title-site {
+	color: #E54040;
+}
+
 @media screen and (min-width: 993px) {
 	.hide-l, .hide-ml, .hide-sl {
 		display: none !important;
@@ -482,7 +509,7 @@ html, body {
 }
 
 .atualizacao-visualizada-false a:hover {
-	background: #DEDEDE !important;	
+	background: #DEDEDE !important;
 }
 
 .atualizacoes_site_lista.msg_list li {
@@ -496,4 +523,23 @@ html, body {
 
 .container_graficos {
 	margin-bottom: 50px !important;
+}
+
+.comentario {
+	padding: 20px;
+	border-radius: 5px;
+	/*border: 1px solid #ddd;*/
+	/*border-left: 5px solid #e54040;*/
+	margin-bottom: 10px;
+	background: #F9F9F9;
+}
+
+.autor_comentario {
+	font-weight: bold;
+	font-size: 12pt;
+	color: #c93434;
+}
+
+.data_comentario {
+	/*margin-left: 5px;*/
 }

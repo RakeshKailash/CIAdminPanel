@@ -428,86 +428,29 @@
 
 	$(document).ready(function() {
 
-		var cb = function(start, end, label) {
-			$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-		}
-
-		$(document).ready(function() {
-			$('#reservation').daterangepicker({
-				opens: 'left',
-				format: 'DD/MM/YYYY',
-				ranges: {
-					'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-					'Últimos 15 dias': [moment().subtract(14, 'days'), moment()],
-					'Últimos 3 meses': [moment().subtract(3, 'month'), moment()],
-					'Este Ano': [moment().startOf('year'), moment()],
-					'Último Ano': [moment().subtract(1, 'year'), moment()]
-				}
-			},
-			function(start, end, label) {
-			});
-		});
-	});
-
-	$("#reservation").on("apply.daterangepicker", function () {
-		var valor = $("#reservation").val();
-		valor = valor.replace(/\//g, "_");
-		valor = valor.split(" - ");
-		var url = base_url + "sistema/Main/updateStatistics/" + valor[0] + "/" + valor[1];
-		$.get(url, function (retorno) {
-			retorno = JSON.parse(retorno);
-			console.log(retorno);
-
-			views = retorno.result;
-
-			if (retorno.result.list.length <= 0) {
-				views = {
-					'count': retorno.result.count,
-					'list': ""
-				};
+		$('#reservation').daterangepicker({
+			opens: 'left',
+			format: 'DD/MM/YYYY',
+			ranges: {
+				'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'Últimos 15 dias': [moment().subtract(14, 'days'), moment()],
+				'Últimos 3 meses': [moment().subtract(3, 'month'), moment()],
+				'Este Ano': [moment().startOf('year'), moment()],
+				'Último Ano': [moment().subtract(1, 'year'), moment()]
 			}
-
-			myChart4.clear();
-			myChart4 = echarts.init(document.getElementById('mainb2'), theme);
-			myChart4.setOption({
-				title: {
-					text: 'Personalizadas',
-					subtext: 'Selecione os filtros e obtenha dados personalizados sobre o seu site'
-				},
-				tooltip: {
-					trigger: 'item',
-					formatter: "Acessos: {c}"
-				},
-				legend: {
-					data: ['Acessos'],
-					x: 'right'
-				},
-				toolbox: {
-					show: false
-				},
-				calculable: false,
-				xAxis: [{
-					type: 'category',
-					data: ["Resultado"]
-				}],
-				yAxis: [{
-					type: 'value'
-				}],
-				series: [{
-					name: 'Acessos',
-					type: 'bar',
-					data: [views.count],
-					markLine: {
-						data: [{
-							type: 'max',
-							name: 'Acessos'
-						}],
-						symbolSize: [6, 4]
-					}
-				}]
-			});
+		},
+		function(start, end, label) {
 		});
+
+		//Custom Statiscs Stuff
+		// refreshCustomGraph();
+
 	});
+
+	//Custom Statiscs Stuff
+	// $("#reservation").on("apply.daterangepicker", function () {
+	// 	refreshCustomGraph();
+	// });
 
 	/* Minhas Funções */
 	function getMultipleImages () {
@@ -547,6 +490,67 @@
 		retorno = (num).toFixed(0) + "Kb";
 		return retorno;
 	}
+
+	//Custom Statiscs Stuff
+	// function refreshCustomGraph () {
+	// 	var valor = $("#reservation").val();
+	// 	valor = valor.replace(/\//g, "_");
+	// 	valor = valor.split(" - ");
+	// 	var url = base_url + "sistema/Main/updateStatistics/" + valor[0] + "/" + valor[1];
+	// 	$.get(url, function (retorno) {
+	// 		retorno = JSON.parse(retorno);
+	// 		console.log(retorno);
+
+	// 		views = retorno.result;
+
+	// 		if (retorno.result.list.length <= 0) {
+	// 			views = {
+	// 				'count': retorno.result.count,
+	// 				'list': ""
+	// 			};
+	// 		}
+
+	// 		myChart4.clear();
+	// 		myChart4 = echarts.init(document.getElementById('mainb2'), theme);
+	// 		myChart4.setOption({
+	// 			title: {
+	// 				text: 'Personalizadas',
+	// 				subtext: 'Selecione os filtros e obtenha dados personalizados sobre o seu site'
+	// 			},
+	// 			tooltip: {
+	// 				trigger: 'item',
+	// 				formatter: "Acessos: {c}"
+	// 			},
+	// 			legend: {
+	// 				data: ['Acessos'],
+	// 				x: 'right'
+	// 			},
+	// 			toolbox: {
+	// 				show: false
+	// 			},
+	// 			calculable: false,
+	// 			xAxis: [{
+	// 				type: 'category',
+	// 				data: ["Resultado"]
+	// 			}],
+	// 			yAxis: [{
+	// 				type: 'value'
+	// 			}],
+	// 			series: [{
+	// 				name: 'Acessos',
+	// 				type: 'bar',
+	// 				data: [views.count],
+	// 				markLine: {
+	// 					data: [{
+	// 						type: 'max',
+	// 						name: 'Acessos'
+	// 					}],
+	// 					symbolSize: [6, 4]
+	// 				}
+	// 			}]
+	// 		});
+	// 	});
+	// }
 	/* /Minhas Funções */
 </script>
 <!-- /Meu JS -->

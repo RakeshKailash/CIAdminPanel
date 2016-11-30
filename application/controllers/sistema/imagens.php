@@ -16,7 +16,7 @@ class Imagens extends CI_Controller {
 		}
 	}
 
-	public function index() 
+	public function index()
 	{
 		redirect('sistema/imagens/editar');
 	}
@@ -64,7 +64,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Acréscimo de novas Imagens";
 
-		
+
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 
@@ -95,7 +95,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Informações de Imagem | ID: " . $id;
 
-		
+
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 
@@ -103,7 +103,7 @@ class Imagens extends CI_Controller {
 		redirect('/sistema/imagens/editar');
 	}
 
-	public function excluir ($ids=null) 
+	public function excluir ($ids=null)
 	{
 		if($ids == null)
 		{
@@ -162,7 +162,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Exclusão de Imagens| ID: $ids";
 
-		
+
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 
@@ -192,7 +192,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Gerado arquivo '.rar' de Download para seção 'Imagens'";
 
-		
+
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 	}

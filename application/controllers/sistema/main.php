@@ -106,34 +106,18 @@ class Main extends CI_Controller {
 		echo json_encode($result);
 	}
 
-	public function updateStatistics ($dataInicial, $dataFinal) {
-		// $datas = $this->input->post('reservation');
+	//Custom Statiscs Stuff
+	// public function updateStatistics ($dataInicial, $dataFinal) {
+	// 	$dataInicial = $this->formatDate($dataInicial);
+	// 	$dataFinal = $this->formatDate($dataFinal);
 
-		// if ($datas == null) {
-		// 	return false;
-		// }
+	// 	$result['result'] = $this->analise_sistema->retrieveAllBy(array('custom' => "DATE(`data`) >= '".$dataInicial."' AND DATE(`data`) <= '".$dataFinal."'"));
+	// 	$result['status'] = true;
+	// 	$result['type'] = 'between';
 
-		$dataInicial = $this->formatDate($dataInicial);
+	// 	echo json_encode($result);
 
-		$dataFinal = $this->formatDate($dataFinal);
-
-		// $datas = str_replace(array("_" ,"%20"), array("/" , " "), $datas);
-
-		// $datas = explode(" - ", $datas);
-
-		$result = array('status' => false, 'result' => null);
-
-		// foreach($datas as &$data) {
-		// 	$data = str_replace(array("/", " "), "-", $data);
-		// }
-
-		$result['result'] = $this->analise_sistema->retrieveAllBy(array('custom' => "`data` BETWEEN '".$dataInicial."' AND '".$dataFinal."'"));
-		$result['status'] = true;
-		$result['type'] = 'between';
-
-		echo json_encode($result);
-
-	}
+	// }
 
 	private function formatDate($date)
 	{

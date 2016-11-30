@@ -21,4 +21,11 @@ class Secoes_model extends CI_Model {
 		return $secoes;
 	}
 
+	public function getComments ($secaoId=0) {
+		$this->db->where("secaoComentario = $secaoId AND aprovado = 1");
+
+		$result = $this->db->get('comentarios')->result();
+		return $result;
+	}
+
 }

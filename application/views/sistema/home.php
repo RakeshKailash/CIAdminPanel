@@ -72,10 +72,11 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 									<div class="col-md-6 col-sm-6 col-xs-4 container_graficos">
 										<div id="mainb" style="height:350px;"></div>
 									</div>
-									<div class="col-md-6 col-sm-6 col-xs-4 container_graficos">
+									<!-- Custom Statiscs Stuff -->
+									<!-- <div class="col-md-6 col-sm-6 col-xs-4 container_graficos">
 										<div id="mainb2" style="height:350px;"></div>
-									</div>
-									<div class="col-md-6 col-sm-6 col-xs-4">
+									</div> -->
+									<!-- <div class="col-md-6 col-sm-6 col-xs-4">
 										<form data-parsley-validate class="form-horizontal form-label-left" action="javascript:void(0)" method="post" enctype="multipart/form-data" id="form_custom_filters">
 											<h4>Selecione os Filtros para as Estatísticas Personalizadas</h4>
 											<div class="form-group">
@@ -109,7 +110,7 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 												</div>
 											</div>
 										</form>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>

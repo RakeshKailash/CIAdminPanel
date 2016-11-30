@@ -168,41 +168,42 @@
 		}]
 	});
 
-	var myChart4 = echarts.init(document.getElementById('mainb2'), theme);
-	myChart4.setOption({
-		title: {
-			text: 'Personalizadas',
-			subtext: 'Selecione os filtros e obtenha dados personalizados sobre o seu site'
-		},
-		tooltip: {
-			trigger: 'item',
-			formatter: "Acessos: {c}"
-		},
-		legend: {
-			data: ['Acessos'],
-			x: 'right'
-		},
-		toolbox: {
-			show: false
-		},
-		calculable: false,
-		xAxis: [{
-			type: 'category',
-			data: ["Resultado"]
-		}],
-		yAxis: [{
-			type: 'value'
-		}],
-		series: [{
-			name: 'Acessos',
-			type: 'bar',
-			data: [views.count[0]],
-			markLine: {
-				data: [{
-					type: 'max',
-					name: 'Acessos'
-				}],
-				symbolSize: [6, 4]
-			}
-		}]
-	});
+	//Custom Statiscs Stuff
+	// var myChart4 = echarts.init(document.getElementById('mainb2'), theme);
+	// myChart4.setOption({
+	// 	title: {
+	// 		text: 'Personalizadas',
+	// 		subtext: 'Selecione os filtros e obtenha dados personalizados sobre o seu site'
+	// 	},
+	// 	tooltip: {
+	// 		trigger: 'item',
+	// 		formatter: "Acessos: {c}"
+	// 	},
+	// 	legend: {
+	// 		data: ['Acessos'],
+	// 		x: 'right'
+	// 	},
+	// 	toolbox: {
+	// 		show: false
+	// 	},
+	// 	calculable: false,
+	// 	xAxis: [{
+	// 		type: 'category',
+	// 		data: ["Resultado"]
+	// 	}],
+	// 	yAxis: [{
+	// 		type: 'value'
+	// 	}],
+	// 	series: [{
+	// 		name: 'Acessos',
+	// 		type: 'bar',
+	// 		data: [views.count[0]],
+	// 		markLine: {
+	// 			data: [{
+	// 				type: 'max',
+	// 				name: 'Acessos'
+	// 			}],
+	// 			symbolSize: [6, 4]
+	// 		}
+	// 	}]
+	// });

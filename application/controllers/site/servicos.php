@@ -14,6 +14,7 @@ class Servicos extends CI_Controller {
 	{
 		$info['secao_info'] = $this->secoes_site->getSections(2)[0];
 		$info['itens'] = $this->secoes_site->getSections();
+		$info['comentarios'] = $this->secoes_site->getComments(2);
 		$this->load->view('site/servicos/servicos', $info);
 		$this->analise_site->insert_access(2);
 	}
