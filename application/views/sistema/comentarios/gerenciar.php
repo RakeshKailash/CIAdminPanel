@@ -4,6 +4,9 @@ $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
 
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+$success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
+$warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 ?>
 
@@ -38,6 +41,24 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 							<div class="x_panel">
 								<div class="container">
 									<div class="col-md-12 container_comentarios_sistema">
+										<?php if ($error) : ?>
+											<div class="alert alert-danger fade in">
+												<a href="#" class="close" data-dismiss="alert">×</a>
+												<strong>Erro!</strong> <?=$error; ?>
+											</div>
+										<?php endif; ?>
+										<?php if ($success) : ?>
+											<div class="alert alert-success fade in">
+												<a href="#" class="close" data-dismiss="alert">×</a>
+												<strong>Sucesso!</strong> <?=$success; ?>
+											</div>
+										<?php endif; ?>
+										<?php if ($warning) : ?>
+											<div class="alert alert-warning fade in">
+												<a href="#" class="close" data-dismiss="alert">×</a>
+												<strong>Atenção!</strong> <?=$warning; ?>
+											</div>
+										<?php endif; ?>
 										<?php foreach ($comentarios as $comentario) : ?>
 											<div class="comentario comentario_sistema">
 												<div class="container">
@@ -49,8 +70,8 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 													</div>
 													<div class="col-md-4 detalhes_comentario_sistema">
 														<p>
-															<span class="label_comentarios_sistema title_label">Status:</span>
-															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
+															<span class="label_comentarios_sistema title_label">E-mail:</span>
+															<span class="label_comentarios_sistema"><?=empty($comentario->emailAutor) ? "Não informado" : $comentario->emailAutor;?></span>
 														</p>
 														<p>
 															<span class="label_comentarios_sistema title_label">Seção:</span>
@@ -59,16 +80,13 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 													</div>
 													<div class="col-md-4 detalhes_comentario_sistema">
 														<p>
-															<span class="label_comentarios_sistema title_label">E-mail:</span>
-															<span class="label_comentarios_sistema"><?=empty($comentario->emailAutor) ? "Não informado" : $comentario->emailAutor;?></span>
+															<span class="label_comentarios_sistema title_label">Status:</span>
+															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
 														</p>
 														<?php if (!$comentario->aprovado): ?>
-															<button type="button" class="btn btn-success">Aprovar para Publicação</button>
-															<button type="button" class="btn btn-default">Reprovar para Publicação</button>
+															<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar para Exibição</button>
 														<?php endif ?>
-														<?php if (!!$comentario->aprovado): ?>
-															<button type="button" class="btn btn-danger">Excluir</button>
-														<?php endif ?>
+														<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
 													</div>
 												</div>
 											</div>
@@ -82,5 +100,15 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 			</div>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		$(".btn_deletar_comentario").click(function () {
+			window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
+		});
+
+		$(".btn_aprovar_comentario").click(function () {
+			window.location = base_url + 'sistema/Comentarios/aprovar/' + $(this).data('id');
+		});
+	</script>
 
 	<?php $this->load->view('footer') ?>

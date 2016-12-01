@@ -25,6 +25,7 @@ class Secoes_model extends CI_Model {
 	public function getComments ($secaoId=0)
 	{
 		$this->db->where("secaoComentario = $secaoId AND aprovado = 1");
+		$this->db->order_by("dataComentario DESC");
 
 		$result = $this->db->get('comentarios')->result();
 		return $result;

@@ -34,4 +34,40 @@ class Comentarios extends CI_Controller {
 		$this->load->view('sistema/comentarios/configurar');
 	}
 
+	function deletar ($ids=null)
+	{
+		if ($ids == null) {
+			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para exclusão.");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+
+		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
+
+		if (! $this->secoes_sistema->deleteComments($ids)) {
+			$this->session->set_flashdata('error', "Erro ao excluir o comentário! Tente novamente.");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+
+		$this->session->set_flashdata('success', "Comentário excluído com sucesso!");
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	function aprovar ($ids=null)
+	{
+		if ($ids == null) {
+			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para aprovação.");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+
+		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
+
+		if (! $this->secoes_sistema->approveComments($ids)) {
+			$this->session->set_flashdata('error', "Erro ao aprovar o comentário para exibição! Tente novamente.");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+
+		$this->session->set_flashdata('success', "Comentário aprovado para exibição com sucesso!");
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
 }

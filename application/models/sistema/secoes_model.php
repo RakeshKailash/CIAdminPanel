@@ -48,7 +48,6 @@ class Secoes_model extends CI_Model
 	{
 		if ($secaoId)
 		{
-			// $this->db->where("secaoComentario = $secaoId AND aprovado = 1");
 			$query = "SELECT
 			comentarios.`idComentario`,
 			comentarios.`nomeAutor`,
@@ -67,7 +66,6 @@ class Secoes_model extends CI_Model
 
 		if (!$secaoId)
 		{
-			// $this->db->group_by("secaoComentario");
 			$query = "SELECT
 			comentarios.`idComentario`,
 			comentarios.`nomeAutor`,
@@ -81,13 +79,41 @@ class Secoes_model extends CI_Model
 			comentarios
 			JOIN secoes
 			ON secoes.`id` = comentarios.secaoComentario
-			ORDER BY `secaoComentario` ASC,
-			`dataComentario` ASC";
+			ORDER BY `dataComentario` DESC";
 
 		}
 
 		$result = $this->db->query($query)->result();
 		return $result;
+	}
+
+	public function deleteComments ($ids=null)
+	{
+		if (!$ids) {
+			return false;
+		}
+
+		foreach ($ids as $idComentario) {
+			$this->db->where('idComentario', $idComentario);
+			$this->db->delete('comentarios');
+		}
+
+		return true;
+	}
+
+	public function approveComments ($ids=null)
+	{
+		if (!$ids) {
+			return false;
+		}
+
+		foreach ($ids as $idComentario) {
+			$this->db->where('idComentario', $idComentario);
+			$this->db->set('aprovado', 1);
+			$this->db->update('comentarios');
+		}
+
+		return true;
 	}
 
 }

@@ -32,7 +32,7 @@
 						<ul class="nav child_menu" style="display: none">
 							<li><a href="<?=base_url('sistema/Comentarios/configurar'); ?>">Configurações de Comentários</a>
 							</li>
-							<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>">Gerenciar Comentários <span class="badge bg-red comment-badge">5</span></a>
+							<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>">Gerenciar Comentários <span class="badge bg-green comment-badge">5</span></a>
 							</li>
 						</ul>
 					</li>
