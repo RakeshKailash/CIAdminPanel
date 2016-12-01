@@ -25,13 +25,17 @@ class Comentarios extends CI_Controller {
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['comentarios'] = $this->secoes_sistema->getComments();
-		// $info['registro'] = $this->secoes_sistema->getInfo(2)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
 		$this->load->view('sistema/comentarios/gerenciar', $info);
 	}
 
 	public function configurar () {
-		$this->load->view('sistema/comentarios/configurar');
+		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
+		$info['comentarios'] = $this->secoes_sistema->getComments();
+		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$this->load->view('sistema/comentarios/configurar', $info);
 	}
 
 	function deletar ($ids=null)

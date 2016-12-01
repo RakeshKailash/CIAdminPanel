@@ -1,5 +1,5 @@
 <?php
-$info['title'] = array('Sistema', 'Editar Serviços');
+$info['title'] = array('Sistema', 'Gerenciar Comentários');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
