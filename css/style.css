@@ -44,6 +44,12 @@ label.control-label.site-label, h2.title-site {
 	color: #E54040;
 }
 
+span.comment-badge.bg-red {
+	font-size: 7pt;
+	padding: 3px 5px;
+	margin-left: 5px;
+}
+
 @media screen and (min-width: 993px) {
 	.hide-l, .hide-ml, .hide-sl {
 		display: none !important;
@@ -534,12 +540,66 @@ label.control-label.site-label, h2.title-site {
 	background: #F9F9F9;
 }
 
+.texto_comentario {
+	margin-bottom: 0;
+}
+
 .autor_comentario {
 	font-weight: bold;
 	font-size: 12pt;
 	color: #c93434;
 }
 
-.data_comentario {
-	/*margin-left: 5px;*/
+.comentario.comentario_sistema {
+	color: #555;
+	position: relative;
+}
+
+.approved-true {
+	/*background: #86CC68;*/
+	background: #2A3F54;
+	color: #fff !important;
+	/*border: 1px solid #666;*/
+}
+
+.approved-false {
+	/*background: #D33734;*/
+	background: #2A3F54;
+	color: #fff !important;
+	/*border: 1px solid #666;*/
+}
+
+.label_comentarios_sistema {
+	display: block;
+	font-size: 11pt;
+}
+
+.label_comentarios_sistema.title_label {
+	color: #2A3F54;
+	font-weight: bold;
+}
+
+.label_comentarios_sistema i {
+	font-size: 12pt;
+}
+
+.square-badge-comentarios {
+	padding: 3px 10px;
+	position: absolute;
+	top: -4px;
+	left: -4px;
+	border-radius: 5px 0 0 0;
+	color: #fff;
+}
+
+.label_comentarios_sistema .fa {
+	vertical-align: baseline;
+}
+
+.label_comentarios_sistema .fa.fa-check {
+	color: #86CC68;
+}
+
+.label_comentarios_sistema .fa.fa-times {
+	color: #D33734;
 }

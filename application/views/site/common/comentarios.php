@@ -1,16 +1,10 @@
 <?php
 $comentariosEstrutura = null;
-foreach ($comentarios as $comentario) {
-	$comentariosEstrutura .= "<div class='comentario'>";
-	$comentariosEstrutura .= "<span class='autor_comentario'>$comentario->nomeAutor</span>";
-	$comentariosEstrutura .= "<span class='data_comentario'>, em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario))."</span>";
-	$comentariosEstrutura .= "<p class='texto_comentario'>$comentario->textoComentario</p>";
-	$comentariosEstrutura .= "</div>";
 
-	$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
-	$success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
-	$warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
-}
+
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+$success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
+$warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 ?>
 <section id="call-to-action" style="margin-top: 100px; margin-bottom: 50px;">
 	<div class="container">
@@ -27,7 +21,13 @@ foreach ($comentarios as $comentario) {
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<?=$comentariosEstrutura;?>
+				<?php foreach ($comentarios as $comentario) : ?>
+					<div class='comentario'>
+						<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
+						<span class='data_comentario'><?=", em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></span>
+						<p class='texto_comentario'><?=$comentario->textoComentario;?></p>
+					</div>
+				<?php endforeach ?>
 			</div>
 		</div>
 	</div>
@@ -48,8 +48,8 @@ foreach ($comentarios as $comentario) {
 					<input type="text" name="email_comentario" class="form-control" placeholder="Seu E-mail (opcional)">
 				</div>
 				<div class="col-md-6 col-lg-6 col-xs-12">
-					<label for="mensagem_comentario" class="col-md-12 control-label site-label">Comentário * <span id="limit_characters">400 restantes</span></label>
-					<textarea class="form-control no-resize" rows="5" name="mensagem_comentario" id="mensagem_comentario" placeholder="Sua Mensagem" maxlength="400"></textarea>
+					<label for="mensagem_comentario" class="col-md-12 control-label site-label">Comentário * <span id="limit_characters">250 restantes</span></label>
+					<textarea class="form-control no-resize" rows="5" name="mensagem_comentario" id="mensagem_comentario" placeholder="Sua Mensagem" maxlength="250"></textarea>
 				</div>
 			</div>
 			<div class="row">
@@ -64,7 +64,7 @@ foreach ($comentarios as $comentario) {
 </section>
 
 <script type="text/javascript">
-	var maxLength = 400;
+	var maxLength = 250;
 
 	$("#btn_enviar").click(function () {
 		var postValues = $("#form_comment").serialize();
@@ -91,7 +91,7 @@ foreach ($comentarios as $comentario) {
 	});
 
 	$("#btn_clear").click(function () {
-		$("#limit_characters").html("400 restantes");
+		$("#limit_characters").html("250 restantes");
 	});
 
 </script>
