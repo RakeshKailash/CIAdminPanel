@@ -1,7 +1,4 @@
 <?php
-$comentariosEstrutura = null;
-
-
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
@@ -54,7 +51,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			</div>
 			<div class="row">
 				<div class="col-md-6 col-lg-6 col-xs-12">
-					<input type="hidden" name="id_secao" value="2">
+					<input type="hidden" name="id_secao" value="<?=$secao_info->id?>">
 					<button type="button" id="btn_enviar" class="btn btn-default">Enviar</button>
 					<button type="reset" id="btn_clear" class="btn btn-default">Limpar</button>
 				</div>

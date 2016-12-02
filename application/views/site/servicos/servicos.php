@@ -4,6 +4,7 @@ $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
 $info['itens'] = $itens;
 $this->load->view('header', $info);
 $classe = $secao_info->caminho ? 'col-md-6' : 'col-md-12';
+
 $commentInfo['comentarios'] = $comentarios;
 ?>
 <div class="container_secao" id="secao_servicos">
