@@ -40,25 +40,51 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="container">
+									<?php if ($error) : ?>
+										<div class="alert alert-danger fade in">
+											<a href="#" class="close" data-dismiss="alert">×</a>
+											<strong>Erro!</strong> <?=$error; ?>
+										</div>
+									<?php endif; ?>
+									<?php if ($success) : ?>
+										<div class="alert alert-success fade in">
+											<a href="#" class="close" data-dismiss="alert">×</a>
+											<strong>Sucesso!</strong> <?=$success; ?>
+										</div>
+									<?php endif; ?>
+									<?php if ($warning) : ?>
+										<div class="alert alert-warning fade in">
+											<a href="#" class="close" data-dismiss="alert">×</a>
+											<strong>Atenção!</strong> <?=$warning; ?>
+										</div>
+									<?php endif; ?>
+									<div class="col-md-12">
+										<h2>Configurações de Comentários</h2>
+										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/updateConfig')?>" method="post">
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12">Habilitar Comentário nas Seções</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<div class="checkbox">
+														<label><input type="checkbox" name="secoes_comentarios" value="2" class="flat"/> Serviços</label>
+													</div>
+													<div class="checkbox">
+														<label><input type="checkbox" name="secoes_comentarios" value="3" class="flat"/> Empresa</label>
+													</div>
+													<div class="checkbox">
+														<label><input type="checkbox" name="secoes_comentarios" value="4" class="flat"/> Imagens</label>
+													</div>
+													<div class="checkbox">
+														<label><input type="checkbox" name="secoes_comentarios" value="5" class="flat"/> Contato</label>
+													</div>
+												</div>
+											</div>
+										</form>
+										<div class="ln_solid"></div>
+									</div>
+									<div class="col-md-12">
+										<h2>Comentários</h2>
+									</div>
 									<div class="col-md-12 container_comentarios_sistema">
-										<?php if ($error) : ?>
-											<div class="alert alert-danger fade in">
-												<a href="#" class="close" data-dismiss="alert">×</a>
-												<strong>Erro!</strong> <?=$error; ?>
-											</div>
-										<?php endif; ?>
-										<?php if ($success) : ?>
-											<div class="alert alert-success fade in">
-												<a href="#" class="close" data-dismiss="alert">×</a>
-												<strong>Sucesso!</strong> <?=$success; ?>
-											</div>
-										<?php endif; ?>
-										<?php if ($warning) : ?>
-											<div class="alert alert-warning fade in">
-												<a href="#" class="close" data-dismiss="alert">×</a>
-												<strong>Atenção!</strong> <?=$warning; ?>
-											</div>
-										<?php endif; ?>
 										<?php foreach ($comentarios as $comentario) : ?>
 											<div class="comentario comentario_sistema">
 												<div class="container">
@@ -86,6 +112,9 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 														<?php if (!$comentario->aprovado): ?>
 															<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar para Exibição</button>
 														<?php endif ?>
+														<?php if ($comentario->aprovado): ?>
+															<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar Temporariamente</button>
+														<?php endif ?>
 														<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
 													</div>
 												</div>
@@ -108,6 +137,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 		$(".btn_aprovar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/aprovar/' + $(this).data('id');
+		});
+
+		$(".btn_desativar_comentario").click(function () {
+			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
 		});
 	</script>
 

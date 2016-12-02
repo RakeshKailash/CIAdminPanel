@@ -12,6 +12,7 @@ $classes = array('0' => 6, '1' => 6, '2' => 12);
 $colunas = array('0' => 4, '1' => 12, '2' => 3);
 $countColumns = 0;
 
+$commentInfo['comentarios'] = $comentarios;
 ?>
 
 <div class="container_secao" id="secao_servicos">
@@ -66,8 +67,8 @@ $countColumns = 0;
 					</div>
 				<?php endif ?>
 				<?php if ($countColumns == 2): ?>
-					</div>
-					<div class="row address-details">
+				</div>
+				<div class="row address-details">
 				<?php endif ?>
 				<div class="col-md-<?=($countColumns > 0) ? $classes[$countColumns] : 12;?>" style="text-align: center;">
 					<div class="col-md-<?=$colunas[$countColumns]?>">
@@ -95,19 +96,25 @@ $countColumns = 0;
 					<?php endif ?>
 					<?php if (isset($contato->whatsapp)) : ?>
 						<div class="col-md-<?=$colunas[$countColumns]?>">
-						<div class="phone wow fadeInLeft" data-wow-duration="500ms" data-wow-delay=".9s">
-							<i class="ion-social-whatsapp-outline"></i>
-							<p><?=$contato->whatsapp;?></p>
+							<div class="phone wow fadeInLeft" data-wow-duration="500ms" data-wow-delay=".9s">
+								<i class="ion-social-whatsapp-outline"></i>
+								<p><?=$contato->whatsapp;?></p>
+							</div>
 						</div>
-					</div>
 					<?php endif ?>
 				</div>
 				<?php if ($countColumns == 2): ?>
-					</div>
-				<?php endif ?>
-			</div>
-		</section>
+				</div>
+			<?php endif ?>
+		</div>
+	</section>
 
-	</div>
+	<?php
+	if ($secao_info->comentarios) {
+		$this->load->view('site/common/comentarios', $commentInfo);
+	}
+	?>
 
-	<?php $this->load->view('footer'); ?>
+</div>
+
+<?php $this->load->view('footer'); ?>

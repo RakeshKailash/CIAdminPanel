@@ -47,7 +47,12 @@ $commentInfo['comentarios'] = $comentarios;
 		</div>
 	</section>
 
-	<?php $this->load->view('site/common/comentarios', $commentInfo);?>
+
+	<?php
+	if ($secao_info->comentarios) {
+		$this->load->view('site/common/comentarios', $commentInfo);
+	}
+	?>
 
 </div>
 

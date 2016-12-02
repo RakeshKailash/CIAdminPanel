@@ -16,7 +16,7 @@ class Contato extends CI_Controller {
 		$info['itens'] = $this->secoes_site->getSections();
 		$info['secao_info'] = $this->secoes_site->getSections(5)[0];
 		$info['contato'] = $this->contatos_model->retrieve(1)[0];
-
+		$info['comentarios'] = $this->secoes_site->getComments(5);
 		$this->load->view('site/contato/contato', $info);
 		$this->analise_site->insert_access(5);
 	}

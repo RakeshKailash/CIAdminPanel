@@ -14,7 +14,7 @@ class Empresa extends CI_Controller {
 	{
 		$info['itens'] = $this->secoes_site->getSections();
 		$info['secao_info'] = $this->secoes_site->getSections(3)[0];
-
+		$info['comentarios'] = $this->secoes_site->getComments(3);
 		$this->load->view('site/empresa/empresa', $info);
 		$this->analise_site->insert_access(3);
 	}

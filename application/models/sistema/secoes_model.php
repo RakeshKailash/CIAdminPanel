@@ -11,7 +11,7 @@ class Secoes_model extends CI_Model
 
 	public function getInfo($id = null)
 	{
-		$this->db->select('secoes.nome, secoes.conteudo, imagens.caminho, secoes.icone, secoes.link');
+		$this->db->select('secoes.nome, secoes.conteudo, imagens.caminho, secoes.icone, secoes.link, secoes.comentarios');
 		$this->db->from('secoes');
 		$this->db->join('imagens', 'imagens.id = secoes.imagem');
 
@@ -101,7 +101,7 @@ class Secoes_model extends CI_Model
 		return true;
 	}
 
-	public function approveComments ($ids=null)
+	public function changeCommentStatus ($ids=null, $status=1)
 	{
 		if (!$ids) {
 			return false;
@@ -109,11 +109,41 @@ class Secoes_model extends CI_Model
 
 		foreach ($ids as $idComentario) {
 			$this->db->where('idComentario', $idComentario);
-			$this->db->set('aprovado', 1);
+			$this->db->set('aprovado', $status);
 			$this->db->update('comentarios');
 		}
 
 		return true;
 	}
+
+	// public function approveComments ($ids=null)
+	// {
+	// 	if (!$ids) {
+	// 		return false;
+	// 	}
+
+	// 	foreach ($ids as $idComentario) {
+	// 		$this->db->where('idComentario', $idComentario);
+	// 		$this->db->set('aprovado', 1);
+	// 		$this->db->update('comentarios');
+	// 	}
+
+	// 	return true;
+	// }
+
+	// public function disableComments ($ids=null)
+	// {
+	// 	if (!$ids) {
+	// 		return false;
+	// 	}
+
+	// 	foreach ($ids as $idComentario) {
+	// 		$this->db->where('idComentario', $idComentario);
+	// 		$this->db->set('aprovado', 0);
+	// 		$this->db->update('comentarios');
+	// 	}
+
+	// 	return true;
+	// }
 
 }

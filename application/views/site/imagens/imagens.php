@@ -4,6 +4,8 @@ $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
 $info['itens'] = $itens;
 $this->load->view('header', $info);
 $countImg = 0;
+
+$commentInfo['comentarios'] = $comentarios;
 ?>
 <div class="container_secao" id="secao_servicos">
 	<section class="global-page-header">
@@ -55,6 +57,13 @@ $countImg = 0;
 			</div>
 		</div>
 	</section>
+
+	<?php
+	if ($secao_info->comentarios) {
+		$this->load->view('site/common/comentarios', $commentInfo);
+	}
+	?>
+
 </div>
 
 <?php $this->load->view('footer'); ?>

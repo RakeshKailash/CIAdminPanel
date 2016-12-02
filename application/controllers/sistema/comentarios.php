@@ -65,12 +65,30 @@ class Comentarios extends CI_Controller {
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
-		if (! $this->secoes_sistema->approveComments($ids)) {
+		if (! $this->secoes_sistema->changeCommentStatus($ids, 1)) {
 			$this->session->set_flashdata('error', "Erro ao aprovar o comentário para exibição! Tente novamente.");
 			redirect($_SERVER['HTTP_REFERER']);
 		}
 
 		$this->session->set_flashdata('success', "Comentário aprovado para exibição com sucesso!");
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	function desativar ($ids=null)
+	{
+		if ($ids == null) {
+			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para desativar.");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+
+		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
+
+		if (! $this->secoes_sistema->changeCommentStatus($ids, 0)) {
+			$this->session->set_flashdata('error', "Erro ao desativar o comentário! Tente novamente.");
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+
+		$this->session->set_flashdata('success', "Comentário desativado com sucesso!");
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 

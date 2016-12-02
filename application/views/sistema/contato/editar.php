@@ -109,9 +109,11 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<h5>Inclua um campo para que o usuário possa lhe enviar um e-mail através do site.</h5>
 										<h5>O e-mail usado para receber as mensagens é o que foi cadastrado no campo E-mail, acima.</h5>
 										<div class="form-group">
-											<label class="control-label col-md-3 col-sm-3 col-xs-12" style="padding: 3px 10px;">Incluir</label>
+											<label class="control-label col-md-3 col-sm-3 col-xs-12">Incluir</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input type="checkbox" name="form_email" id="form_email" value="1" class="flat" <?php echo $checkForm; ?> />
+												<div class="checkbox">
+													<input type="checkbox" name="form_email" id="form_email" value="1" class="flat" <?php echo $checkForm; ?> />
+												</div>
 											</div>
 										</div>
 										<div id="contact-group" class="<?=($checkForm == 'checked') ? 'element-visible' : 'element-hidden';?>">
@@ -129,7 +131,9 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<div class="form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12">Incluir</label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input type="checkbox" name="map_google" id="map_google" value="1" class="flat" <?php echo $checkMap; ?> />
+												<div class="checkbox">
+													<input type="checkbox" name="map_google" id="map_google" value="1" class="flat" <?php echo $checkMap; ?> />
+												</div>
 											</div>
 										</div>
 										<div id="map-group" class="<?=($checkMap == 'checked') ? 'element-visible' : 'element-hidden';?>">

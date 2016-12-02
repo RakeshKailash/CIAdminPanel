@@ -9,7 +9,7 @@ class Secoes_model extends CI_Model {
 
 	public function getSections ($id=null)
 	{
-		$this->db->select('secoes.nome, secoes.conteudo, imagens.caminho, secoes.icone, secoes.link');
+		$this->db->select('secoes.nome, secoes.conteudo, imagens.caminho, secoes.icone, secoes.link, secoes.comentarios');
 		$this->db->from('secoes');
 		$this->db->join('imagens', 'imagens.id = secoes.imagem');
 

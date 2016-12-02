@@ -531,11 +531,18 @@ span.comment-badge.bg-red {
 	margin-bottom: 50px !important;
 }
 
+.container_comentarios_sistema {
+	overflow-y: scroll;
+	max-height: 500px;
+	padding-top: 10px;
+	background: #f1f1f1;
+	border-radius: 3px;
+	border: 2px solid #f1f1f1;
+}
+
 .comentario {
 	padding: 20px;
 	border-radius: 5px;
-	/*border: 1px solid #ddd;*/
-	/*border-left: 5px solid #e54040;*/
 	margin-bottom: 10px;
 	background: #F9F9F9;
 }
