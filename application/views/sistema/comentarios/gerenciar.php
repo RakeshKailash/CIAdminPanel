@@ -65,18 +65,22 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Habilitar Comentário nas Seções</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="2" class="flat"/> Serviços</label>
+														<label><input type="checkbox" name="secoes_comentarios" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
 													</div>
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="3" class="flat"/> Empresa</label>
+														<label><input type="checkbox" name="secoes_comentarios" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
 													</div>
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="4" class="flat"/> Imagens</label>
+														<label><input type="checkbox" name="secoes_comentarios" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
 													</div>
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="5" class="flat"/> Contato</label>
+														<label><input type="checkbox" name="secoes_comentarios" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
 													</div>
 												</div>
+											</div>
+											<div class="form-group">
+												<button type="button" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
+												<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
 											</div>
 										</form>
 										<div class="ln_solid"></div>
@@ -141,6 +145,14 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 		$(".btn_desativar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
+		});
+
+		$(".btn_atualizar_comentario_secao").click(function () {
+			var ids = [];
+
+			console.log($("input[name='secoes_comentarios']").val());
+
+			// window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
 		});
 	</script>
 

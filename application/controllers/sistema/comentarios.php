@@ -24,8 +24,9 @@ class Comentarios extends CI_Controller {
 		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
-		$info['comentarios'] = $this->secoes_sistema->getComments();
 		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$info['comentarios'] = $this->secoes_sistema->getComments();
+		$info['statusSections'] = $this->secoes_sistema->getSectionCommentStatus();
 		$this->load->view('sistema/comentarios/gerenciar', $info);
 	}
 
@@ -42,54 +43,84 @@ class Comentarios extends CI_Controller {
 	{
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para exclusão.");
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->deleteComments($ids)) {
 			$this->session->set_flashdata('error', "Erro ao excluir o comentário! Tente novamente.");
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Comentário excluído com sucesso!");
-		redirect($_SERVER['HTTP_REFERER']);
+		redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 	function aprovar ($ids=null)
 	{
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para aprovação.");
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->changeCommentStatus($ids, 1)) {
 			$this->session->set_flashdata('error', "Erro ao aprovar o comentário para exibição! Tente novamente.");
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Comentário aprovado para exibição com sucesso!");
-		redirect($_SERVER['HTTP_REFERER']);
+		redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 	function desativar ($ids=null)
 	{
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para desativar.");
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->changeCommentStatus($ids, 0)) {
 			$this->session->set_flashdata('error', "Erro ao desativar o comentário! Tente novamente.");
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Comentário desativado com sucesso!");
-		redirect($_SERVER['HTTP_REFERER']);
+		redirect(base_url('sistema/Comentarios/gerenciar'));
+	}
+
+	public function setSectionStatus($ids, $values)
+	{
+		if (! $ids || ! $values)
+		{
+			$this->session->set_flashdata('warning', "Nenhuma Seção selecionada para alterar.");
+			redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
+		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
+		$values = strstr($values, "_") ? $values = explode("_", $values) : array($values);
+
+		if (count($ids) < 1 || count($values) < 1 || count($ids) != count($values))
+		{
+			$this->session->set_flashdata('warning', "Nenhuma Seção selecionada para alterar.");
+			redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
+		for ($i=0; $i < count($ids); $i++) {
+			$data[$ids[$i]] = $values[$i];
+		}
+
+		if (!$this->secoes_sistema->setSectionCommentStatus($data)) {
+			$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
+			redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
+		$this->session->set_flashdata('success', "Seção alterada com sucesso!");
+		redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 }

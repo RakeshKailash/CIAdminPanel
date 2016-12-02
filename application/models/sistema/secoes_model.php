@@ -116,34 +116,46 @@ class Secoes_model extends CI_Model
 		return true;
 	}
 
-	// public function approveComments ($ids=null)
-	// {
-	// 	if (!$ids) {
-	// 		return false;
-	// 	}
+	public function getSectionCommentStatus ($id=null)
+	{
+		$query = "SELECT
+			secoes.`nome`,
+			CASE WHEN secoes.`comentarios` = 0 THEN '' ELSE 'checked' END AS comentarios
+			FROM
+			secoes";
 
-	// 	foreach ($ids as $idComentario) {
-	// 		$this->db->where('idComentario', $idComentario);
-	// 		$this->db->set('aprovado', 1);
-	// 		$this->db->update('comentarios');
-	// 	}
+		if ($id)
+		{
+			$query .= " WHERE secao.`id` = $id";
+		}
 
-	// 	return true;
-	// }
+		$query .= " ORDER BY secoes.`id` ASC";
 
-	// public function disableComments ($ids=null)
-	// {
-	// 	if (!$ids) {
-	// 		return false;
-	// 	}
+		$result = $this->db->query($query)->result();
 
-	// 	foreach ($ids as $idComentario) {
-	// 		$this->db->where('idComentario', $idComentario);
-	// 		$this->db->set('aprovado', 0);
-	// 		$this->db->update('comentarios');
-	// 	}
+		return $result;
 
-	// 	return true;
-	// }
+	}
+
+	public function setSectionCommentStatus ($props=array(null))
+	{
+		if (! $props || $props == null)
+		{
+			return false;
+		}
+
+		foreach ($props as $idKey => $idValue) {
+		$query = "UPDATE secoes
+			SET `comentarios` = $idValue
+			WHERE secoes.`id` = $idKey";
+			if (! $this->db->query($query))
+			{
+				return false;
+			}
+		}
+
+		return true;
+
+	}
 
 }
