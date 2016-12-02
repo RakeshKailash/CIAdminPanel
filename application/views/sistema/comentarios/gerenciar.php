@@ -60,26 +60,30 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									<?php endif; ?>
 									<div class="col-md-12">
 										<h2>Configurações de Comentários</h2>
-										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/updateConfig')?>" method="post">
+										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/setSectionStatus')?>" method="post">
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Habilitar Comentário nas Seções</label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
+														<label><input type="checkbox" name="secoes_valores[]" value="1" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
+														<input type="hidden" name="secoes_ids[]" value="2">
 													</div>
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
+														<label><input type="checkbox" name="secoes_valores[]" value="1" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
+														<input type="hidden" name="secoes_ids[]" value="3">
 													</div>
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
+														<label><input type="checkbox" name="secoes_valores[]" value="1" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
+														<input type="hidden" name="secoes_ids[]" value="4">
 													</div>
 													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_comentarios" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+														<label><input type="checkbox" name="secoes_valores[]" value="1" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+														<input type="hidden" name="secoes_ids[]" value="5">
 													</div>
 												</div>
 											</div>
 											<div class="form-group">
-												<button type="button" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
+												<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
 												<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
 											</div>
 										</form>
@@ -147,13 +151,13 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
 		});
 
-		$(".btn_atualizar_comentario_secao").click(function () {
-			var ids = [];
+		// $(".btn_atualizar_comentario_secao").click(function () {
+		// 	var ids = [];
 
-			console.log($("input[name='secoes_comentarios']").val());
+		// 	console.log($("input[name='secoes_comentarios']").val());
 
-			// window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
-		});
+		// 	// window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
+		// });
 	</script>
 
 	<?php $this->load->view('footer') ?>

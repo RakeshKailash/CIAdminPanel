@@ -327,8 +327,6 @@
 		$("#descr").html($("#editor").html());
 	});
 
-
-
 	$("#imagens_galeria").change(function () {
 		var label_text = []
 		, arquivos = $("#imagens_galeria")[0].files

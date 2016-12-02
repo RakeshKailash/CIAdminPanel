@@ -93,34 +93,45 @@ class Comentarios extends CI_Controller {
 		redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
-	public function setSectionStatus($ids, $values)
+	public function setSectionStatus()
 	{
-		if (! $ids || ! $values)
-		{
-			$this->session->set_flashdata('warning', "Nenhuma Seção selecionada para alterar.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+		for ($j=0; $j < count($_POST['secoes_valores']); $j++) {
+			print_r($_POST['secoes_valores'][$j]);
+			$_POST['secoes_valores'][$j] = $_POST['secoes_valores'][$j] == 1 ? $_POST['secoes_valores'][$j] : 0;
 		}
 
-		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
-		$values = strstr($values, "_") ? $values = explode("_", $values) : array($values);
+		$ids = $this->input->post('secoes_ids');
+		$values = $_POST['secoes_valores'];
 
-		if (count($ids) < 1 || count($values) < 1 || count($ids) != count($values))
-		{
-			$this->session->set_flashdata('warning', "Nenhuma Seção selecionada para alterar.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
-		}
+		print_r($ids);
+		print_r($values);
 
-		for ($i=0; $i < count($ids); $i++) {
-			$data[$ids[$i]] = $values[$i];
-		}
+		// if (! $ids || ! $values)
+		// {
+		// 	$this->session->set_flashdata('warning', "Nenhuma Seção selecionada para alterar.");
+		// 	redirect(base_url('sistema/Comentarios/gerenciar'));
+		// }
 
-		if (!$this->secoes_sistema->setSectionCommentStatus($data)) {
-			$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
-		}
+		// $ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
+		// $values = strstr($values, "_") ? $values = explode("_", $values) : array($values);
 
-		$this->session->set_flashdata('success', "Seção alterada com sucesso!");
-		redirect(base_url('sistema/Comentarios/gerenciar'));
+		// if (count($ids) < 1 || count($values) < 1 || count($ids) != count($values))
+		// {
+		// 	$this->session->set_flashdata('warning', "Nenhuma Seção selecionada para alterar.");
+		// 	redirect(base_url('sistema/Comentarios/gerenciar'));
+		// }
+
+		// for ($i=0; $i < count($ids); $i++) {
+		// 	$data[$ids[$i]] = $values[$i];
+		// }
+
+		// if (!$this->secoes_sistema->setSectionCommentStatus($data)) {
+		// 	$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
+		// 	redirect(base_url('sistema/Comentarios/gerenciar'));
+		// }
+
+		// $this->session->set_flashdata('success', "Seção alterada com sucesso!");
+		// redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 }
