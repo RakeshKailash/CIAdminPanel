@@ -27,16 +27,8 @@ class Comentarios extends CI_Controller {
 		$info['secoes'] = $this->secoes_sistema->getInfo();
 		$info['comentarios'] = $this->secoes_sistema->getComments();
 		$info['statusSections'] = $this->secoes_sistema->getSectionCommentStatus();
+		$info['auto_approve'] = $this->secoes_sistema->getSitePreferences('auto_approve_comments')[0];
 		$this->load->view('sistema/comentarios/gerenciar', $info);
-	}
-
-	public function configurar () {
-		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
-		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
-		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
-		$info['comentarios'] = $this->secoes_sistema->getComments();
-		$info['secoes'] = $this->secoes_sistema->getInfo();
-		$this->load->view('sistema/comentarios/configurar', $info);
 	}
 
 	function deletar ($ids=null)
@@ -93,18 +85,23 @@ class Comentarios extends CI_Controller {
 		redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
-	public function setSectionStatus ()
+	function setSectionStatus ()
 	{
 		$props = array(2 => 0, 3 => 0, 4 => 0, 5 => 0);
 		$values = $_POST['secoes_valores'];
+		$prefs['auto_approve_comments'] = $_POST['aprovacao_comentarios'];
 
 		foreach ($values as $value) {
 			$props[$value] = 1;
 		}
 
-		print_r($props);
-
 		if (!$this->secoes_sistema->setSectionCommentStatus($props)) {
+			$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
+			redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
+		if (!$this->secoes_sistema->setSitePreferences($prefs))
+		{
 			$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
 			redirect(base_url('sistema/Comentarios/gerenciar'));
 		}

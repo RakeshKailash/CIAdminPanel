@@ -7,12 +7,12 @@ class Contato extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->database();
+		$this->load->library('form_validation');
 		$this->load->model('sistema/secoes_model', 'secoes_sistema');
 		$this->load->model('sistema/usuario_model');
 		$this->load->model('sistema/imagens_model');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
 		$this->load->model('sistema/contatos_model');
-		$this->load->library('form_validation');
 		if (! $this->usuario_model->isLogged()) {
 			redirect('sistema/login');
 		}

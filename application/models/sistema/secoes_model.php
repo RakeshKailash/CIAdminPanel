@@ -158,4 +158,21 @@ class Secoes_model extends CI_Model
 
 	}
 
+	public function getSitePreferences ($prefName=null)
+	{
+		if ($prefName)
+		{
+			$this->db->where('nome', $prefName);
+		}
+
+		$result = $this->db->get('preferencias')->result();
+
+		if (!$result)
+		{
+			return false;
+		}
+
+		return $result;
+	}
+
 }
