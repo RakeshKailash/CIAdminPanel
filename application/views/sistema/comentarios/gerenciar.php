@@ -61,44 +61,67 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									<div class="col-md-12">
 										<h2>Configurações de Comentários</h2>
 										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/setSectionStatus')?>" method="post">
-											<div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">Habilitar Comentário nas Seções</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_valores[]" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
+											<div class="container">
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12">Habilitar Comentário nas Seções</label>
+															<div class="col-md-6 col-sm-6 col-xs-12">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="secoes_valores[]" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
+																</div>
+																<div class="checkbox">
+																	<label><input type="checkbox" name="secoes_valores[]" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
+																</div>
+																<div class="checkbox">
+																	<label><input type="checkbox" name="secoes_valores[]" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
+																</div>
+																<div class="checkbox">
+																	<label><input type="checkbox" name="secoes_valores[]" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+																</div>
+															</div>
+														</div>
 													</div>
-													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_valores[]" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
-													</div>
-													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_valores[]" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
-													</div>
-													<div class="checkbox">
-														<label><input type="checkbox" name="secoes_valores[]" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12">Aprovação de Comentários</label>
+															<div class="col-md-6 col-sm-6 col-xs-12">
+																<div class="radio">
+																	<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovY" value="1" required /> Auto-aprovar
+																</div>
+																<div class="radio">
+																<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovN" value="0" checked="" /> Aguardar Aprovação Manual
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
-											</div>
-											<div class="form-group">
-												<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
-												<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
+															<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
+														</div>
+													</div>
+												</div>
 											</div>
 										</form>
 										<div class="ln_solid"></div>
 									</div>
-									<div class="col-md-12">
+									<div class="col-md-12 col-xs-12">
 										<h2>Comentários</h2>
 									</div>
-									<div class="col-md-12 container_comentarios_sistema">
+									<div class="col-md-12 col-xs-12 container_comentarios_sistema">
 										<?php foreach ($comentarios as $comentario) : ?>
 											<div class="comentario comentario_sistema">
 												<div class="container">
 													<span class="square-badge-comentarios approved-<?=!!$comentario->aprovado ? 'true' : 'false';?>">ID: <?=$comentario->idComentario;?></span>
-													<div class="col-md-4">
+													<div class="col-md-4 col-xs-12">
 														<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
 														<span class='data_comentario'><?=", em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></span>
 														<p class='texto_comentario'><?=$comentario->textoComentario;?></p>
 													</div>
-													<div class="col-md-4 detalhes_comentario_sistema">
+													<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
 														<p>
 															<span class="label_comentarios_sistema title_label">E-mail:</span>
 															<span class="label_comentarios_sistema"><?=empty($comentario->emailAutor) ? "Não informado" : $comentario->emailAutor;?></span>
@@ -108,7 +131,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 															<span class="label_comentarios_sistema"><?=$comentario->nomeSecao;?></span>
 														</p>
 													</div>
-													<div class="col-md-4 detalhes_comentario_sistema">
+													<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
 														<p>
 															<span class="label_comentarios_sistema title_label">Status:</span>
 															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
@@ -146,14 +169,6 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 		$(".btn_desativar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
 		});
-
-		// $(".btn_atualizar_comentario_secao").click(function () {
-		// 	var ids = [];
-
-		// 	console.log($("input[name='secoes_comentarios']").val());
-
-		// 	// window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
-		// });
 	</script>
 
 	<?php $this->load->view('footer') ?>

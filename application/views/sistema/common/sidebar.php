@@ -27,15 +27,8 @@
 			<div class="menu_section">
 				<h3>Sistema</h3>
 				<ul class="nav side-menu">
-					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"> </i> Home </a></li>
-					<li><a><i class="fa fa-comment"></i> Comentários <span class="fa fa-chevron-down"></span></a>
-						<ul class="nav child_menu" style="display: none">
-							<li><a href="<?=base_url('sistema/Comentarios/configurar'); ?>">Configurações de Comentários</a>
-							</li>
-							<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>">Gerenciar Comentários <span class="badge bg-green comment-badge">5</span></a>
-							</li>
-						</ul>
-					</li>
+					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Home </a></li>
+					<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>"><i class="fa fa-comment"></i> Comentários </a></li>
 				</ul>
 			</div>
 

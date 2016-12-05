@@ -66,10 +66,10 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 									<div class="col-md-12 col-sm-12 col-xs-12 container_graficos">
 										<div id="echart_line" style="height:350px;"></div>
 									</div>
-									<div class="col-md-6 col-sm-6 col-xs-4 container_graficos">
+									<div class="col-md-6 col-sm-6 col-xs-12 container_graficos">
 										<div id="echart_pie" style="height:350px;"></div>
 									</div>
-									<div class="col-md-6 col-sm-6 col-xs-4 container_graficos">
+									<div class="col-md-6 col-sm-6 col-xs-12 container_graficos">
 										<div id="mainb" style="height:350px;"></div>
 									</div>
 									<!-- Custom Statiscs Stuff -->
