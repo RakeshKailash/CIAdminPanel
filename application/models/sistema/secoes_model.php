@@ -119,10 +119,10 @@ class Secoes_model extends CI_Model
 	public function getSectionCommentStatus ($id=null)
 	{
 		$query = "SELECT
-			secoes.`nome`,
-			CASE WHEN secoes.`comentarios` = 0 THEN '' ELSE 'checked' END AS comentarios
-			FROM
-			secoes";
+		secoes.`nome`,
+		CASE WHEN secoes.`comentarios` = 0 THEN '' ELSE 'checked' END AS comentarios
+		FROM
+		secoes";
 
 		if ($id)
 		{
@@ -145,7 +145,7 @@ class Secoes_model extends CI_Model
 		}
 
 		foreach ($props as $idKey => $idValue) {
-		$query = "UPDATE secoes
+			$query = "UPDATE secoes
 			SET `comentarios` = $idValue
 			WHERE secoes.`id` = $idKey";
 			if (! $this->db->query($query))
@@ -173,6 +173,25 @@ class Secoes_model extends CI_Model
 		}
 
 		return $result;
+	}
+
+	public function setSitePreferences ($prefs = array(null))
+	{
+		if (!$prefs)
+		{
+			return false;
+		}
+
+		$contador = count($prefs);
+
+		foreach ($prefs as $key => $value) {
+			$this->db->set('valor', $value);
+			$this->db->where('nome', $key);
+			$this->db->update('preferencias');
+			$contador--;
+		}
+
+		return true;
 	}
 
 }

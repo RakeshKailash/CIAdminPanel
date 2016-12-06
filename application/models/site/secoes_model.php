@@ -31,4 +31,35 @@ class Secoes_model extends CI_Model {
 		return $result;
 	}
 
+	public function insertComment ($data=null)
+	{
+		if (!$data)
+		{
+			return false;
+		}
+
+		if (!$this->db->insert('comentarios', $data))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	public function getSitePreferences ($prefName=null)
+	{
+		if ($prefName)
+		{
+			$this->db->where('nome', $prefName);
+		}
+
+		$result = $this->db->get('preferencias')->result();
+
+		if (!$result)
+		{
+			return false;
+		}
+
+		return $result;
+	}
 }

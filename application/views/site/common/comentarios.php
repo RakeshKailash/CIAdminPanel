@@ -78,7 +78,14 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 		$.post(base_url+'site/Main/enviarComentario', postValues, function (retorno) {
 			retorno = JSON.parse(retorno);
+
 			$("#mensagens").html(statusMessages.createMessage(retorno.status, retorno.message));
+
+			if (retorno.aprovado) {
+				setTimeout(function () {
+					location.reload();
+				}, 3000);
+			}
 		});
 	});
 

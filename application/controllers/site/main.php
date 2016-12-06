@@ -22,6 +22,9 @@ class Main extends CI_Controller {
 	}
 
 	public function enviarComentario () {
+		$successMessage = "<p>Comentário enviado! Aguardando aprovação.</p>";
+		$data['aprovado'] = 0;
+
 		if ($this->input->post('autor_comentario')) {
 			$data['nomeAutor'] = $this->input->post('autor_comentario');
 		}
@@ -31,7 +34,7 @@ class Main extends CI_Controller {
 		}
 
 		if (!$this->input->post('mensagem_comentario')) {
-			$retorno = array('status' => 'error', 'message' => "<p>Preencha os campos corretamente para enviar um comentário!</p>");
+			$retorno = array('status' => 'error', 'message' => "<p>Preencha os campos corretamente para enviar um comentário!</p>", 'aprovado' => 0);
 			echo json_encode($retorno);
 			return false;
 		}
@@ -40,8 +43,14 @@ class Main extends CI_Controller {
 
 		$data['secaoComentario'] = !empty($this->input->post('id_secao')) ? $this->input->post('id_secao') : null;
 
-		$this->db->insert('comentarios', $data);
-		$retorno = array('status' => 'success', 'message' => "<p>Comentário enviado! Aguardando aprovação.</p>");
+		if ($this->secoes_site->getSitePreferences('auto_approve_comments')[0]->valor)
+		{
+			$data['aprovado'] = 1;
+			$successMessage = "<p>Comentário enviado e aprovado! A página será atualizada para exibi-lo.</p>";
+		}
+
+		$this->secoes_site->insertComment($data);
+		$retorno = array('status' => 'success', 'message' => $successMessage, 'aprovado' => $data['aprovado']);
 
 		echo json_encode($retorno);
 	}
