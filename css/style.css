@@ -610,3 +610,9 @@ span.comment-badge.bg-red {
 .label_comentarios_sistema .fa.fa-times {
 	color: #D33734;
 }
+
+.check_comentarios {
+	position: absolute;
+	top: -5px;
+	right: 5px;
+}

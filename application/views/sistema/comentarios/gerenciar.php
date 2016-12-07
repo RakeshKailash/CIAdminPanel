@@ -8,6 +8,19 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
+$totalComments = count($comentarios);
+$disabledComments = 0;
+$enabledComments = 0;
+
+foreach ($comentarios as $comentario) {
+	if ($comentario->aprovado)
+	{
+		$enabledComments++;
+	} else {
+		$disabledComments++;
+	}
+}
+
 ?>
 
 <body class="nav-md">
@@ -59,25 +72,27 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										</div>
 									<?php endif; ?>
 									<div class="col-md-12">
-										<h2>Configurações de Comentários</h2>
+										<h2>Configurar Comentários</h2>
 										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/setSectionStatus')?>" method="post">
 											<div class="container">
 												<div class="row">
 													<div class="col-md-4">
 														<div class="form-group">
 															<label class="control-label col-md-6 col-sm-6 col-xs-12">Habilitar Comentário nas Seções</label>
-															<div class="col-md-6 col-sm-6 col-xs-12">
-																<div class="checkbox">
-																	<label><input type="checkbox" name="secoes_valores[]" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
-																</div>
-																<div class="checkbox">
-																	<label><input type="checkbox" name="secoes_valores[]" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
-																</div>
-																<div class="checkbox">
-																	<label><input type="checkbox" name="secoes_valores[]" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
-																</div>
-																<div class="checkbox">
-																	<label><input type="checkbox" name="secoes_valores[]" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+															<div class="container">
+																<div class="col-md-6 col-sm-6 col-xs-12">
+																	<div class="checkbox">
+																		<label><input type="checkbox" name="secoes_valores[]" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
+																	</div>
+																	<div class="checkbox">
+																		<label><input type="checkbox" name="secoes_valores[]" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
+																	</div>
+																	<div class="checkbox">
+																		<label><input type="checkbox" name="secoes_valores[]" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
+																	</div>
+																	<div class="checkbox">
+																		<label><input type="checkbox" name="secoes_valores[]" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -85,12 +100,14 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 													<div class="col-md-4">
 														<div class="form-group">
 															<label class="control-label col-md-4 col-sm-4 col-xs-12">Aprovação de Comentários</label>
-															<div class="col-md-8 col-sm-8 col-xs-12">
-																<div class="radio">
-																	<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovY" value="1" required <?=!!$auto_approve->valor ? 'checked' : '' ?> /> Auto-aprovar
-																</div>
-																<div class="radio">
-																	<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovN" value="0" <?=!!$auto_approve->valor ? '' : 'checked' ?> /> Aguardar Aprovação Manual
+															<div class="container">
+																<div class="col-md-8 col-sm-8 col-xs-12">
+																	<div class="radio">
+																		<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovY" value="1" required <?=!!$auto_approve->valor ? 'checked' : '' ?> /> Auto-aprovar
+																	</div>
+																	<div class="radio">
+																		<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovN" value="0" <?=!!$auto_approve->valor ? '' : 'checked' ?> /> Aguardar Aprovação Manual
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -102,49 +119,72 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 														</div>
 													</div>
 												</div>
-											</form>
-											<div class="ln_solid"></div>
+											</div>
+										</form>
+										<div class="ln_solid"></div>
+									</div>
+									<div class="col-md-12 col-xs-12">
+										<h2>Administrar Comentários</h2>
+										<div class="container">
+											<div class="col-md-6">
+												<h5 class="bg-blue badge"><?=$totalComments?> comentários registrados</h5>
+												<?php if ($enabledComments > 0): ?>
+													<h5 class="bg-green badge"><?=$enabledComments?> aprovados</h5>
+												<?php endif ?>
+												<?php if ($disabledComments > 0): ?>
+													<h5 class="bg-orange badge"><?=$disabledComments?> aguardando aprovação</h5>
+												<?php endif ?>
+
+												<?php if ($totalComments > 0): ?>
+													<div class="checkbox">
+														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
+													</div>
+												<?php endif ?>
+											</div>
+											<div class="col-md-6">
+												<button type="button" class="btn btn-default btn_limpar_comentario_secao">Exibir</button>
+											</div>
 										</div>
-										<div class="col-md-12 col-xs-12">
-											<h2>Comentários</h2>
-										</div>
-										<div class="col-md-12 col-xs-12 container_comentarios_sistema">
-											<?php foreach ($comentarios as $comentario) : ?>
-												<div class="comentario comentario_sistema">
-													<div class="container">
-														<span class="square-badge-comentarios approved-<?=!!$comentario->aprovado ? 'true' : 'false';?>">ID: <?=$comentario->idComentario;?></span>
-														<div class="col-md-4 col-xs-12">
-															<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
-															<span class='data_comentario'><?=", em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></span>
-															<p class='texto_comentario'><?=$comentario->textoComentario;?></p>
-														</div>
-														<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
-															<p>
-																<span class="label_comentarios_sistema title_label">E-mail:</span>
-																<span class="label_comentarios_sistema"><?=empty($comentario->emailAutor) ? "Não informado" : $comentario->emailAutor;?></span>
-															</p>
-															<p>
-																<span class="label_comentarios_sistema title_label">Seção:</span>
-																<span class="label_comentarios_sistema"><?=$comentario->nomeSecao;?></span>
-															</p>
-														</div>
-														<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
-															<p>
-																<span class="label_comentarios_sistema title_label">Status:</span>
-																<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
-															</p>
-															<?php if (!$comentario->aprovado): ?>
-																<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar para Exibição</button>
-															<?php endif ?>
-															<?php if ($comentario->aprovado): ?>
-																<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar Temporariamente</button>
-															<?php endif ?>
-															<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
-														</div>
+									</div>
+									<div class="col-md-12 col-xs-12 container_comentarios_sistema">
+										<?php foreach ($comentarios as $comentario) : ?>
+											<div class="comentario comentario_sistema">
+												<div class="container">
+													<span class="square-badge-comentarios approved-<?=!!$comentario->aprovado ? 'true' : 'false';?>">ID: <?=$comentario->idComentario;?></span>
+													<div class="checkbox check_comentarios">
+														<input type="checkbox" name="select_all_comments" value="0" class="flat" />
+													</div>
+													<div class="col-md-4 col-xs-12">
+														<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
+														<span class='data_comentario'><?=", em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></span>
+														<p class='texto_comentario'><?=$comentario->textoComentario;?></p>
+													</div>
+													<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
+														<p>
+															<span class="label_comentarios_sistema title_label">E-mail:</span>
+															<span class="label_comentarios_sistema"><?=empty($comentario->emailAutor) ? "Não informado" : $comentario->emailAutor;?></span>
+														</p>
+														<p>
+															<span class="label_comentarios_sistema title_label">Seção:</span>
+															<span class="label_comentarios_sistema"><?=$comentario->nomeSecao;?></span>
+														</p>
+													</div>
+													<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
+														<p>
+															<span class="label_comentarios_sistema title_label">Status:</span>
+															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
+														</p>
+														<?php if (!$comentario->aprovado): ?>
+															<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
+														<?php endif ?>
+														<?php if ($comentario->aprovado): ?>
+															<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
+														<?php endif ?>
+														<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
 													</div>
 												</div>
-											<?php endforeach ?>
-										</div>
+											</div>
+										<?php endforeach ?>
 									</div>
 								</div>
 							</div>
@@ -153,19 +193,20 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<script type="text/javascript">
-			$(".btn_deletar_comentario").click(function () {
-				window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
-			});
+	<script type="text/javascript">
+		$(".btn_deletar_comentario").click(function () {
+			window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
+		});
 
-			$(".btn_aprovar_comentario").click(function () {
-				window.location = base_url + 'sistema/Comentarios/aprovar/' + $(this).data('id');
-			});
+		$(".btn_aprovar_comentario").click(function () {
+			window.location = base_url + 'sistema/Comentarios/aprovar/' + $(this).data('id');
+		});
 
-			$(".btn_desativar_comentario").click(function () {
-				window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
-			});
-		</script>
+		$(".btn_desativar_comentario").click(function () {
+			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
+		});
+	</script>
 
-		<?php $this->load->view('footer') ?>
+	<?php $this->load->view('footer') ?>
