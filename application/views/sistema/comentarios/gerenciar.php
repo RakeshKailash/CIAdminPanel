@@ -137,7 +137,7 @@ foreach ($comentarios as $comentario) {
 
 												<?php if ($totalComments > 0): ?>
 													<div class="checkbox">
-														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
+														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" id="select_all_comments" /> Selecionar todos</label>
 													</div>
 												<?php endif ?>
 											</div>
@@ -206,6 +206,21 @@ foreach ($comentarios as $comentario) {
 
 		$(".btn_desativar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
+		});
+
+		$("#select_all_comments").on('ifChecked', function () {
+			$(".checkbox.check_comentarios .icheckbox_flat-green .flat").prop('checked', true);
+			$(".checkbox.check_comentarios .icheckbox_flat-green").addClass('checked');
+		});
+
+		$("#select_all_comments").on('ifUnchecked', function () {
+			$(".checkbox.check_comentarios .icheckbox_flat-green .flat").prop('checked', false);
+			$(".checkbox.check_comentarios .icheckbox_flat-green").removeClass('checked');
+		});
+
+		$(".checkbox.check_comentarios .icheckbox_flat-green .flat").on('ifUnchecked', function () {
+			$("#select_all_comments").prop('checked', false);
+			$("#select_all_comments .icheckbox_flat-green").removeClass('checked');
 		});
 	</script>
 
