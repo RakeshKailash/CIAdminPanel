@@ -496,6 +496,10 @@ span.comment-badge.bg-red {
 	color: #86CC68;
 }
 
+.icon_inline.icone_alert {
+	color: #F39C12;
+}
+
 .atualizacao-visualizada-true {
 	border-bottom: 1px solid #ddd;
 }

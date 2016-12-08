@@ -46,7 +46,7 @@ class Main extends CI_Controller {
 		if ($this->secoes_site->getSitePreferences('auto_approve_comments')[0]->valor)
 		{
 			$data['aprovado'] = 1;
-			$successMessage = "<p>Comentário enviado e aprovado! A página será atualizada para exibi-lo.</p>";
+			$successMessage = "<p>Comentário publicado! A página será atualizada para exibi-lo.</p>";
 		}
 
 		$this->secoes_site->insertComment($data);

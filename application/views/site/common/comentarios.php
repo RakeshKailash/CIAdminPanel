@@ -84,7 +84,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			if (retorno.aprovado) {
 				setTimeout(function () {
 					location.reload();
-				}, 3000);
+				}, 4000);
 			}
 		});
 	});

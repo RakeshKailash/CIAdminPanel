@@ -135,16 +135,19 @@ foreach ($comentarios as $comentario) {
 										<div class="container">
 											<div class="col-md-12">
 												<?php if ($totalComments > 0): ?>
-													<button type="button" class="btn btn-default btn_limpar_comentario_secao"><span class="glyphicon glyphicon-eye-open icon_inline"></span> Exibir</button>
-													<button type="button" class="btn btn-default" style="display: none;" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
+													<button type="button" class="btn btn-default btn_exibir_comentarios"><span class="glyphicon glyphicon-eye-open icon_inline"></span> Exibir</button>
 													<div class="checkbox" id="select_all_comments">
-														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
+														<label style="padding-left: 0; display: none;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
+													</div>
+													<div class="buttons_comments" style="display: none;">
+														<button type="button" class="btn btn-default" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
+														<button type="button" class="btn btn-default" id="btn_desativar_multiple"><span class="glyphicon glyphicon-lock icon_inline icone_alert"></span> Desativar Múltiplos</button>
 													</div>
 												<?php endif ?>
 											</div>
 										</div>
 									</div>
-									<div class="col-md-12 col-xs-12 container_comentarios_sistema">
+									<div class="col-md-12 col-xs-12 container_comentarios_sistema" style="display: none;">
 										<?php foreach ($comentarios as $comentario) : ?>
 											<div class="comentario comentario_sistema">
 												<div class="container">
@@ -194,6 +197,16 @@ foreach ($comentarios as $comentario) {
 	</div>
 
 	<script type="text/javascript">
+		$(".btn_exibir_comentarios").click(function () {
+			if ($(".container_comentarios_sistema").css('display') == 'none') {
+				$(".container_comentarios_sistema").css('display', 'block');
+				$(".btn_exibir_comentarios").html("<span class='glyphicon glyphicon-eye-close icon_inline'></span> Esconder");
+			} else {
+				$(".container_comentarios_sistema").css('display', 'none');
+				$(".btn_exibir_comentarios").html("<span class='glyphicon glyphicon-eye-open icon_inline'></span> Exibir");
+			}
+		});
+
 		$(".btn_deletar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
 		});
@@ -208,12 +221,12 @@ foreach ($comentarios as $comentario) {
 
 		$("#select_all_comments .flat").on('ifChecked', function () {
 			checkboxControl.check(".checkbox.check_comentarios");
-			$("#btn_delete_multiple").css('display', 'inline-block');
+			$(".buttons_comments").css('display', 'inline-block');
 		});
 
 		$("#select_all_comments .flat").on('ifUnchecked', function () {
 			checkboxControl.uncheck(".checkbox.check_comentarios");
-			$("#btn_delete_multiple").css('display', 'none');
+			$(".buttons_comments").css('display', 'none');
 		});
 
 		$(".checkbox.check_comentarios .flat").on('ifChanged', function () {
@@ -224,9 +237,9 @@ foreach ($comentarios as $comentario) {
 			}
 
 			if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
-				$("#btn_delete_multiple").css('display', 'inline-block');
+				$(".buttons_comments").css('display', 'inline-block');
 			} else {
-				$("#btn_delete_multiple").css('display', 'none');
+				$(".buttons_comments").css('display', 'none');
 			}
 		});
 
