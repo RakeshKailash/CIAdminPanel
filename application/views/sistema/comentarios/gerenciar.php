@@ -125,25 +125,22 @@ foreach ($comentarios as $comentario) {
 									</div>
 									<div class="col-md-12 col-xs-12">
 										<h2>Administrar Comentários</h2>
+										<h5 class="bg-blue badge"><?=$totalComments?> comentários registrados</h5>
+										<?php if ($enabledComments > 0): ?>
+											<h5 class="bg-green badge"><?=$enabledComments?> aprovados</h5>
+										<?php endif ?>
+										<?php if ($disabledComments > 0): ?>
+											<h5 class="bg-orange badge"><?=$disabledComments?> aguardando aprovação</h5>
+										<?php endif ?>
 										<div class="container">
-											<div class="col-md-6">
-												<h5 class="bg-blue badge"><?=$totalComments?> comentários registrados</h5>
-												<?php if ($enabledComments > 0): ?>
-													<h5 class="bg-green badge"><?=$enabledComments?> aprovados</h5>
-												<?php endif ?>
-												<?php if ($disabledComments > 0): ?>
-													<h5 class="bg-orange badge"><?=$disabledComments?> aguardando aprovação</h5>
-												<?php endif ?>
-
+											<div class="col-md-12">
 												<?php if ($totalComments > 0): ?>
+													<button type="button" class="btn btn-default btn_limpar_comentario_secao"><span class="glyphicon glyphicon-eye-open icon_inline"></span> Exibir</button>
+													<button type="button" class="btn btn-default" style="display: none;" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
 													<div class="checkbox" id="select_all_comments">
 														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
-													<button type="button" class="btn btn-default" style="display: none;" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
 												<?php endif ?>
-											</div>
-											<div class="col-md-6">
-												<button type="button" class="btn btn-default btn_limpar_comentario_secao">Exibir</button>
 											</div>
 										</div>
 									</div>
@@ -151,7 +148,7 @@ foreach ($comentarios as $comentario) {
 										<?php foreach ($comentarios as $comentario) : ?>
 											<div class="comentario comentario_sistema">
 												<div class="container">
-													<span class="square-badge-comentarios approved-<?=!!$comentario->aprovado ? 'true' : 'false';?>">ID: <?=$comentario->idComentario;?></span>
+													<span class="square-badge-comentarios">ID: <?=$comentario->idComentario;?></span>
 													<div class="checkbox check_comentarios">
 														<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
 													</div>

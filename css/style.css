@@ -562,20 +562,6 @@ span.comment-badge.bg-red {
 	position: relative;
 }
 
-.approved-true {
-	/*background: #86CC68;*/
-	background: #2A3F54;
-	color: #fff !important;
-	/*border: 1px solid #666;*/
-}
-
-.approved-false {
-	/*background: #D33734;*/
-	background: #2A3F54;
-	color: #fff !important;
-	/*border: 1px solid #666;*/
-}
-
 .label_comentarios_sistema {
 	display: block;
 	font-size: 11pt;
@@ -592,6 +578,7 @@ span.comment-badge.bg-red {
 }
 
 .square-badge-comentarios {
+	background: #2A3F54;
 	padding: 3px 10px;
 	position: absolute;
 	top: -4px;
