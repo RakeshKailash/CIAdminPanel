@@ -136,9 +136,10 @@ foreach ($comentarios as $comentario) {
 												<?php endif ?>
 
 												<?php if ($totalComments > 0): ?>
-													<div class="checkbox">
-														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" id="select_all_comments" /> Selecionar todos</label>
+													<div class="checkbox" id="select_all_comments">
+														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
+													<button type="button" class="btn btn-default" style="display: none;" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
 												<?php endif ?>
 											</div>
 											<div class="col-md-6">
@@ -152,7 +153,7 @@ foreach ($comentarios as $comentario) {
 												<div class="container">
 													<span class="square-badge-comentarios approved-<?=!!$comentario->aprovado ? 'true' : 'false';?>">ID: <?=$comentario->idComentario;?></span>
 													<div class="checkbox check_comentarios">
-														<input type="checkbox" name="select_all_comments" value="0" class="flat" />
+														<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
 													</div>
 													<div class="col-md-4 col-xs-12">
 														<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
@@ -208,20 +209,60 @@ foreach ($comentarios as $comentario) {
 			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
 		});
 
-		$("#select_all_comments").on('ifChecked', function () {
-			$(".checkbox.check_comentarios .icheckbox_flat-green .flat").prop('checked', true);
-			$(".checkbox.check_comentarios .icheckbox_flat-green").addClass('checked');
+		$("#select_all_comments .flat").on('ifChecked', function () {
+			checkboxControl.check(".checkbox.check_comentarios");
+			$("#btn_delete_multiple").css('display', 'inline-block');
 		});
 
-		$("#select_all_comments").on('ifUnchecked', function () {
-			$(".checkbox.check_comentarios .icheckbox_flat-green .flat").prop('checked', false);
-			$(".checkbox.check_comentarios .icheckbox_flat-green").removeClass('checked');
+		$("#select_all_comments .flat").on('ifUnchecked', function () {
+			checkboxControl.uncheck(".checkbox.check_comentarios");
+			$("#btn_delete_multiple").css('display', 'none');
 		});
 
-		$(".checkbox.check_comentarios .icheckbox_flat-green .flat").on('ifUnchecked', function () {
-			$("#select_all_comments").prop('checked', false);
-			$("#select_all_comments .icheckbox_flat-green").removeClass('checked');
+		$(".checkbox.check_comentarios .flat").on('ifChanged', function () {
+			if ($(".checkbox.check_comentarios .flat:checked").length != $(".checkbox.check_comentarios .flat").length) {
+				checkboxControl.uncheck("#select_all_comments");
+			} else {
+				checkboxControl.check("#select_all_comments");
+			}
+
+			if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
+				$("#btn_delete_multiple").css('display', 'inline-block');
+			} else {
+				$("#btn_delete_multiple").css('display', 'none');
+			}
 		});
+
+		$("#btn_delete_multiple").click(function () {
+			var idsDeletar = [];
+			$(".checkbox.check_comentarios .flat:checked").each(function () {
+				idsDeletar.push($(this).data('id'));
+			});
+
+			idsDeletar = idsDeletar.join("_");
+
+			window.location = base_url + 'sistema/Comentarios/deletar/' + idsDeletar;
+		});
+
+		var checkboxControl = {};
+		checkboxControl.check = function (nomeDiv) {
+			if (nomeDiv == null) {
+				nomeDiv = ".checkbox";
+			}
+
+			$(nomeDiv + " .flat").prop('checked', true);
+			$(nomeDiv + " .icheckbox_flat-green").addClass('checked');
+
+		};
+
+		checkboxControl.uncheck = function (nomeDiv) {
+			if (nomeDiv == null) {
+				nomeDiv = ".checkbox";
+			}
+
+			$(nomeDiv + " .flat").prop('checked', false);
+			$(nomeDiv + " .icheckbox_flat-green").removeClass('checked');
+		}
 	</script>
 
 	<?php $this->load->view('footer') ?>
