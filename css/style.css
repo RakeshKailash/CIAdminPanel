@@ -616,3 +616,7 @@ span.comment-badge.bg-red {
     text-align: center;
     margin-left: 10px;
 }
+
+.profile_img_userpage {
+	max-height: 150px;
+}

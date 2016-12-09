@@ -59,6 +59,26 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									<?php endif; ?>
 									<div class="col-md-12">
 										<h2>Alterar Minha Conta</h2>
+										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/usuarios/update')?>" method="post">
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12">Nome de Usuário:</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="text" name="nome_usuario" class="form-control" value="<?=$_SESSION['login']?>">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12">E-mail:</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="text" name="email_usuario" class="form-control" value="<?=$_SESSION['email']?>">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12">Imagem de Perfil:</label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
+												</div>
+											</div>
+										</form>
 										<div class="ln_solid"></div>
 										<h2>Gerenciar Usuários</h2>
 									</div>
