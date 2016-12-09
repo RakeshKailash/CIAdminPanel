@@ -124,7 +124,12 @@ foreach ($comentarios as $comentario) {
 										<div class="ln_solid"></div>
 									</div>
 									<div class="col-md-12 col-xs-12">
-										<h2>Administrar Comentários</h2>
+										<h2>
+											Administrar Comentários
+											<?php if ($totalComments > 0): ?>
+												<label class="lbl_exibir_comentario green"><span class="glyphicon glyphicon-eye-open icon_inline"></span> Exibir</label>
+											<?php endif ?>
+										</h2>
 										<h5 class="bg-blue badge"><?=$totalComments?> comentários registrados</h5>
 										<?php if ($enabledComments > 0): ?>
 											<h5 class="bg-green badge"><?=$enabledComments?> aprovados</h5>
@@ -135,9 +140,8 @@ foreach ($comentarios as $comentario) {
 										<div class="container">
 											<div class="col-md-12">
 												<?php if ($totalComments > 0): ?>
-													<button type="button" class="btn btn-default btn_exibir_comentarios"><span class="glyphicon glyphicon-eye-open icon_inline"></span> Exibir</button>
 													<div class="checkbox" id="select_all_comments">
-														<label style="padding-left: 0; display: none;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
+														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
 													<div class="buttons_comments" style="display: none;">
 														<button type="button" class="btn btn-default" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
@@ -197,13 +201,17 @@ foreach ($comentarios as $comentario) {
 	</div>
 
 	<script type="text/javascript">
-		$(".btn_exibir_comentarios").click(function () {
+		$(".lbl_exibir_comentario").click(function () {
 			if ($(".container_comentarios_sistema").css('display') == 'none') {
 				$(".container_comentarios_sistema").css('display', 'block');
-				$(".btn_exibir_comentarios").html("<span class='glyphicon glyphicon-eye-close icon_inline'></span> Esconder");
+				$(".lbl_exibir_comentario").html("<span class='glyphicon glyphicon-eye-close icon_inline'></span> Esconder");
+				$(".lbl_exibir_comentario").addClass('red');
+				$(".lbl_exibir_comentario").removeClass('green');
 			} else {
 				$(".container_comentarios_sistema").css('display', 'none');
-				$(".btn_exibir_comentarios").html("<span class='glyphicon glyphicon-eye-open icon_inline'></span> Exibir");
+				$(".lbl_exibir_comentario").html("<span class='glyphicon glyphicon-eye-open icon_inline'></span> Exibir");
+				$(".lbl_exibir_comentario").addClass('green');
+				$(".lbl_exibir_comentario").removeClass('red');
 			}
 		});
 
@@ -221,7 +229,14 @@ foreach ($comentarios as $comentario) {
 
 		$("#select_all_comments .flat").on('ifChecked', function () {
 			checkboxControl.check(".checkbox.check_comentarios");
-			$(".buttons_comments").css('display', 'inline-block');
+
+			if ($(".container_comentarios_sistema").css('display') == 'none') {
+				$(".lbl_exibir_comentario").trigger('click');
+			}
+
+			if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
+				$(".buttons_comments").css('display', 'inline-block');
+			}
 		});
 
 		$("#select_all_comments .flat").on('ifUnchecked', function () {
