@@ -144,8 +144,9 @@ foreach ($comentarios as $comentario) {
 														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
 													<div class="buttons_comments" style="display: none;">
+														<button type="button" class="btn btn-default" id="btn_aprovar_multiple"><span class="glyphicon glyphicon-ok icon_inline icone_save"></span> Aprovar Múltiplos</button>
+														<button type="button" class="btn btn-default" id="btn_desativar_multiple"><span class="glyphicon glyphicon-ban-circle icon_inline icone_alert"></span> Desativar Múltiplos</button>
 														<button type="button" class="btn btn-default" id="btn_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button>
-														<button type="button" class="btn btn-default" id="btn_desativar_multiple"><span class="glyphicon glyphicon-lock icon_inline icone_alert"></span> Desativar Múltiplos</button>
 													</div>
 												<?php endif ?>
 											</div>
@@ -267,6 +268,28 @@ foreach ($comentarios as $comentario) {
 			idsDeletar = idsDeletar.join("_");
 
 			window.location = base_url + 'sistema/Comentarios/deletar/' + idsDeletar;
+		});
+
+		$("#btn_desativar_multiple").click(function () {
+			var idsDesativar = [];
+			$(".checkbox.check_comentarios .flat:checked").each(function () {
+				idsDesativar.push($(this).data('id'));
+			});
+
+			idsDesativar = idsDesativar.join("_");
+
+			window.location = base_url + 'sistema/Comentarios/desativar/' + idsDesativar;
+		});
+
+		$("#btn_aprovar_multiple").click(function () {
+			var idsAprovar = [];
+			$(".checkbox.check_comentarios .flat:checked").each(function () {
+				idsAprovar.push($(this).data('id'));
+			});
+
+			idsAprovar = idsAprovar.join("_");
+
+			window.location = base_url + 'sistema/Comentarios/aprovar/' + idsAprovar;
 		});
 
 		var checkboxControl = {};
