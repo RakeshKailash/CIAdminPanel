@@ -13,7 +13,7 @@
 						<span class=" fa fa-angle-down"></span>
 					</a>
 					<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-						<li><a href="<?="Editar_usuario" ?>"><i class="fa fa-user pull-right"></i> Conta de Usuário</a>
+						<li><a href="<?=base_url('sistema/usuarios') ?>"><i class="fa fa-user pull-right"></i> Conta de Usuário</a>
 						</li>
 						<li>
 							<a href="<?="Ajuda" ?>"><i class="fa fa-question-circle pull-right"></i> Ajuda</a>
