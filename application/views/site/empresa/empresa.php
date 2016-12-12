@@ -26,7 +26,7 @@ $commentInfo['comentarios'] = $comentarios;
 					</div>
 				</div>
 			</div>
-		</div>   
+		</div>
 	</section><!--/#Page header-->
 
 	<section id="service-page" class="pages service-page">

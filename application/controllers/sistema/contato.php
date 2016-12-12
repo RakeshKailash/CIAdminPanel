@@ -82,4 +82,5 @@ class Contato extends CI_Controller {
 		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");
 		redirect('sistema/contato/editar');
 	}
+
 }

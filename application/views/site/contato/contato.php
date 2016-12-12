@@ -34,7 +34,7 @@ $commentInfo['comentarios'] = $comentarios;
 					</div>
 				</div>
 			</div>
-		</div>   
+		</div>
 	</section><!--/#Page header-->
 
 	<section id="contact-section">
@@ -42,7 +42,7 @@ $commentInfo['comentarios'] = $comentarios;
 			<div class="row">
 				<?php if ($contato->has_form) : ?>
 					<div class="col-md-<?=$classes[$countColumns];?>">
-						<?php 
+						<?php
 						$countColumns++;
 						$info_contact = null;
 						if (isset($contato->contact_message)) {
@@ -57,7 +57,7 @@ $commentInfo['comentarios'] = $comentarios;
 						<?php
 						$countColumns++;
 						$info_map['address'] = str_replace(' ', "+", $contato->address);
-						if (isset($contato->map_message)) 
+						if (isset($contato->map_message))
 						{
 							$info_map['map_message'] = $contato->map_message;
 						}

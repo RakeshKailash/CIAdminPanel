@@ -74,8 +74,16 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 											</div>
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Imagem de Perfil:</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-													<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
+												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
+													<div class="container">
+														<div class="col-md-4 col-xs-12">
+															<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
+														</div>
+														<div class="col-md-4 col-xs-12">
+															<button type="button" class="btn btn-primary" id="select_img" style="margin-top: 20px;">Selecionar Imagem</button>
+															<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
+														</div>
+													</div>
 												</div>
 											</div>
 										</form>

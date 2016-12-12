@@ -55,7 +55,7 @@ class Usuario_model extends CI_Model {
 		if (isset($user_logged['login']) && $user_logged['login'] != null) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -88,7 +88,7 @@ class Usuario_model extends CI_Model {
 		$this->db->set('ultimaVerifNotif', $tempo);
 		$this->session->set_userdata('ultimaVerifNotif', $tempo);
 		$this->db->where('id', $userId);
-		
+
 		if (! $this->db->update('usuarios'))
 		{
 			return array('status' => 'Erro');
