@@ -44,29 +44,64 @@ class Contatos_model extends CI_Model {
 			'mailtype' => 'html',
 			'charset' => 'utf8',
 			'wordwrap' => TRUE);
-		$mensagem = "";
 
+		$dataHora = time();
+
+		$mensagem = "";
 		$mensagem .= "<h2>".$data['subject']."</h2>";
 		$mensagem .= "<p><b>Autor: </b> ".$data['name']."</p>";
-		$mensagem .= "<p><b>Data: </b> ".date('d/m/Y\, \à\s H:i:s', time())."</p>";
+		$mensagem .= "<p><b>Data: </b> ".date('d/m/Y\, \à\s H:i:s', $dataHora)."</p>";
 		$mensagem .= "<p><b>E-mail: </b> ".$data['from']."</p>";
 		$mensagem .= "<h4>Mensagem enviada através do formulário de contato no seu <a href='".base_url('site')."'>Site</a> </h4><br><br>";
 		$mensagem .= "<h3>".$data['message']."</h3>";
 
+		$mailTo = $this->retrieve(1)[0]->email;
+
 		$this->load->library('email', $config);
 		$this->email->set_newline("\r\n");
 		$this->email->from($data['from']);
-		$this->email->to($this->retrieve(1)[0]->email);
+		$this->email->to($mailTo);
 		$this->email->subject($data['subject']);
 		$this->email->message($mensagem);
 
 		$result = array('status' => 'success', 'message' => '<p>Mensagem enviada com sucesso!</p>');
 		if (! $this->email->send())
 		{
-			$result = array('status' => 'error', 'message' => '<p>' . show_error($this->email->print_debugger()) . '</p>');
+			$result = array('status' => 'error', 'message' => '<p>'.show_error($this->email->print_debugger()).'</p>');
 		}
 
+		$email['nome_autor'] = $data['name'];
+		$email['email_autor'] = $data['from'];
+		$email['destino'] = $mailTo;
+		$email['assunto'] = $data['subject'];
+		$email['mensagem'] = $data['message'];
+		$email['data'] = date('Y-m-d H:i:s', $dataHora);
+
+		$this->insertEmail($email);
+
 		return $result;
+	}
+
+	private function insertEmail ($data=null)
+	{
+		if (! $data)
+		{
+			return false;
+		}
+
+		foreach ($data as $item) {
+			if (empty($item) || $item == "")
+			{
+				return false;
+			}
+		}
+
+		if (! $this->db->insert('emails', $data))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 }
