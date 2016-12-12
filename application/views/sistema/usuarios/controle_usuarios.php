@@ -77,11 +77,14 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
 													<div class="container">
 														<div class="col-md-4 col-xs-12">
-															<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
+															<div id='img_selecionada'>
+																<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
+															</div>
 														</div>
 														<div class="col-md-4 col-xs-12">
 															<button type="button" class="btn btn-primary" id="select_img" style="margin-top: 20px;">Selecionar Imagem</button>
 															<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
+															<input type="file" name="imagem" style="display: none;" id="imagem">
 														</div>
 													</div>
 												</div>
