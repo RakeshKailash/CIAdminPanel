@@ -8,6 +8,8 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
+$usuarios = $this->usuario_model->getUser();
+
 ?>
 
 <body class="nav-md">
@@ -121,6 +123,32 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										</form>
 										<div class="ln_solid"></div>
 										<h2>Gerenciar Usuários</h2>
+										<table class="table">
+											<thead>
+												<tr>
+													<th>ID</th>
+													<th>Imagem de Perfil</th>
+													<th>Nome Completo</th>
+													<th>Data de Nascimento</th>
+													<th>E-mail</th>
+													<th>Login</th>
+													<th>Último Acesso</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php foreach ($usuarios as $usuario): ?>
+													<tr>
+														<th scope="row"><?=$usuario->id?></th>
+														<td><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
+														<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
+														<td><?=$usuario->dataNascimento?></td>
+														<td><?=$usuario->email?></td>
+														<td><?=$usuario->login?></td>
+														<td><?=$usuario->ultimoAcesso?></td>
+													</tr>
+												<?php endforeach ?>
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>

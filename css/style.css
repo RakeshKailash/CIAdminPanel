@@ -629,3 +629,7 @@ span.comment-badge.bg-red {
 	z-index: 1;
 	display: none;
 }
+
+.mini-thumb {
+	width: 50px;
+}

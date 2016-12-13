@@ -8,6 +8,18 @@ class Usuario_model extends CI_Model {
 		$this->load->library('session');
 	}
 
+	public function getUser ($id=null)
+	{
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif");
+		if ($id)
+		{
+			$this->db->where('id', $id);
+		}
+
+		$result = $this->db->get('usuarios')->result();
+		return $result;
+	}
+
 	public function getInfo($login, $password)
 	{
 		$this->db->where('login', $login);
