@@ -352,8 +352,7 @@
 		}
 
 		$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>" + texto_imgs + label_text.join("<br />") + "</label>");
-			// $("#has_img").val("true");
-		});
+	});
 
 	$("#btn_reset_form").click(function () {
 		location.reload();

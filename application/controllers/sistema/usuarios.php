@@ -45,15 +45,15 @@ class Usuarios extends CI_Controller {
 		if (! $this->form_validation->run())
 		{
 			$result = array('status' => 'warning', 'message' => validation_errors());
-			echo json_encode($result);
-			return false;
+			$this->session->set_flashdata($result);
+			return redirect(base_url('sistema/usuarios'));
 		}
 
 		if ($emailExists)
 		{
 			$result = array('status' => 'warning', 'message' => 'O campo E-mail já existe, ele deve ser único');
-			echo json_encode($result);
-			return false;
+			$this->session->set_flashdata($result);
+			return redirect(base_url('sistema/usuarios'));
 		}
 
 		$dataNascimento = DateTime::createFromFormat('d/m/Y', $this->input->post('data_nascimento'));
@@ -64,10 +64,24 @@ class Usuarios extends CI_Controller {
 		$data['dataNascimento'] = $dataNascimento;
 		$data['login'] = $this->input->post('nome_usuario');
 		$data['email'] = $email_usuario;
-		$data['imagem'] = $this->input->post('imagem');
+		$data['imagem'] = 'imagem';
+		$data['has_img'] = !!$this->input->post('has_img');
+		$data['change_img'] = $data['has_img'] && !empty($_FILES['imagem']['name']);
 
 		$result = $this->usuario_model->update($id, $data);
-		echo json_encode($result);
+
+		if (isset($result['success']))
+		{
+			if (! $this->usuario_model->refreshUserdata())
+			{
+				$result = array('status' => 'error', 'message' => 'Ocorreu um erro inesperado. Tente novamente.');
+				$this->session->set_flashdata($result);
+				return redirect(base_url('sistema/usuarios'));
+			}
+		}
+
+		$this->session->set_flashdata($result);
+		return redirect(base_url('sistema/usuarios'));
 
 	}
 }

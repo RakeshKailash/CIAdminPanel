@@ -27,11 +27,11 @@ class Imagens_model extends CI_Model {
 			}
 
 			$info_img = $this->upload->data();
-		
+
 		} else {
 			$info_img = array('file_name' => null, 'file_size' => 0);
 		}
-		
+
 		$this->db->select('imagens.id, imagens.caminho');
 		$this->db->from('imagens');
 		$this->db->join('secoes', "secoes.id = $secao AND imagens.id = secoes.imagem");
@@ -55,7 +55,7 @@ class Imagens_model extends CI_Model {
 		}
 
 		$info_retorno['imagem']['id'] = $img_anterior->id;
-		
+
 
 		return $info_retorno;
 	}
@@ -88,7 +88,7 @@ class Imagens_model extends CI_Model {
 			$_FILES['imagem_up']['size'] = $_FILES[$campo]['size'][$i];
 
 			if (!$this->upload->do_upload('imagem_up')) {
-				 return array('status' => 'error', 'mensagem' => $this->upload->display_errors());
+				return array('status' => 'error', 'mensagem' => $this->upload->display_errors());
 			}
 
 			$data['nome'] = $this->upload->data('file_name');
