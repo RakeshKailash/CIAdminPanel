@@ -30,10 +30,36 @@ class Usuario_model extends CI_Model {
 			'senha' => $user_info['senha']
 			));
 
-		$this->db->select('id, nome, login, email, imagem, ultimoAcesso, ultimaVerifNotif');
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif");
 
 		$result = $this->db->get('usuarios')->result_array()[0];
 		$result['inicio'] = time();
+
+		return $result;
+	}
+
+	function update ($id=null, $usuario=null)
+	{
+		if (! $usuario || empty($usuario['nome']) || empty($usuario['dataNascimento']) || empty($usuario['login']) || empty($usuario['email']))
+		{
+			$result = array('status' => 'warning', 'message' => '<p>Todos os campos devem ser preenchidos para atualizar o usuário!</p>');
+			return $result;
+		}
+
+		if (! $id)
+		{
+			$result = array('status' => 'error', 'message' => '<p>Ocorreu um erro. Tente novamente.</p>');
+			return $result;
+		}
+
+		$result = array('status' => 'success', 'message' => '<p>Usuário atualizado com sucesso!</p>');
+
+		$this->db->where('id', $id);
+
+		if (! $this->db->update('usuarios', $usuario))
+		{
+			$result = array('status' => 'error', 'message' => '<p>Ocorreu um erro. Tente novamente.</p>');
+		}
 
 		return $result;
 	}
