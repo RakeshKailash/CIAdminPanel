@@ -631,5 +631,47 @@ span.comment-badge.bg-red {
 }
 
 .mini-thumb {
-	width: 50px;
+	height: 50px;
+}
+
+.user_mobile_item {
+	word-wrap: break-word;
+	background: #eee;
+	overflow: hidden;
+	border-radius: 0 0 3px 3px;
+	padding: 30px 10px 0px 10px;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.user_mobile_item:last-child {
+	margin-bottom: 0;
+}
+
+.title-label-top {
+	margin-bottom: 0;
+}
+
+.img_user_mobile {
+	margin-bottom: 10px;
+}
+
+.img_user_mobile img {
+	width: 100%;
+	height: auto;
+}
+
+.title_user_mobile {
+	position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 3px 3px 0 0;
+}
+
+.linha_usuario {
+	cursor: pointer;
+}
+
+.linha_usuario:hover {
+	background: #eee;
 }

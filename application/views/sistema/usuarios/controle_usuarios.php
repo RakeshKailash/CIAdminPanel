@@ -41,7 +41,7 @@ $usuarios = $this->usuario_model->getUser();
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="container">
-									<div class="col-md-12">
+									<div class="col-md-12 col-xs-12">
 										<h2>Alterar Minha Conta</h2>
 										<div id="mensagens">
 											<?php if ($error) : ?>
@@ -98,17 +98,15 @@ $usuarios = $this->usuario_model->getUser();
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Imagem de Perfil:</label>
 												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
-													<div class="container">
-														<div class="col-md-6 col-xs-12">
-															<div id='img_selecionada'>
-																<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
-															</div>
+													<div class="col-md-6 col-xs-12">
+														<div id='img_selecionada'>
+															<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
 														</div>
-														<div class="col-md-6 col-xs-12">
-															<button type="button" class="btn btn-primary" id="select_img" style="margin-top: 20px;">Selecionar Imagem</button>
-															<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
-															<input type="file" name="imagem" style="display: none;" id="imagem">
-														</div>
+													</div>
+													<div class="col-md-6 col-xs-12" style="margin-top: 20px;">
+														<button type="button" class="btn btn-primary" id="select_img">Selecionar Imagem</button>
+														<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
+														<input type="file" name="imagem" style="display: none;" id="imagem">
 													</div>
 												</div>
 											</div>
@@ -123,7 +121,7 @@ $usuarios = $this->usuario_model->getUser();
 										</form>
 										<div class="ln_solid"></div>
 										<h2>Gerenciar Usuários</h2>
-										<table class="table">
+										<table class="table hidden-xs">
 											<thead>
 												<tr>
 													<th>ID</th>
@@ -137,7 +135,7 @@ $usuarios = $this->usuario_model->getUser();
 											</thead>
 											<tbody>
 												<?php foreach ($usuarios as $usuario): ?>
-													<tr>
+													<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
 														<th scope="row"><?=$usuario->id?></th>
 														<td><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
 														<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
@@ -149,6 +147,31 @@ $usuarios = $this->usuario_model->getUser();
 												<?php endforeach ?>
 											</tbody>
 										</table>
+										<div class="hidden-lg hidden-md hidden-sm">
+											<?php foreach ($usuarios as $usuario): ?>
+												<div class="user_mobile_item" style="word-wrap: break-word; ">
+													<span class="col-xs-12 bg-blue title_user_mobile">ID: <?=$usuario->id?></span>
+													<div class="col-xs-12 img_user_mobile"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></div>
+
+													<div class="col-xs-12">
+														<p class="title-label-top"><b>Nome: </b></p>
+														<p><?=$usuario->nome . ' ' . $usuario->sobrenome?></p>
+
+														<p class="title-label-top"><b>Data de Nascimento: </b></p>
+														<p><?=$usuario->dataNascimento?></p>
+
+														<p class="title-label-top"><b>E-mail: </b></p>
+														<p><?=$usuario->email?></p>
+
+														<p class="title-label-top"><b>Nome de Usuário: </b></p>
+														<p><?=$usuario->login?></p>
+
+														<p class="title-label-top"><b>Último Acesso: </b></p>
+														<p><?=$usuario->ultimoAcesso?></p>
+													</div>
+												</div>
+											<?php endforeach ?>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -160,5 +183,10 @@ $usuarios = $this->usuario_model->getUser();
 	</div>
 </div>
 
+<script type="text/javascript">
+	$(".linha_usuario").click(function () {
+
+	})
+</script>
 
 <?php $this->load->view('footer') ?>
