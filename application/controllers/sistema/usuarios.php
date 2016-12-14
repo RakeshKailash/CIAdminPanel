@@ -25,6 +25,24 @@ class Usuarios extends CI_Controller {
 		$this->load->view('sistema/usuarios/controle_usuarios', $info);
 	}
 
+	public function getInfo ($userId=null)
+	{
+		if (! $userId)
+		{
+			$result = array('status' => false);
+			echo json_encode($result);
+			return false;
+		}
+
+		$this->db->where('usuarios.id', $userId);
+		$this->db->select("usuarios.id, usuarios.nome, usuarios.sobrenome, DATE_FORMAT(usuarios.dataNascimento, '%d/%m/%Y') AS dataNascimento, usuarios.login, usuarios.email, usuarios.imagem, usuarios.ultimoAcesso, usuarios.ultimaVerifNotif, tipos_usuarios.nome AS tipoUsuario");
+		$this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');
+		$query = $this->db->get('usuarios');
+
+		$result = array('status' => 1, 'user' => $query->result()[0]);
+		echo json_encode($result);
+	}
+
 	public function update ()
 	{
 		$this->load->library('form_validation');

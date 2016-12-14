@@ -37,6 +37,79 @@ $usuarios = $this->usuario_model->getUser();
 						</div>
 					</div>
 					<div class="clearfix"></div>
+
+					<div class="modal" tabindex="-1" role="dialog" id="user_full_modal">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="title_user_modal">Visualizar/Editar Usuário</h4>
+								</div>
+								<div class="modal-body" id="img_modal_body">
+									<div class="x_panel">
+										<div class="x_title">
+											<h5>Informações do Usuário</h5>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div class="image_modal_inside col-lg-4 col-xs-12 col-md-4">
+											<p><b>Imagem de Perfil</b></p>
+												<img src="#" alt="Não foi possível carregar" class="thumbnail col-lg-12 col-xs-12 col-md-12" id="img_modal_full" style="height: auto;">
+											</div>
+											<div class="tools_modal_inside">
+												<div class="row">
+													<div class="col-md-12 col-sm-12 col-xs-12">
+														<form action="<?=base_url('sistema/usuarios/update')?>" method="post" accept-charset="utf-8">
+															<table class="table">
+																<tr>
+																	<th>ID</th>
+																	<td id="id_usuario_modal">ID</td>
+																</tr>
+																<tr>
+																	<th>Nome Completo</th>
+																	<td id="nome_usuario_modal">Nome Completo</td>
+																</tr>
+																<tr>
+																	<th>Data de Nascimento</th>
+																	<td id="nascimento_usuario_modal">00/00/0000</td>
+																</tr>
+																<tr>
+																	<th>E-mail</th>
+																	<td id="email_usuario_modal">exemplo@exemplo.com</td>
+																</tr>
+																<tr>
+																	<th>Privilégios</th>
+																	<td id="privilegios_usuario_modal">Colaborador</td>
+																</tr>
+																<tr>
+																	<th>Login</th>
+																	<td id="login_usuario_modal">exemplo</td>
+																</tr>
+																<tr>
+																	<th>Último Acesso</th>
+																	<td id="acesso_usuario_modal">00/00/0000</td>
+																</tr>
+															</table>
+															<div class="form-group">
+																<div class="col-md-6 col-sm-6 col-xs-12 col-lg-3">
+																	<input type="hidden" name="id_usuario_modal" id="id_usuario_hidden" value="0">
+																	<button type="submit" class="btn btn-success">Salvar</button>
+																</div>
+															</div>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
@@ -185,7 +258,31 @@ $usuarios = $this->usuario_model->getUser();
 
 <script type="text/javascript">
 	$(".linha_usuario").click(function () {
+		var id = $(this).data('userid');
+		var url = base_url + 'sistema/usuarios/getInfo/'+id;
+		$.get(url, function(retorno) {
+			retorno = JSON.parse(retorno);
 
+			if (retorno.status == 0) {
+				return false;
+			}
+
+			var usuario = retorno.user;
+
+			$("#id_usuario_modal").html(usuario.id);
+			$("#id_usuario_hidden").val(usuario.id);
+			$("#nome_usuario_modal").html(usuario.nome + usuario.sobrenome);
+			$("#title_user_modal").html("Editar Usuário: <b>" + usuario.nome + "</b>")
+			$("#nascimento_usuario_modal").html(usuario.dataNascimento);
+			$("#email_usuario_modal").html(usuario.email);
+			$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
+			$("#login_usuario_modal").html(usuario.login);
+			$("#acesso_usuario_modal").html(usuario.ultimoAcesso);
+			$("#img_modal_full").prop('src', base_url + 'images/uploads/profile/' + usuario.imagem);
+
+			$("#user_full_modal").modal('show');
+
+		});
 	})
 </script>
 
