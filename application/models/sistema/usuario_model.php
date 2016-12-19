@@ -10,7 +10,7 @@ class Usuario_model extends CI_Model {
 
 	public function getUser ($id=null)
 	{
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario");
 		if ($id)
 		{
 			$this->db->where('id', $id);
@@ -42,7 +42,7 @@ class Usuario_model extends CI_Model {
 			'senha' => $user_info['senha']
 			));
 
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario");
 
 		$result = $this->db->get('usuarios')->result_array()[0];
 		$result['inicio'] = time();
@@ -185,7 +185,7 @@ class Usuario_model extends CI_Model {
 
 		$this->db->where('id', $id);
 
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario");
 
 		$query = $this->db->get('usuarios');
 
