@@ -45,8 +45,7 @@ class Usuarios extends CI_Controller {
 			usuarios.imagem,
 			DATE_FORMAT(usuarios.ultimoAcesso, '%d/%m/%Y, às %H:%i:%s') AS ultimoAcesso,
 			DATE_FORMAT(usuarios.ultimaVerifNotif, '%d/%m/%Y %H:%i:%s') AS ultimaVerifNotif,
-			tipos_usuarios.nome AS tipoUsuario,
-			(CASE WHEN (usuarios.id = ".$_SESSION['id'].") THEN 1 ELSE 0 END) AS `current_user`"
+			tipos_usuarios.nome AS tipoUsuario"
 		);
 
 		$this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');

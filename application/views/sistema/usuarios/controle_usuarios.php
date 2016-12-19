@@ -275,7 +275,7 @@ $usuarios = $this->usuario_model->getUser();
 			$("#email_usuario_modal").html(usuario.email);
 			var options = ['Monitor', 'Criador de Conteúdo', 'Administrador'];
 
-			if (usuario.current_user == "1" || curUserProps.tipoUsuario != 3) {
+			if (usuario.id == curUserProps.id || curUserProps.tipoUsuario != 3) {
 				$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
 			} else {
 				$("#privilegios_usuario_modal").html(createSelectWith(options, usuario.tipoUsuario));
