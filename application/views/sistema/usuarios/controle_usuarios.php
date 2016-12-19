@@ -189,33 +189,33 @@ $usuarios = $this->usuario_model->getUser();
 										<?php if ($_SESSION['tipoUsuario'] != 2): ?>
 											<div class="ln_solid"></div>
 											<h2>Gerenciar Usuários</h2>
-											<table class="table hidden-xs">
+											<table class="table">
 												<thead>
 													<tr>
 														<th>ID</th>
-														<th>Imagem de Perfil</th>
+														<th style="text-align: center;">Imagem de Perfil</th>
 														<th>Nome Completo</th>
-														<th>Data de Nascimento</th>
-														<th>E-mail</th>
-														<th>Login</th>
-														<th>Último Acesso</th>
+														<th class="hidden-xs">Data de Nascimento</th>
+														<th class="hidden-xs">E-mail</th>
+														<th class="hidden-xs">Login</th>
+														<th class="hidden-xs">Último Acesso</th>
 													</tr>
 												</thead>
 												<tbody>
 													<?php foreach ($usuarios as $usuario): ?>
 														<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
 															<th scope="row"><?=$usuario->id?></th>
-															<td><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
+															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
 															<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
-															<td><?=$usuario->dataNascimento?></td>
-															<td><?=$usuario->email?></td>
-															<td><?=$usuario->login?></td>
-															<td><?=$usuario->ultimoAcesso?></td>
+															<td class="hidden-xs"><?=$usuario->dataNascimento?></td>
+															<td class="hidden-xs"><?=$usuario->email?></td>
+															<td class="hidden-xs"><?=$usuario->login?></td>
+															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($usuario->ultimoAcesso))?></td>
 														</tr>
 													<?php endforeach ?>
 												</tbody>
 											</table>
-											<div class="hidden-lg hidden-md hidden-sm">
+											<!-- <div class="hidden-lg hidden-md hidden-sm">
 												<?php foreach ($usuarios as $usuario): ?>
 													<div class="user_mobile_item" style="word-wrap: break-word; ">
 														<span class="col-xs-12 bg-blue title_user_mobile">ID: <?=$usuario->id?></span>
@@ -239,7 +239,7 @@ $usuarios = $this->usuario_model->getUser();
 														</div>
 													</div>
 												<?php endforeach ?>
-											</div>
+											</div> -->
 										<?php endif ?>
 									</div>
 								</div>
@@ -269,7 +269,7 @@ $usuarios = $this->usuario_model->getUser();
 
 			$("#id_usuario_modal").html(usuario.id);
 			$("#id_usuario_hidden").val(usuario.id);
-			$("#nome_usuario_modal").html(usuario.nome + usuario.sobrenome);
+			$("#nome_usuario_modal").html(usuario.nome + " " + usuario.sobrenome);
 			$("#title_user_modal").html("Editar Usuário: <b>" + usuario.nome + "</b>")
 			$("#nascimento_usuario_modal").html(usuario.dataNascimento);
 			$("#email_usuario_modal").html(usuario.email);
