@@ -50,6 +50,26 @@ class Usuario_model extends CI_Model {
 		return $result;
 	}
 
+	function updateUserType ($id, $newType)
+	{
+		if (! $newType || ! $id)
+		{
+			$result = array('warning' => '<p>Todos os campos devem ser preenchidos para atualizar o usuário!</p>');
+			return $result;
+		}
+
+		$this->db->set('tipoUsuario', $newType);
+		$this->db->where('id', $id);
+		if (!$this->db->update('usuarios'))
+		{
+			$result = array('error' => '<p>Ocorreu um erro. Tente novamente.</p>');
+			return $result;
+		}
+
+		$result = array('success' => '<p>Usuário atualizado com sucesso!</p>');
+		return $result;
+	}
+
 	function update ($id=null, $usuario=null)
 	{
 		if (! $usuario || empty($usuario['nome']) || empty($usuario['dataNascimento']) || empty($usuario['login']) || empty($usuario['email']))

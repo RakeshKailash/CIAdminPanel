@@ -53,7 +53,7 @@ $usuarios = $this->usuario_model->getUser();
 									<div class="tools_modal_inside col-md-8">
 										<div class="row">
 											<div class="col-md-12 col-sm-12 col-xs-12">
-												<form action="<?=base_url('sistema/usuarios/update')?>" method="post" accept-charset="utf-8">
+												<form action="<?=base_url('sistema/usuarios/update_another')?>" method="post" accept-charset="utf-8">
 													<table class="table">
 														<tr>
 															<th>ID</th>
@@ -130,7 +130,7 @@ $usuarios = $this->usuario_model->getUser();
 												</div>
 											<?php endif; ?>
 										</div>
-										<form class="form-horizontal form-label-left" id="form_editar_usuario" action="<?=base_url('sistema/usuarios/update')?>" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal form-label-left" id="form_editar_usuario" action="<?=base_url('sistema/usuarios/update_current')?>" method="post" enctype="multipart/form-data">
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Nome: <span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
@@ -292,7 +292,7 @@ $usuarios = $this->usuario_model->getUser();
 
 	function createSelectWith (options, selectedItem) {
 		var htmlOptions = []
-		, htmlSelect = "<select class='form-control' id='select_user_type'>"
+		, htmlSelect = "<select class='form-control' id='select_user_type' name='tipo_usuario'>"
 		, value
 		, selected = ""
 		;
@@ -302,7 +302,7 @@ $usuarios = $this->usuario_model->getUser();
 				selected = "selected";
 			}
 
-			value = options[i].toLowerCase().replace(/ |-/g, " ");
+			value = i + 1;
 			htmlOptions.push("<option "+selected+" value='"+value+"'>"+options[i]+"</option>");
 
 			selected = "";

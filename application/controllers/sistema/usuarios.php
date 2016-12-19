@@ -55,7 +55,7 @@ class Usuarios extends CI_Controller {
 		echo json_encode($result);
 	}
 
-	public function update ()
+	public function update_current ()
 	{
 		$this->load->library('form_validation');
 
@@ -113,5 +113,16 @@ class Usuarios extends CI_Controller {
 		$this->session->set_flashdata($result);
 		return redirect(base_url('sistema/usuarios'));
 
+	}
+
+	public function update_another ()
+	{
+		$tipoUsuario = $this->input->post('tipo_usuario');
+		$id = $this->input->post('id_usuario_modal');
+
+		$result = $this->usuario_model->updateUserType($id, $tipoUsuario);
+
+		$this->session->set_flashdata($result);
+		return redirect(base_url('sistema/usuarios'));
 	}
 }
