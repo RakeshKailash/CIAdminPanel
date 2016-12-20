@@ -35,6 +35,12 @@ class Imagens extends CI_Controller {
 
 	public function add ()
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/imagens/editar');
+		}
+
 		if (! $_FILES['imagens_galeria']['name'][0]) {
 			$this->session->set_flashdata('warning', "<p>Nenhum arquivo selecionado. Nada foi alterado.</p>");
 			redirect('sistema/imagens/editar');
@@ -74,6 +80,12 @@ class Imagens extends CI_Controller {
 
 	public function update ()
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/imagens/editar');
+		}
+
 		if ($this->input->post('titulo_img_modal') == null)
 		{
 			$this->session->set_flashdata('warning', "<p>O campo 'Título' é obrigatório!</p>");
@@ -105,6 +117,12 @@ class Imagens extends CI_Controller {
 
 	public function excluir ($ids=null)
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/imagens/editar');
+		}
+
 		if($ids == null)
 		{
 			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");

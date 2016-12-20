@@ -159,6 +159,26 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<?php endif ?>
 							<div class="x_panel" id="conteudo_galeria">
 								<h2>Prévia da Galeria</h2>
+								<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+									<?php if ($error) : ?>
+										<div class="alert alert-danger fade in">
+											<a href="#" class="close" data-dismiss="alert">×</a>
+											<strong>Erro!</strong> <?=$error; ?>
+										</div>
+									<?php endif; ?>
+									<?php if ($success) : ?>
+										<div class="alert alert-success fade in">
+											<a href="#" class="close" data-dismiss="alert">×</a>
+											<strong>Sucesso!</strong> <?=$success; ?>
+										</div>
+									<?php endif; ?>
+									<?php if ($warning) : ?>
+										<div class="alert alert-warning fade in">
+											<a href="#" class="close" data-dismiss="alert">×</a>
+											<strong>Atenção!</strong> <?=$warning; ?>
+										</div>
+									<?php endif; ?>
+								<?php endif ?>
 								<?php if ($_SESSION['tipoUsuario'] != 1): ?>
 									<h5>Clique nas imagens para editar suas informações.</h5>
 									<h5>Utilize o <span class="glyphicon glyphicon-remove" style="color: #D33734;"></span> para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
