@@ -22,7 +22,7 @@ class Usuarios extends CI_Controller {
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['secoes'] = $this->secoes_sistema->getInfo();
-		$this->usuario_model->passRecoverCreate($_SESSION['id']);
+		// $this->usuario_model->passRecoverCreate($_SESSION['id']);
 		$this->load->view('sistema/usuarios/controle_usuarios', $info);
 	}
 
