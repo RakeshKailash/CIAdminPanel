@@ -151,8 +151,6 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 											<input type="file" name="imagens_galeria[]" id="imagens_galeria" multiple style="display: none;">
 											<input type="submit" name="enviar" id="submit_galeria" style="display: none;">
-
-
 										</div>
 									</form>
 								</div>

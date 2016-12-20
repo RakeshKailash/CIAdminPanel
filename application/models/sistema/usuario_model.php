@@ -196,6 +196,85 @@ class Usuario_model extends CI_Model {
 		return $userdata;
 	}
 
+	public function passRecoverCreate ($userid=null)
+	{
+		if (! $userid)
+		{
+			return false;
+		}
+
+		$user = $this->getUser($userid)[0];
+		$passToken = $userid . $this->randStrGenerate();
+
+		$config = Array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'marcelo.boemeke@gmail.com',
+			'smtp_pass' => 'markonoha031098',
+			'mailtype' => 'html',
+			'charset' => 'utf8',
+			'wordwrap' => TRUE);
+
+		$dataHora = time();
+
+		$mensagem = "";
+		$mensagem .= "<h2 id='title'>Recuperação de Senha</h2>";
+		$mensagem .= "<p class='p_mail'><b>De: </b> Projeto CI</p>";
+		$mensagem .= "<p class='p_mail'><b>Data: </b> ".date('d/m/Y\, \à\s H:i:s', $dataHora)."</p>";
+		$mensagem .= "<h4>".$user->nome.", você solicitou a recuperação da sua senha. Clique no link abaixo para ser redirecionado à página de redefinição de senha.</h4><br><br>";
+		$mensagem .= "<div id='btn_pass'><a href=".base_url('sistema/usuarios/password_recovery/' . $passToken)." title='Recuperar a Senha' style='text-decoration: none; color: #fff;'>Recuperar a Senha</a></div>";
+		$mensagem .= "<style type='text/css'>";
+		$mensagem .= "#btn_pass {
+			padding: 15px 30px;
+			background: #e54040;
+			color: #fff;
+			font-family: sans-serif;
+			width: 110px;
+			box-shadow: 0px -1px 1px rgba(0,0,0,0.3);
+		}";
+		$mensagem .= "#title {
+			color: #fff;
+			background: #e54040;
+			padding: 10px 45px;
+			width: auto;
+			display: inline-block;
+			font-family: sans-serif;
+			font-weight: lighter;
+		}";
+		$mensagem .= ".p_mail {
+			font-family: sans-serif;
+			font-size: 12pt;
+			color: #333;
+		}";
+		$mensagem .= ".p_mail b {
+			color: #e54040;
+		}";
+
+		$mensagem .= "</style>";
+
+		$this->load->library('email', $config);
+		$this->email->set_newline("\r\n");
+		$this->email->from("marcelo.boemeke@gmail.com");
+		$this->email->to($user->email);
+		$this->email->subject("Recuperação de Senha - Projeto CI");
+		$this->email->message($mensagem);
+
+		$result = array('status' => 'success', 'message' => '<p>Mensagem enviada com sucesso!</p>');
+		if (! $this->email->send())
+		{
+			$result = array('status' => 'error', 'message' => '<p>'.show_error($this->email->print_debugger()).'</p>');
+		}
+
+		$recovery['token'] = $passToken;
+		$recovery['data_expira'] = "";
+		$recovery['usuario'] = $userid;
+
+		$this->db->insert('recuperacao_senha', $recovery);
+
+		return $result;
+	}
+
 	private function getUserById ($id=null)
 	{
 		if (!$id)
@@ -271,5 +350,27 @@ class Usuario_model extends CI_Model {
 		}
 
 		return $info_retorno;
+	}
+
+	private function randStrGenerate ($length=32)
+	{
+		$charList = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		$randStr = "";
+		$randIndex = null;
+		$prevIndex = null;
+
+		for ($i=0; $i < $length; $i++) {
+			$randIndex = rand(0, 61);
+
+			while ($randIndex == $prevIndex)
+			{
+				$randIndex = rand(0, 61);
+			}
+
+			$randStr .= $charList[$randIndex];
+			$prevIndex = $randIndex;
+		}
+
+		return $randStr;
 	}
 }
