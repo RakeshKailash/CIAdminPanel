@@ -18,7 +18,7 @@ class Contato extends CI_Controller {
 		}
 	}
 
-	public function index() 
+	public function index()
 	{
 		redirect('sistema/contato/editar');
 	}
@@ -37,12 +37,18 @@ class Contato extends CI_Controller {
 
 	public function update()
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/contato/editar');
+		}
+
 		$this->form_validation->set_rules('telefone', 'Telefone', 'required');
 		$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');
 
 		if ($this->form_validation->run() == false) {
 			$this->session->set_flashdata('error', validation_errors('<p>', '</p>'));
-			redirect('sistema/contato/editar');
+			return redirect('sistema/contato/editar');
 		}
 
 		$celular = $this->input->post('celular');
@@ -80,7 +86,7 @@ class Contato extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");
-		redirect('sistema/contato/editar');
+		return redirect('sistema/contato/editar');
 	}
 
 }

@@ -16,7 +16,7 @@ class Servicos extends CI_Controller {
 		}
 	}
 
-	public function index() 
+	public function index()
 	{
 		redirect('sistema/servicos/editar');
 	}
@@ -33,6 +33,19 @@ class Servicos extends CI_Controller {
 
 	public function update ()
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('/sistema/servicos/editar');
+		}
+
+		if ($this->input->post('conteudo') == null)
+		{
+			$this->session->set_flashdata('warning', "<p>Preencha todos os campos para atualizar a seção!</p>");
+			return redirect('/sistema/servicos/editar');
+		}
+
+		$dados['conteudo'] = $this->input->post('conteudo');
 		$campo = 'imagem';
 
 		$has_img = !! $this->input->post('has_img');
@@ -49,21 +62,19 @@ class Servicos extends CI_Controller {
 			$this->imagens_model->replaceSectionImg(2, $campo);
 		}
 
-		$dados['conteudo'] = $this->input->post('conteudo');
-		$dados['icone'] = $this->input->post('icone');
-
-		if ($dados['conteudo'] != null || $dados['icone'] != null) {
-			$this->secoes_sistema->update($dados, 2);
-
-			$atualizacao['titulo'] = "Seção 'Serviços' alterada";
-			$atualizacao['usuario'] = $_SESSION['id'];
-			$atualizacao['tipo'] = "Alteração de Conteúdo";
-			
-
-			$this->atualizacoes_sistema->insert($atualizacao);
+		if (! $this->secoes_sistema->update($dados, 2))
+		{
+			$this->session->set_flashdata('error', "<p>Ocorreu um erro, tente novamente!</p>");
+			return redirect('/sistema/servicos/editar');
 		}
 
-		redirect('/sistema/servicos/editar');
+		$atualizacao['titulo'] = "Seção 'Serviços' alterada";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Alteração de Conteúdo";
+		$this->atualizacoes_sistema->insert($atualizacao);
+
+		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");
+		return redirect('/sistema/servicos/editar');
 	}
 
 }

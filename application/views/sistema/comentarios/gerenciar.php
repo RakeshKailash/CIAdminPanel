@@ -1,5 +1,5 @@
 <?php
-$info['title'] = array('Sistema', 'Gerenciar Comentários');
+$info['title'] = array('Sistema', 'Comentários');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
@@ -45,7 +45,7 @@ foreach ($comentarios as $comentario) {
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4>Gerenciar Comentários</h4>
+							<h4><?=$_SESSION['tipoUsuario'] != 1 ? 'Gerenciar' : 'Visualizar'?> Comentários</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>

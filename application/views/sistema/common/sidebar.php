@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="menu_section">
-				<h3>Editar Seções</h3>
+			<h3><?=$_SESSION['tipoUsuario'] != 1 ? 'Editar' : 'Visualizar'?> Seções</h3>
 				<ul class="nav side-menu">
 					<?php
 					foreach ($secoes as $secao_info):

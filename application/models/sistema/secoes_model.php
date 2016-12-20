@@ -24,24 +24,25 @@ class Secoes_model extends CI_Model
 
 	public function update($data=null, $id=null)
 	{
-		if ($id != null && $data != null) {
-			$sets = array();
-			foreach ($data as $key => $value) {
-				if ($value != null) {
-					$sets[$key] = $value;
-				}
-			}
-
-			$this->db->where('id', $id);
-			$this->db->set($sets);
-			if ( ! $this->db->update('secoes')) {
-				return false;
-			}
-
-			return true;
-		} else {
+		if ($id == null || $data == null) {
 			return false;
 		}
+
+		$sets = array();
+		foreach ($data as $key => $value) {
+			if ($value != null) {
+				$sets[$key] = $value;
+			}
+		}
+
+		$this->db->where('id', $id);
+		$this->db->set($sets);
+
+		if ( ! $this->db->update('secoes')) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function getComments ($secaoId=null)

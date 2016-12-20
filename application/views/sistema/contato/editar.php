@@ -1,5 +1,5 @@
 <?php
-$info['title'] = array('Sistema', 'Editar Contato');
+$info['title'] = array('Sistema', 'Seção Contato');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
@@ -37,7 +37,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4>Editar Contato</h4>
+							<h4><?=$_SESSION['tipoUsuario'] != 1 ? 'Editar' : 'Visualizar'?> Contato</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>

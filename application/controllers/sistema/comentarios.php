@@ -33,60 +33,84 @@ class Comentarios extends CI_Controller {
 
 	function deletar ($ids=null)
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para exclusão.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->deleteComments($ids)) {
 			$this->session->set_flashdata('error', "Erro ao excluir o comentário! Tente novamente.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Comentário excluído com sucesso!");
-		redirect(base_url('sistema/Comentarios/gerenciar'));
+		return redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 	function aprovar ($ids=null)
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para aprovação.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->changeCommentStatus($ids, 1)) {
 			$this->session->set_flashdata('error', "Erro ao aprovar o comentário para exibição! Tente novamente.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Comentário aprovado para exibição com sucesso!");
-		redirect(base_url('sistema/Comentarios/gerenciar'));
+		return redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 	function desativar ($ids=null)
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para desativar.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->changeCommentStatus($ids, 0)) {
 			$this->session->set_flashdata('error', "Erro ao desativar o comentário! Tente novamente.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Comentário desativado com sucesso!");
-		redirect(base_url('sistema/Comentarios/gerenciar'));
+		return redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 	function setSectionStatus ()
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
+		}
+
 		$props = array(2 => 0, 3 => 0, 4 => 0, 5 => 0);
 		$values = $_POST['secoes_valores'];
 		$prefs['auto_approve_comments'] = $_POST['aprovacao_comentarios'];
@@ -97,17 +121,17 @@ class Comentarios extends CI_Controller {
 
 		if (!$this->secoes_sistema->setSectionCommentStatus($props)) {
 			$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		if (!$this->secoes_sistema->setSitePreferences($prefs))
 		{
 			$this->session->set_flashdata('error', "Erro ao alterar seção! Tente novamente.");
-			redirect(base_url('sistema/Comentarios/gerenciar'));
+			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
 		$this->session->set_flashdata('success', "Seção alterada com sucesso!");
-		redirect(base_url('sistema/Comentarios/gerenciar'));
+		return redirect(base_url('sistema/Comentarios/gerenciar'));
 	}
 
 }

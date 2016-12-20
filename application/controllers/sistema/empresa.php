@@ -11,7 +11,7 @@ class Empresa extends CI_Controller {
 		$this->load->model('sistema/imagens_model');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
 		if (! $this->usuario_model->isLogged()) {
-			return redirect('sistema/login');
+			redirect('sistema/login');
 		}
 	}
 
@@ -32,6 +32,12 @@ class Empresa extends CI_Controller {
 
 	public function update()
 	{
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/contato/editar');
+		}
+
 		$campo = 'imagem';
 
 		$has_img = !! $this->input->post('has_img');
@@ -49,20 +55,21 @@ class Empresa extends CI_Controller {
 		}
 
 		$dados['conteudo'] = $this->input->post('conteudo');
-		$dados['icone'] = $this->input->post('icone');
 
-		if ($dados['conteudo'] != null || $dados['icone'] != null) {
-			$this->secoes_sistema->update($dados, 3);
-
-			$atualizacao['titulo'] = "Seção 'Empresa' alterada";
-			$atualizacao['usuario'] = $_SESSION['id'];
-			$atualizacao['tipo'] = "Alteração de Conteúdo";
-			
-
-			$this->atualizacoes_sistema->insert($atualizacao);
-
-			redirect('/sistema/empresa/editar');
+		if ($dados['conteudo'] == null) {
+			$this->session->set_flashdata('warning', "<p>Preencha todos os campos para atualizar a seção!</p>");
+			return redirect('sistema/contato/editar');
 		}
+		$this->secoes_sistema->update($dados, 3);
+
+		$atualizacao['titulo'] = "Seção 'Empresa' alterada";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Alteração de Conteúdo";
+
+		$this->atualizacoes_sistema->insert($atualizacao);
+
+		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");
+		return redirect('sistema/contato/editar');
 	}
 
 }
