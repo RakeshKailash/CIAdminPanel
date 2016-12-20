@@ -112,12 +112,14 @@ foreach ($comentarios as $comentario) {
 															</div>
 														</div>
 													</div>
-													<div class="col-md-4">
-														<div class="form-group col-md-12">
-															<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
-															<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
+													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+														<div class="col-md-4">
+															<div class="form-group col-md-12">
+																<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
+																<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
+															</div>
 														</div>
-													</div>
+													<?php endif ?>
 												</div>
 											</div>
 										</form>
@@ -139,7 +141,7 @@ foreach ($comentarios as $comentario) {
 										<?php endif ?>
 										<div class="container">
 											<div class="col-md-12">
-												<?php if ($totalComments > 0): ?>
+												<?php if ($totalComments > 0 && $_SESSION['tipoUsuario'] != 1): ?>
 													<div class="checkbox" id="select_all_comments">
 														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
@@ -157,9 +159,11 @@ foreach ($comentarios as $comentario) {
 											<div class="comentario comentario_sistema">
 												<div class="container">
 													<span class="square-badge-comentarios">ID: <?=$comentario->idComentario;?></span>
-													<div class="checkbox check_comentarios">
-														<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
-													</div>
+													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+														<div class="checkbox check_comentarios">
+															<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
+														</div>
+													<?php endif ?>
 													<div class="col-md-4 col-xs-12">
 														<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
 														<span class='data_comentario'><?=", em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></span>
@@ -180,13 +184,15 @@ foreach ($comentarios as $comentario) {
 															<span class="label_comentarios_sistema title_label">Status:</span>
 															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
 														</p>
-														<?php if (!$comentario->aprovado): ?>
-															<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
+														<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+															<?php if (!$comentario->aprovado): ?>
+																<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
+															<?php endif ?>
+															<?php if ($comentario->aprovado): ?>
+																<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
+															<?php endif ?>
+															<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
 														<?php endif ?>
-														<?php if ($comentario->aprovado): ?>
-															<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
-														<?php endif ?>
-														<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
 													</div>
 												</div>
 											</div>

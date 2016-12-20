@@ -150,13 +150,13 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												</div>
 											</div>
 										</div>
-
-										<div class="ln_solid"></div>
-
-										<div class="form-group">
-											<button type="button" class="btn btn-warning" id="btn_reset_contato">Limpar</button>
-											<button type="submit" class="btn btn-success" id="btn_submit_contato">Salvar</button>
-										</div>
+										<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+											<div class="ln_solid"></div>
+											<div class="form-group">
+												<button type="button" class="btn btn-warning" id="btn_reset_contato">Limpar</button>
+												<button type="submit" class="btn btn-success" id="btn_submit_contato">Salvar</button>
+											</div>
+										<?php endif ?>
 									</div>
 
 								</form>
