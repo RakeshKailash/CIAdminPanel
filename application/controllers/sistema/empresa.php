@@ -35,7 +35,7 @@ class Empresa extends CI_Controller {
 		if ($_SESSION['tipoUsuario'] == 1)
 		{
 			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
-			return redirect('sistema/contato/editar');
+			return redirect('sistema/empresa/editar');
 		}
 
 		$campo = 'imagem';
@@ -58,7 +58,7 @@ class Empresa extends CI_Controller {
 
 		if ($dados['conteudo'] == null) {
 			$this->session->set_flashdata('warning', "<p>Preencha todos os campos para atualizar a seção!</p>");
-			return redirect('sistema/contato/editar');
+			return redirect('sistema/empresa/editar');
 		}
 		$this->secoes_sistema->update($dados, 3);
 
@@ -69,7 +69,7 @@ class Empresa extends CI_Controller {
 		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");
-		return redirect('sistema/contato/editar');
+		return redirect('sistema/empresa/editar');
 	}
 
 }

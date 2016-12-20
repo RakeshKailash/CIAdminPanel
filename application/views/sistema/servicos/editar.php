@@ -45,7 +45,24 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 									<h2>Conteúdo da Seção</h2>
 
 									<div class="x_content">
-
+										<?php if ($error) : ?>
+											<div class="alert alert-danger fade in">
+												<a href="#" class="close" data-dismiss="alert">×</a>
+												<strong>Erro!</strong> <?php echo $error; ?>
+											</div>
+										<?php endif; ?>
+										<?php if ($success) : ?>
+											<div class="alert alert-success fade in">
+												<a href="#" class="close" data-dismiss="alert">×</a>
+												<strong>Sucesso!</strong> <?php echo $success; ?>
+											</div>
+										<?php endif; ?>
+										<?php if ($warning) : ?>
+											<div class="alert alert-warning fade in">
+												<a href="#" class="close" data-dismiss="alert">×</a>
+												<strong>Atenção!</strong> <?php echo $warning; ?>
+											</div>
+										<?php endif; ?>
 										<?php if ($_SESSION['tipoUsuario'] != 1): ?>
 											<div id="alerts"></div>
 											<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor">
