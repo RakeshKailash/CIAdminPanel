@@ -215,31 +215,6 @@ $usuarios = $this->usuario_model->getUser();
 													<?php endforeach ?>
 												</tbody>
 											</table>
-											<!-- <div class="hidden-lg hidden-md hidden-sm">
-												<?php foreach ($usuarios as $usuario): ?>
-													<div class="user_mobile_item" style="word-wrap: break-word; ">
-														<span class="col-xs-12 bg-blue title_user_mobile">ID: <?=$usuario->id?></span>
-														<div class="col-xs-12 img_user_mobile"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></div>
-
-														<div class="col-xs-12">
-															<p class="title-label-top"><b>Nome: </b></p>
-															<p><?=$usuario->nome . ' ' . $usuario->sobrenome?></p>
-
-															<p class="title-label-top"><b>Data de Nascimento: </b></p>
-															<p><?=$usuario->dataNascimento?></p>
-
-															<p class="title-label-top"><b>E-mail: </b></p>
-															<p><?=$usuario->email?></p>
-
-															<p class="title-label-top"><b>Nome de Usuário: </b></p>
-															<p><?=$usuario->login?></p>
-
-															<p class="title-label-top"><b>Último Acesso: </b></p>
-															<p><?=$usuario->ultimoAcesso?></p>
-														</div>
-													</div>
-												<?php endforeach ?>
-											</div> -->
 										<?php endif ?>
 									</div>
 								</div>

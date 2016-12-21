@@ -11,13 +11,14 @@ class Usuarios extends CI_Controller {
 		$this->load->model('sistema/usuario_model');
 		$this->load->model('sistema/imagens_model');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
-		if (! $this->usuario_model->isLogged()) {
-			redirect('sistema/login');
-		}
 	}
 
 	public function index ()
 	{
+		if (! $this->usuario_model->isLogged()) {
+			redirect('sistema/login');
+		}
+
 		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
@@ -28,6 +29,10 @@ class Usuarios extends CI_Controller {
 
 	public function getInfo ($userId=null)
 	{
+		if (! $this->usuario_model->isLogged()) {
+			redirect('sistema/login');
+		}
+
 		if (! $userId)
 		{
 			$result = array('status' => false);
@@ -47,7 +52,7 @@ class Usuarios extends CI_Controller {
 			DATE_FORMAT(usuarios.ultimoAcesso, '%d/%m/%Y, às %H:%i:%s') AS ultimoAcesso,
 			DATE_FORMAT(usuarios.ultimaVerifNotif, '%d/%m/%Y %H:%i:%s') AS ultimaVerifNotif,
 			tipos_usuarios.nome AS tipoUsuario"
-		);
+			);
 
 		$this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');
 		$query = $this->db->get('usuarios');
@@ -58,6 +63,10 @@ class Usuarios extends CI_Controller {
 
 	public function update_current ()
 	{
+		if (! $this->usuario_model->isLogged()) {
+			redirect('sistema/login');
+		}
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('email_usuario', 'E-mail', 'required|valid_email');
@@ -118,6 +127,10 @@ class Usuarios extends CI_Controller {
 
 	public function update_another ()
 	{
+		if (! $this->usuario_model->isLogged()) {
+			redirect('sistema/login');
+		}
+
 		$tipoUsuario = $this->input->post('tipo_usuario');
 		$id = $this->input->post('id_usuario_modal');
 
@@ -125,5 +138,87 @@ class Usuarios extends CI_Controller {
 
 		$this->session->set_flashdata($result);
 		return redirect(base_url('sistema/usuarios'));
+	}
+
+	public function lost_password ()
+	{
+		$email = $this->input->post('email_pass_recover');
+
+		if (! $email)
+		{
+			$this->session->set_flashdata('warning', '<p>Informe seu E-mail cadastrado, para poder recuperar sua senha!</p>');
+			return redirect(base_url('sistema/login'));
+		}
+
+		$user = $this->db->select('id')->where('email', $email)->get('usuarios')->result()[0];
+
+		if (! $user)
+		{
+			$this->session->set_flashdata('error', '<p>Não encontramos nenhum registro para o E-mail informado!</p>');
+			return redirect(base_url('sistema/login'));
+		}
+
+		if (! $this->usuario_model->passRecoverCreate($user->id))
+		{
+			$this->session->set_flashdata('error', '<p>Ocorreu um erro, tente novamente.</p>');
+			return redirect(base_url('sistema/login'));
+		}
+
+		$this->session->set_flashdata('success', '<p>Solicitação realizada com sucesso! Um E-mail com instruções para a redefinição da sua senha foi enviado para o seu E-mail cadastrado</p>');
+		return redirect(base_url('sistema/login'));
+	}
+
+	public function password_recovery ($token=null)
+	{
+		if (isset($_SESSION['login']))
+		{
+			return redirect('sistema');
+		}
+
+		if (! $token)
+		{
+			return redirect('site');
+		}
+
+		$tokenStatus = $this->usuario_model->retrieveToken($token);
+		$result[$tokenStatus['status']] = $tokenStatus['message'];
+
+		if ($tokenStatus['status'] != 'success')
+		{
+			return $this->load->view('sistema/login', $result);
+		}
+
+		$result['userid'] = $tokenStatus['userid'];
+
+		return $this->load->view('sistema/redefinir_senha', $result);
+	}
+
+	public function update_password ()
+	{
+		if (! isset($_POST['nova_senha']) || ! isset($_POST['nova_senha_confirmar']) || ! isset($_POST['userid']))
+		{
+			// return redirect('site');
+			echo "Não pegou";
+			return false;
+		}
+
+		if ($this->input->post('nova_senha') != $this->input->post('nova_senha_confirmar'))
+		{
+			echo "Tá diferente!";
+			return false;
+		}
+
+		$userid = $this->input->post('userid');
+		$password = $this->input->post('nova_senha');
+
+		$this->session->set_flashdata('verif_user', true);
+		if (! $this->usuario_model->updatePassword($userid, $password))
+		{
+			echo "Ferrou";
+			return false;
+		}
+
+		echo "AÊ!";
+		return true;
 	}
 }

@@ -77,7 +77,7 @@
 </head>
 <body>
 
-	<?php 
+	<?php
 
 	if ($cabecalho['menu'] != null && $cabecalho['header'] == 'site') {
 		$this->load->view($cabecalho['menu']);

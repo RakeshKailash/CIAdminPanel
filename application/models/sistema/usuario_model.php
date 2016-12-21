@@ -210,8 +210,8 @@ class Usuario_model extends CI_Model {
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
 			'smtp_port' => 465,
-			'smtp_user' => 'marcelo.boemeke@gmail.com',
-			'smtp_pass' => 'markonoha031098',
+			'smtp_user' => 'marcelo.boemekeci@gmail.com',
+			'smtp_pass' => 'testpassforci',
 			'mailtype' => 'html',
 			'charset' => 'utf8',
 			'wordwrap' => TRUE);
@@ -223,33 +223,7 @@ class Usuario_model extends CI_Model {
 		$mensagem .= "<p class='p_mail'><b>De: </b> Projeto CI</p>";
 		$mensagem .= "<p class='p_mail'><b>Data: </b> ".date('d/m/Y\, \à\s H:i:s', $dataHora)."</p>";
 		$mensagem .= "<h4>".$user->nome.", você solicitou a recuperação da sua senha. Clique no link abaixo para ser redirecionado à página de redefinição de senha.</h4><br><br>";
-		$mensagem .= "<div id='btn_pass'><a href=".base_url('sistema/usuarios/password_recovery/' . $passToken)." title='Recuperar a Senha' style='text-decoration: none; color: #fff;'>Recuperar a Senha</a></div>";
-		$mensagem .= "<style type='text/css'>";
-		$mensagem .= "#btn_pass {
-			padding: 15px 30px;
-			background: #e54040;
-			color: #fff;
-			font-family: sans-serif;
-			width: 110px;
-			box-shadow: 0px -1px 1px rgba(0,0,0,0.3);
-		}";
-		$mensagem .= "#title {
-			color: #fff;
-			background: #e54040;
-			padding: 10px 45px;
-			width: auto;
-			display: inline-block;
-			font-family: sans-serif;
-			font-weight: lighter;
-		}";
-		$mensagem .= ".p_mail {
-			font-family: sans-serif;
-			font-size: 12pt;
-			color: #333;
-		}";
-		$mensagem .= ".p_mail b {
-			color: #e54040;
-		}";
+		$mensagem .= "<div id='btn_pass'><a href=".base_url('sistema/usuarios/password_recovery/' . $passToken)." title='Recuperar a Senha' style='text-decoration: none; color: #333;'>Recuperar a Senha</a></div>";
 
 		$mensagem .= "</style>";
 
@@ -266,13 +240,66 @@ class Usuario_model extends CI_Model {
 			$result = array('status' => 'error', 'message' => '<p>'.show_error($this->email->print_debugger()).'</p>');
 		}
 
-		$recovery['token'] = $passToken;
-		$recovery['data_expira'] = "";
-		$recovery['usuario'] = $userid;
-
-		$this->db->insert('recuperacao_senha', $recovery);
+		if (! $this->insertToken($passToken, $userid))
+		{
+			$result = array('status' => 'error', 'message' => '<p>Ocorreu um erro, tente novamente.</p>');
+		}
 
 		return $result;
+	}
+
+	public function retrieveToken ($token=null)
+	{
+		if (! $token)
+		{
+			return false;
+		}
+
+
+		$this->db->select('usuario, data_expira, disponivel');
+		$tokenReg = $this->db->get('recuperacao_senha')->result();
+
+		if (count($tokenReg) != 1)
+		{
+			$retorno = array('status' => 'error', 'message' => '<p>Não foi possível processar a solicitação, tente novamente.</p>');
+		}
+
+		if (!$tokenReg[0]->disponivel || date('Y-m-d', strtotime($tokenReg[0]->data_expira)) < date('Y-m-d', time()))
+		{
+			$retorno = array('status' => 'warning', 'message' => '<p>Esta redefinição de senha já expirou, solicite uma nova.</p>');
+		}
+
+		$retorno = array('status' => 'success', 'message' => '<p>Solicitação processada com sucesso! Agora você pode redefinir sua senha.</p>', 'userid' => $tokenReg[0]->usuario);
+
+		return $retorno;
+	}
+
+	private function insertToken ($token=null, $userid=null)
+	{
+		if (! $token || ! $userid)
+		{
+			return false;
+		}
+
+		$query = "INSERT INTO recuperacao_senha (
+				token,
+				data_criacao,
+				data_expira,
+				usuario
+			)
+			VALUES (
+				'$token',
+				CURRENT_TIMESTAMP,
+				DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 24 HOUR),
+				$userid
+			)";
+
+		if (! $this->db->query($query))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	private function getUserById ($id=null)
@@ -372,5 +399,40 @@ class Usuario_model extends CI_Model {
 		}
 
 		return $randStr;
+	}
+
+	public function updatePassword ($userid=null, $password=null)
+	{
+		if (! isset($_SESSION['verif_user']) || ! $_SESSION['verif_user'])
+		{
+			return false;
+		}
+
+		if (! $this->changePassword($password, $userid))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	private function changePassword ($password=null, $userid=null)
+	{
+		if (! $userid || ! $password)
+		{
+			return false;
+		}
+
+		$newpass = password_hash($password, PASSWORD_BCRYPT);
+
+		$this->db->set('senha', $newpass);
+		$this->db->where('id', $userid);
+
+		if (! $this->db->update('usuarios'))
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
