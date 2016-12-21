@@ -45,6 +45,10 @@ class Main extends CI_Controller {
 
 	public function login ()
 	{
+		if ($this->usuario_model->isLogged()) {
+			return redirect('sistema');
+		}
+
 		$this->load->view('sistema/login');
 	}
 

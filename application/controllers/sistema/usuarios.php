@@ -142,6 +142,10 @@ class Usuarios extends CI_Controller {
 
 	public function lost_password ()
 	{
+		if ($this->usuario_model->isLogged()) {
+			return redirect('sistema');
+		}
+
 		$email = $this->input->post('email_pass_recover');
 
 		if (! $email)
@@ -170,8 +174,7 @@ class Usuarios extends CI_Controller {
 
 	public function password_recovery ($token=null)
 	{
-		if (isset($_SESSION['login']))
-		{
+		if ($this->usuario_model->isLogged()) {
 			return redirect('sistema');
 		}
 
@@ -185,7 +188,8 @@ class Usuarios extends CI_Controller {
 
 		if ($tokenStatus['status'] != 'success')
 		{
-			return $this->load->view('sistema/login', $result);
+			$this->session->set_flashdata($tokenStatus['status'], $tokenStatus['message']);
+			return redirect('sistema/login');
 		}
 
 		$result['userid'] = $tokenStatus['userid'];
@@ -195,17 +199,19 @@ class Usuarios extends CI_Controller {
 
 	public function update_password ()
 	{
+		if ($this->usuario_model->isLogged()) {
+			return redirect('sistema');
+		}
+
 		if (! isset($_POST['nova_senha']) || ! isset($_POST['nova_senha_confirmar']) || ! isset($_POST['userid']))
 		{
-			// return redirect('site');
-			echo "Não pegou";
-			return false;
+			return redirect('site');
 		}
 
 		if ($this->input->post('nova_senha') != $this->input->post('nova_senha_confirmar'))
 		{
-			echo "Tá diferente!";
-			return false;
+			$this->session->set_flashdata('warning', '<p>As Senhas digitadas não conferem.</p>');
+			return redirect('sistema/main/login');
 		}
 
 		$userid = $this->input->post('userid');
@@ -214,11 +220,13 @@ class Usuarios extends CI_Controller {
 		$this->session->set_flashdata('verif_user', true);
 		if (! $this->usuario_model->updatePassword($userid, $password))
 		{
-			echo "Ferrou";
-			return false;
+			$this->session->set_flashdata('error', '<p>Ocorreu um erro, tente novamente.</p>');
+			return redirect('sistema/main/login');
 		}
 
-		echo "AÊ!";
-		return true;
+		$this->usuario_model->updateTokens($userid, array('disponivel' => 0));
+
+		// $this->session->set_flashdata('success', '<p>Senha redefinida com sucesso! Você já pode usar a nova senha para acessar sua conta.</p>');
+		// return redirect('sistema/main/login');
 	}
 }

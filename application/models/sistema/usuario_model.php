@@ -257,16 +257,19 @@ class Usuario_model extends CI_Model {
 
 
 		$this->db->select('usuario, data_expira, disponivel');
+		$this->db->where('token', $token);
 		$tokenReg = $this->db->get('recuperacao_senha')->result();
 
 		if (count($tokenReg) != 1)
 		{
 			$retorno = array('status' => 'error', 'message' => '<p>Não foi possível processar a solicitação, tente novamente.</p>');
+			return $retorno;
 		}
 
-		if (!$tokenReg[0]->disponivel || date('Y-m-d', strtotime($tokenReg[0]->data_expira)) < date('Y-m-d', time()))
+		if ($tokenReg[0]->disponivel == '0' || date('Y-m-d H:i:s', strtotime($tokenReg[0]->data_expira)) < date('Y-m-d H:i:s', time()))
 		{
 			$retorno = array('status' => 'warning', 'message' => '<p>Esta redefinição de senha já expirou, solicite uma nova.</p>');
+			return $retorno;
 		}
 
 		$retorno = array('status' => 'success', 'message' => '<p>Solicitação processada com sucesso! Agora você pode redefinir sua senha.</p>', 'userid' => $tokenReg[0]->usuario);
@@ -295,6 +298,24 @@ class Usuario_model extends CI_Model {
 			)";
 
 		if (! $this->db->query($query))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	public function updateTokens ($user, $changes=null)
+	{
+		if (! $user || ! $changes)
+		{
+			return false;
+		}
+
+		$this->db->set($changes);
+		$this->db->where('usuario', $user);
+
+		if (! $this->db->update('recuperacao_senha'))
 		{
 			return false;
 		}
