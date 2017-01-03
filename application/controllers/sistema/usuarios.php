@@ -226,7 +226,7 @@ class Usuarios extends CI_Controller {
 
 		$this->usuario_model->updateTokens($userid, array('disponivel' => 0));
 
-		// $this->session->set_flashdata('success', '<p>Senha redefinida com sucesso! Você já pode usar a nova senha para acessar sua conta.</p>');
-		// return redirect('sistema/main/login');
+		$this->session->set_flashdata('success', '<p>Senha redefinida com sucesso! Você já pode usar a nova senha para acessar sua conta.</p>');
+		return redirect('sistema/main/login');
 	}
 }

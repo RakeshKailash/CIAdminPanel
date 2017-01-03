@@ -17,15 +17,7 @@ class Atualizacoes_model extends CI_Model {
 			return false;
 		}
 
-		$insert = $this->db->insert('atualizacoes', $data);
-
-		if ( ! $insert )
-		{
-			return false;
-		}
-
-		return true;
-
+		return  !!$this->db->insert('atualizacoes', $data);
 	}
 
 	function retrieve ($id=null, $limit=null)

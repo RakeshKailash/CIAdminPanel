@@ -160,6 +160,39 @@ class Analise_model extends CI_Model {
 		return $result;
 	}
 
+	public function getAll ()
+	{
+		$query = $this->db->get('acessos');
+		$result['count'] = $query->num_rows();
+		$result['list'] = $query->result();
+
+		return (object) $result;
+	}
+
+	public function getChartsInfo ()
+	{
+		$info = null;
+
+		$today = date('Y-m-d', time());
+
+		$info['views'] = $this->retrieveLast();
+		$info['viewsToday']['home'] = $this->retrieveAllBy(array('dateYmd' => $today, 'section' => 1));
+		$info['viewsToday']['servicos'] = $this->retrieveAllBy(array('dateYmd' => $today, 'section' => 2));
+		$info['viewsToday']['empresa'] = $this->retrieveAllBy(array('dateYmd' => $today, 'section' => 3));
+		$info['viewsToday']['imagens'] = $this->retrieveAllBy(array('dateYmd' => $today, 'section' => 4));
+		$info['viewsToday']['contato'] = $this->retrieveAllBy(array('dateYmd' => $today, 'section' => 5));
+
+		$info['viewsSections']['home'] = $this->retrieveAllBy(array('section' => 1));
+		$info['viewsSections']['servicos'] = $this->retrieveAllBy(array('section' => 2));
+		$info['viewsSections']['empresa'] = $this->retrieveAllBy(array('section' => 3));
+		$info['viewsSections']['imagens'] = $this->retrieveAllBy(array('section' => 4));
+		$info['viewsSections']['contato'] = $this->retrieveAllBy(array('section' => 5));
+
+		$info['totalViews'] = $this->getAll();
+
+		return $info;
+	}
+
 	function translateDate ($dates='', $order=0)
 	{
 		$dates = array($dates);

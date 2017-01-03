@@ -1,9 +1,10 @@
 <?php
 $info['title'] = array('Sistema', 'Painel de Administração');
 $info['cabecalho'] = array('menu' => null, 'header' => 'sistema');
-// $views;
-// $viewsToday;
-// $viewsSections;
+$views = $info_views['views'];
+$viewsToday = $info_views['viewsToday'];
+$viewsSections = $info_views['viewsSections'];
+$totalViews = $info_views['totalViews'];
 
 $lastWeek = array();
 $daysEn = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
@@ -23,7 +24,7 @@ $lastWeek = json_encode($lastWeek);
 $viewsLastWeek = json_encode($viewsLastWeek);
 $limitValue = $views->limitValue;
 $currentday = str_replace($daysEn, $daysPt, date("D d/m/Y", time()));
-
+$totalViews = $totalViews->count;
 
 $this->load->view('header', $info);
 $this->load->view('sistema/atualizacoes', $atualizacoes);
@@ -131,6 +132,7 @@ $this->load->view('sistema/atualizacoes', $atualizacoes);
 	, sectionsViews = <?=json_encode($viewsSections)?>
 	, currentDay = <?=json_encode($currentday)?>
 	, views = <?=json_encode($views)?>
+	, totalViews = <?=json_encode($totalViews)?>
 	;
 </script>
 

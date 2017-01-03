@@ -92,7 +92,7 @@ class Comentarios extends CI_Controller {
 			return redirect(base_url('sistema/Comentarios/gerenciar'));
 		}
 
-		$ids = strstr($ids, "_") ? $ids = explode("_", $ids) : array($ids);
+		$ids = strstr($ids, "_") ?  explode("_", $ids) : array($ids);
 
 		if (! $this->secoes_sistema->changeCommentStatus($ids, 0)) {
 			$this->session->set_flashdata('error', "Erro ao desativar o comentário! Tente novamente.");

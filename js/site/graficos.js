@@ -60,7 +60,7 @@
 			},
 			calculable: false,
 			series: [{
-				name: 'Total de Acessos ao Site: 159',
+				name: 'Total de Acessos ao Site: ' + totalViews,
 				type: 'pie',
 				radius: '55%',
 				center: ['50%', '48%'],

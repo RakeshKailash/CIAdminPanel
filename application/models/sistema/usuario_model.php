@@ -203,15 +203,32 @@ class Usuario_model extends CI_Model {
 			return false;
 		}
 
+		$this->db->select('disponivel');
+		$this->db->where("usuario = ".$userid." AND disponivel = 1");
+		$activeTokens = $this->db->get('recuperacao_senha')->result();
+
+		if (count($activeTokens) > 0)
+		{
+			return false;
+		}
+
 		$user = $this->getUser($userid)[0];
 		$passToken = $userid . $this->randStrGenerate();
+
+		$this->db->select('valor');
+		$this->db->where('nome', 'default_email');
+		$email_config['email'] = $this->db->get('preferencias')->result()[0]->valor;
+
+		$this->db->select('valor');
+		$this->db->where('nome', 'default_email_password');
+		$email_config['password'] = $this->db->get('preferencias')->result()[0]->valor;
 
 		$config = Array(
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
 			'smtp_port' => 465,
-			'smtp_user' => 'marcelo.boemekeci@gmail.com',
-			'smtp_pass' => 'testpassforci',
+			'smtp_user' => $email_config['email'],
+			'smtp_pass' => $email_config['password'],
 			'mailtype' => 'html',
 			'charset' => 'utf8',
 			'wordwrap' => TRUE);
