@@ -215,20 +215,14 @@ class Usuario_model extends CI_Model {
 		$user = $this->getUser($userid)[0];
 		$passToken = $userid . $this->randStrGenerate();
 
-		$this->db->select('valor');
-		$this->db->where('nome', 'default_email');
-		$email_config['email'] = $this->db->get('preferencias')->result()[0]->valor;
-
-		$this->db->select('valor');
-		$this->db->where('nome', 'default_email_password');
-		$email_config['password'] = $this->db->get('preferencias')->result()[0]->valor;
+		$email_config = $this->getDefaultEmail();
 
 		$config = Array(
-			'protocol' => 'smtp',
-			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_port' => 465,
-			'smtp_user' => $email_config['email'],
-			'smtp_pass' => $email_config['password'],
+			'protocol' => $email_config[3]->valor,
+			'smtp_host' => $email_config[2]->valor,
+			'smtp_port' => $email_config[4]->valor,
+			'smtp_user' => $email_config[0]->valor,
+			'smtp_pass' => $email_config[1]->valor,
 			'mailtype' => 'html',
 			'charset' => 'utf8',
 			'wordwrap' => TRUE);
@@ -302,17 +296,17 @@ class Usuario_model extends CI_Model {
 		}
 
 		$query = "INSERT INTO recuperacao_senha (
-				token,
-				data_criacao,
-				data_expira,
-				usuario
-			)
-			VALUES (
-				'$token',
-				CURRENT_TIMESTAMP,
-				DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 24 HOUR),
-				$userid
-			)";
+		token,
+		data_criacao,
+		data_expira,
+		usuario
+		)
+		VALUES (
+		'$token',
+		CURRENT_TIMESTAMP,
+		DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 24 HOUR),
+		$userid
+		)";
 
 		if (! $this->db->query($query))
 		{
@@ -452,6 +446,25 @@ class Usuario_model extends CI_Model {
 		}
 
 		return true;
+	}
+
+	private function getDefaultEmail ()
+	{
+		$query = "SELECT valor FROM	preferencias
+		WHERE nome = 'default_email'
+		OR nome = 'default_email_password'
+		OR nome = 'default_email_host'
+		OR nome = 'default_email_protocol'
+		OR nome = 'default_email_port'";
+
+		$result = $this->db->query($query);
+
+		if (! $result)
+		{
+			return false;
+		}
+
+		return $result->result();
 	}
 
 	private function changePassword ($password=null, $userid=null)
