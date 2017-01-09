@@ -87,7 +87,7 @@ $usuarios = $this->usuario_model->getUser();
 													<div class="form-group">
 														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
 															<input type="hidden" name="id_usuario_modal" id="id_usuario_hidden" value="0">
-															<?php if ($_SESSION['tipoUsuario'] == 3): ?>
+															<?php if ($_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 4): ?>
 																<button type="submit" class="btn btn-success">Salvar</button>
 															<?php endif; ?>
 														</div>
@@ -103,6 +103,60 @@ $usuarios = $this->usuario_model->getUser();
 							</div><!-- /.modal-content -->
 						</div><!-- /.modal-dialog -->
 					</div><!-- /.modal -->
+
+					<div class="modal" tabindex="-1" role="dialog" id="user_pass_modal">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="title_user_modal">Alterar Senha</h4>
+								</div>
+								<div class="modal-body" id="pass_modal_body" style="overflow: hidden;">
+									<div class="tools_modal_inside col-md-12">
+										<div class="row">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<form action="<?=base_url('sistema/usuarios/update_current_password')?>" method="post" accept-charset="utf-8" class="form-horizontal form-label-left">
+													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="newpass_usuario_modal">Nova Senha</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="password" name="newpass_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="newpass_confirm_usuario_modal">Confirme a Nova Senha</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="password" name="newpass_confirm_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="oldpass_usuario_modal">Senha Antiga</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="password" name="oldpass_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
+															<input type="hidden" name="id_usuario_modal" value=<?=$_SESSION['id']?>>
+															<button type="submit" class="btn btn-success">Salvar</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal senha -->
 
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
@@ -183,6 +237,7 @@ $usuarios = $this->usuario_model->getUser();
 													<input type="hidden" name="has_img" value="<?=$_SESSION['imagem'] == 'user.png' ? '0' : '1'?>" id="has_img">
 													<button type="reset" class="btn btn-warning">Limpar</button>
 													<button type="submit" id="salvar_edicao_usuario" class="btn btn-success">Salvar</button>
+													<button type="button" id="alterar_senha_usuario" class="btn btn-primary">Alterar Senha</button>
 												</div>
 											</div>
 										</form>
@@ -250,7 +305,7 @@ $usuarios = $this->usuario_model->getUser();
 			$("#email_usuario_modal").html(usuario.email);
 			var options = ['Monitor', 'Criador de Conteúdo', 'Administrador'];
 
-			if (usuario.id == curUserProps.id || curUserProps.tipoUsuario != 3) {
+			if (usuario.id == curUserProps.id || curUserProps.tipoUsuario == 1 || curUserProps.tipoUsuario == 2) {
 				$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
 			} else {
 				$("#privilegios_usuario_modal").html(createSelectWith(options, usuario.tipoUsuario));
@@ -264,6 +319,10 @@ $usuarios = $this->usuario_model->getUser();
 
 		});
 	});
+
+	$("#alterar_senha_usuario").click(function () {
+		$("#user_pass_modal").modal('show');
+	})
 
 	function createSelectWith (options, selectedItem) {
 		var htmlOptions = []

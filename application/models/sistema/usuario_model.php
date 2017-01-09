@@ -50,6 +50,33 @@ class Usuario_model extends CI_Model {
 		return $result;
 	}
 
+	function verif_password ($userid, $password)
+	{
+		if (! $userid || !$password)
+		{
+			return 0; //Empty params
+		}
+
+		$this->db->where('id', $userid);
+		$query = $this->db->get('usuarios')->result_array()[0];
+
+		$user_info =  isset($query['login']) ? $query : null;
+
+		if (! $user_info)
+		{
+			return false; //User not found
+		}
+
+		$verify = password_verify($password, $user_info['senha']);
+
+		if (! $verify)
+		{
+			return false; //Old password doesn't match
+		}
+
+		return true;
+	}
+
 	function updateUserType ($id, $newType)
 	{
 		if (! $newType || ! $id)
@@ -233,10 +260,9 @@ class Usuario_model extends CI_Model {
 		$mensagem .= "<h2 id='title'>Recuperação de Senha</h2>";
 		$mensagem .= "<p class='p_mail'><b>De: </b> Projeto CI</p>";
 		$mensagem .= "<p class='p_mail'><b>Data: </b> ".date('d/m/Y\, \à\s H:i:s', $dataHora)."</p>";
-		$mensagem .= "<h4>".$user->nome.", você solicitou a recuperação da sua senha. Clique no link abaixo para ser redirecionado à página de redefinição de senha.</h4><br><br>";
-		$mensagem .= "<div id='btn_pass'><a href=".base_url('sistema/usuarios/password_recovery/' . $passToken)." title='Recuperar a Senha' style='text-decoration: none; color: #333;'>Recuperar a Senha</a></div>";
-
-		$mensagem .= "</style>";
+		// $mensagem .= "<h4>".$user->nome.", você solicitou a recuperação da sua senha. Clique no link abaixo para ser redirecionado à página de redefinição de senha.</h4><br><br>";
+		$mensagem .= "<img src='".base_url('images/recuperacao_senha.png')."'>";
+		$mensagem .= "<div id='btn_pass'><a href=".base_url('sistema/usuarios/password_recovery/' . $passToken)." title='Recuperar a Senha' style='text-decoration: none; color: #333;'><img src='".base_url('images/recuperacao_senha_botao.png')."'></a></div>";
 
 		$this->load->library('email', $config);
 		$this->email->set_newline("\r\n");

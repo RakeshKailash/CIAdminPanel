@@ -80,18 +80,18 @@ class Usuarios extends CI_Controller {
 		$this->db->select('email');
 		$this->db->where("`id` != '$id' AND `email` = '$email_usuario'");
 
-		$emailExists = $this->db->get('usuarios')->result() ? true : false;
+		$emailExists = $this->db->get('usuarios')->result()[0]->email ? true : false;
 
-		if (! $this->form_validation->run())
+		if ($emailExists)
 		{
-			$result = array('status' => 'warning', 'message' => validation_errors());
+			$result = array('warning' => 'O campo E-mail já existe, ele deve ser único');
 			$this->session->set_flashdata($result);
 			return redirect(base_url('sistema/usuarios'));
 		}
 
-		if ($emailExists)
+		if (! $this->form_validation->run())
 		{
-			$result = array('status' => 'warning', 'message' => 'O campo E-mail já existe, ele deve ser único');
+			$result = array('warning' => validation_errors());
 			$this->session->set_flashdata($result);
 			return redirect(base_url('sistema/usuarios'));
 		}
@@ -114,7 +114,7 @@ class Usuarios extends CI_Controller {
 		{
 			if (! $this->usuario_model->refreshUserdata())
 			{
-				$result = array('status' => 'error', 'message' => 'Ocorreu um erro inesperado. Tente novamente.');
+				$result = array('status' => 'Ocorreu um erro inesperado. Tente novamente.');
 				$this->session->set_flashdata($result);
 				return redirect(base_url('sistema/usuarios'));
 			}
@@ -228,5 +228,46 @@ class Usuarios extends CI_Controller {
 
 		$this->session->set_flashdata('success', '<p>Senha redefinida com sucesso! Você já pode usar a nova senha para acessar sua conta.</p>');
 		return redirect('sistema/main/login');
+	}
+
+	public function update_current_password ()
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('newpass_usuario_modal', 'Nova Senha', 'required|matches[newpass_confirm_usuario_modal]');
+		$this->form_validation->set_rules('newpass_confirm_usuario_modal', 'Confirme a Nova Senha', 'required');
+		$this->form_validation->set_rules('oldpass_usuario_modal', 'Senha Antiga', 'required');
+
+		if (! $this->form_validation->run())
+		{
+			$return = array('warning' => validation_errors('<p>', '</p>'));
+			$this->session->set_flashdata($return);
+			return redirect('sistema/usuarios');
+		}
+
+		$newpass = $this->input->post('newpass_usuario_modal');
+		$newpass_confirm = $this->input->post('newpass_confirm_usuario_modal');
+		$oldpass = $this->input->post('oldpass_usuario_modal');
+		$userid = $this->input->post('id_usuario_modal');
+
+		if (! $this->usuario_model->verif_password($userid, $oldpass))
+		{
+			$return = array('error' => '<p>O campo Senha Antiga não confere com a sua senha. Se você esqueceu, saia da conta e solicite a Recuperação de Senha.</p>');
+			$this->session->set_flashdata($return);
+			return redirect('sistema/usuarios');
+		}
+
+		$this->session->set_flashdata('verif_user', true);
+
+		if (! $this->usuario_model->updatePassword($userid, $newpass))
+		{
+			$return = array('error' => '<p>Ocorreu um erro. Por favor, tente novamente.</p>');
+			$this->session->set_flashdata($return);
+			return redirect('sistema/usuarios');
+		}
+
+		$return = array('success' => '<p>Senha alterada com sucesso!</p>');
+		$this->session->set_flashdata($return);
+		return redirect('sistema/usuarios');
 	}
 }

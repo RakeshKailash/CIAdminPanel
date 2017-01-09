@@ -1,3 +1,7 @@
+<?php
+	$usertype_images = ['eye.png', 'pencil.png', 'badge.png', 'star.png'];
+ ?>
+
 <div class="col-md-3 left_col">
 	<div class="left_col scroll-view">
 
@@ -14,7 +18,7 @@
 			</div>
 			<div class="profile_info">
 				<span>Bem-vindo,</span>
-				<h2><?php echo $_SESSION['nome']; ?></h2>
+				<h2><?php echo $_SESSION['nome']; ?> <img src="<?=base_url('images/'.$usertype_images[($_SESSION['tipoUsuario'] - 1)])?>" class="usertype_image"></h2>
 			</div>
 		</div>
 		<!-- /menu prile quick info -->

@@ -641,3 +641,8 @@ span.comment-badge.bg-red {
 .linha_usuario:hover {
 	background: #eee;
 }
+
+.usertype_image {
+	width: 20px;
+	vertical-align: middle;
+}
