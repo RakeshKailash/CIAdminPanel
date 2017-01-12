@@ -247,7 +247,7 @@ $usuarios = $this->usuario_model->getUser();
 											<table class="table">
 												<thead>
 													<tr>
-														<th>ID</th>
+														<th></th>
 														<th style="text-align: center;">Imagem de Perfil</th>
 														<th>Nome Completo</th>
 														<th class="hidden-xs">Data de Nascimento</th>
@@ -259,7 +259,7 @@ $usuarios = $this->usuario_model->getUser();
 												<tbody>
 													<?php foreach ($usuarios as $usuario): ?>
 														<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
-															<th scope="row"><?=$usuario->id?></th>
+															<th scope="row" style="vertical-align: middle;"><?=!!$usuario->online ? '<span class="badge bg-green">online</span>' : '<span class="badge bg-red">offline</span>'?></th>
 															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
 															<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
 															<td class="hidden-xs"><?=$usuario->dataNascimento?></td>

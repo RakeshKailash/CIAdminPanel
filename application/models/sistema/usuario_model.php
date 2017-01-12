@@ -10,7 +10,7 @@ class Usuario_model extends CI_Model {
 
 	public function getUser ($id=null)
 	{
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, online");
 		if ($id)
 		{
 			$this->db->where('id', $id);
@@ -42,7 +42,7 @@ class Usuario_model extends CI_Model {
 			'senha' => $user_info['senha']
 			));
 
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, online");
 
 		$result = $this->db->get('usuarios')->result_array()[0];
 		$result['inicio'] = time();
@@ -149,6 +149,16 @@ class Usuario_model extends CI_Model {
 		}
 
 		$this->session->set_userdata($userdata);
+
+		$sets = array(
+			'ultimoAcesso' => date("Y-m-d H:i:s", time()),
+			'online' => 1
+			);
+
+		$this->db->set($sets);
+		$this->db->where('id', $_SESSION['id']);
+		$this->db->update('usuarios');
+
 		return $userdata;
 	}
 
@@ -164,6 +174,15 @@ class Usuario_model extends CI_Model {
 
 	public function logout ($data=null)
 	{
+		$this->db->set('online', 0);
+		$this->db->where('id', $_SESSION['id']);
+
+		if (! $this->db->update('usuarios'))
+		{
+			$this->session->sess_destroy();
+			return false;
+		}
+
 		if ($data === null)
 		{
 			$this->session->sess_destroy();
@@ -175,10 +194,6 @@ class Usuario_model extends CI_Model {
 			$this->session->sess_destroy();
 			return false;
 		}
-
-		$this->db->set('ultimoAcesso', date("Y-m-d H:i:s", time()));
-		$this->db->where('id', $_SESSION['id']);
-		$this->db->update('usuarios');
 
 		$this->session->sess_destroy();
 		return true;
