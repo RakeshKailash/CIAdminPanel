@@ -50,7 +50,6 @@ class Main extends CI_Controller {
 
 		$user = $this->input->post('login');
 		$password = $this->input->post('senha');
-		// $details = null;
 
 		if ($user == null || $password == null) {
 			return redirect('sistema/login');
@@ -77,17 +76,24 @@ class Main extends CI_Controller {
 			redirect('sistema/login');
 		}
 
-		$data = $this->session->userdata();
+		$data['id_usuario'] = $_SESSION['id'];
+		$data['login'] = $_SESSION['login'];
+		$data['inicio'] = $_SESSION['inicio'];
+
+		$insertSession = $this->sessions_model->insert($data);
+
+		if (! $insertSession)
+		{
+			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente</p>");
+			redirect('sistema/login');
+		}
+
 		return redirect('sistema');
 	}
 
 	public function logout ()
 	{
-		$data['id_usuario'] = $_SESSION['id'];
-		$data['login'] = $_SESSION['login'];
-		$data['inicio'] = $_SESSION['inicio'];
-
-		$this->usuario_model->logout($data);
+		$this->usuario_model->logout();
 
 		redirect('/sistema/login');
 	}
@@ -96,6 +102,18 @@ class Main extends CI_Controller {
 	{
 		$result = $this->usuario_model->viewNotifications();
 		echo json_encode($result);
+	}
+
+	public function refresh_session ()
+	{
+		$this->db->set('fim', time());
+		$this->db->where('id', $_SESSION['record_id']);
+		$this->db->update('sessions');
+	}
+
+	public function get_online_users ()
+	{
+		$this->usuario_model->getOnlineUsers();
 	}
 
 	//Custom Statiscs Stuff

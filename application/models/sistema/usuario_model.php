@@ -172,7 +172,7 @@ class Usuario_model extends CI_Model {
 		return false;
 	}
 
-	public function logout ($data=null)
+	public function logout ()
 	{
 		$this->db->set('online', 0);
 		$this->db->where('id', $_SESSION['id']);
@@ -183,13 +183,7 @@ class Usuario_model extends CI_Model {
 			return false;
 		}
 
-		if ($data === null)
-		{
-			$this->session->sess_destroy();
-			return false;
-		}
-
-		if (! $this->sessions_model->insert($data))
+		if (! $this->sessions_model->refresh_info())
 		{
 			$this->session->sess_destroy();
 			return false;
@@ -373,6 +367,37 @@ class Usuario_model extends CI_Model {
 		}
 
 		return true;
+	}
+
+	public function getOnlineUsers ()
+	{
+		$query = "
+		SELECT
+		usuarios.id AS id,
+		IF(
+		TIMESTAMPDIFF(SECOND, FROM_UNIXTIME(sessions.`fim`), CURRENT_TIMESTAMP) < 15,
+		'online',
+		'offline'
+		) AS status
+		FROM
+		usuarios
+		JOIN sessions
+		ON sessions.`id_usuario` = usuarios.`id`
+		AND sessions.`id` =
+		(SELECT
+		MAX(id) AS id_m
+		FROM
+		sessions WHERE id_usuario = usuarios.`id`)
+		WHERE sessions.`id_usuario` = usuarios.`id`";
+
+		$onlineUsers = $this->db->query($query);
+
+		if (! $onlineUsers)
+		{
+			return false;
+		}
+
+		print json_encode($onlineUsers->result_array());
 	}
 
 	private function getUserById ($id=null)

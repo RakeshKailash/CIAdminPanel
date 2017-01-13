@@ -62,3 +62,10 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+	window.setInterval(function () {
+		var url = base_url + 'sistema/main/refresh_session';
+		$.get(url);
+	}, 10000);
+</script>

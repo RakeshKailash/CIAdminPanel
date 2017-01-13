@@ -259,7 +259,7 @@ $usuarios = $this->usuario_model->getUser();
 												<tbody>
 													<?php foreach ($usuarios as $usuario): ?>
 														<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
-															<th scope="row" style="vertical-align: middle;"><?=!!$usuario->online ? '<span class="badge bg-green">online</span>' : '<span class="badge bg-red">offline</span>'?></th>
+															<th scope="row" class="user_status" style="vertical-align: middle;"><span class="badge"></span></th>
 															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
 															<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
 															<td class="hidden-xs"><?=$usuario->dataNascimento?></td>
@@ -284,6 +284,8 @@ $usuarios = $this->usuario_model->getUser();
 
 <script type="text/javascript">
 	var curUserProps = <?=json_encode($_SESSION) ?>;
+
+	getOnlineUsers();
 
 	$(".linha_usuario").click(function () {
 		var id = $(this).data('userid');
@@ -323,6 +325,43 @@ $usuarios = $this->usuario_model->getUser();
 	$("#alterar_senha_usuario").click(function () {
 		$("#user_pass_modal").modal('show');
 	})
+
+	window.setInterval(function () {
+		getOnlineUsers();
+	}, 10000);
+
+	function getOnlineUsers () {
+		var url = base_url + 'sistema/main/get_online_users';
+		$.get(url, function (retorno) {
+			retorno = JSON.parse(retorno);
+
+			var id = null
+			, status = 'offline'
+			, badge_color = 'red'
+			;
+
+			for (var i = 0; i < retorno.length; i++) {
+				id = retorno[i].id;
+
+				status = 'offline';
+				badge_color = 'red';
+
+				if (retorno[i].status == "online") {
+					status = 'online';
+					badge_color = 'green';
+				}
+
+				console.log(retorno);
+
+				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").html(retorno[i].status);
+
+				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").removeClass('bg-red');
+				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").removeClass('bg-green');
+
+				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").addClass('bg-' + badge_color);
+			}
+		})
+	}
 
 	function createSelectWith (options, selectedItem) {
 		var htmlOptions = []
