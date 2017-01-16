@@ -646,3 +646,11 @@ span.comment-badge.bg-red {
 	width: 20px;
 	vertical-align: middle;
 }
+
+.user_status {
+	vertical-align: middle !important;
+}
+
+.user_status span {
+	transition: all linear 0.5s;
+}

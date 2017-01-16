@@ -120,6 +120,12 @@ class Usuarios extends CI_Controller {
 			}
 		}
 
+		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' alterou suas informações";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Alteração de Conta de Usuário";
+
+		$this->atualizacoes_sistema->insert($atualizacao);
+
 		$this->session->set_flashdata($result);
 		return redirect(base_url('sistema/usuarios'));
 
@@ -135,6 +141,13 @@ class Usuarios extends CI_Controller {
 		$id = $this->input->post('id_usuario_modal');
 
 		$result = $this->usuario_model->updateUserType($id, $tipoUsuario);
+		$usuario = $this->usuario_model->getUser($id)[0];
+
+		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' alterou as informações do usuário '".$usuario->nome."'";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Alteração de Conta de Usuário";
+
+		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata($result);
 		return redirect(base_url('sistema/usuarios'));

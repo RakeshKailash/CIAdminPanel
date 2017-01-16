@@ -259,7 +259,7 @@ $usuarios = $this->usuario_model->getUser();
 												<tbody>
 													<?php foreach ($usuarios as $usuario): ?>
 														<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
-															<th scope="row" class="user_status" style="vertical-align: middle;"><span class="badge"></span></th>
+															<th scope="row" class="user_status"><span class="badge"></span></th>
 															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
 															<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
 															<td class="hidden-xs"><?=$usuario->dataNascimento?></td>
