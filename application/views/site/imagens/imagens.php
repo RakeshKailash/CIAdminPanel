@@ -7,6 +7,7 @@ $countImg = 0;
 
 $commentInfo['comentarios'] = $comentarios;
 ?>
+
 <div class="container_secao" id="secao_servicos">
 	<section class="global-page-header">
 		<div class="container">
@@ -41,12 +42,12 @@ $commentInfo['comentarios'] = $comentarios;
 					}
 					?>
 					<div class="col-sm-4 col-xs-12">
-						<figure class="wow fadeInLeft animated portfolio-item animated" data-wow-duration="500ms" data-wow-delay="0ms" style="visibility: visible; animation-duration: 300ms; -webkit-animation-duration: 300ms; animation-delay: 0ms; -webkit-animation-delay: 0ms; animation-name: fadeInLeft; -webkit-animation-name: fadeInLeft;">
+						<figure class="wow fadeInLeft animated portfolio-item animated" data-imgid="<?=$imagem->id?>" data-wow-duration="500ms" data-wow-delay="0ms" style="visibility: visible; animation-duration: 300ms; -webkit-animation-duration: 300ms; animation-delay: 0ms; -webkit-animation-delay: 0ms; animation-name: fadeInLeft; -webkit-animation-name: fadeInLeft;">
 							<div class="img-wrapper">
 								<img src="<?=base_url($imagem->caminho);?>" class="img-responsive">
 								<div class="overlay">
 									<div class="buttons">
-										<a rel="gallery" class="fancybox" href="<?=base_url($imagem->caminho);?>">Demo</a>
+										<a rel="gallery" class="fancybox" caption="<?="<h3>".$imagem->titulo . "</h3><br><h5>" . $imagem->texto . "</h5>";?>" href="<?=base_url($imagem->caminho);?>">Visualizar</a>
 									</div>
 								</div>
 							</div>
@@ -65,5 +66,9 @@ $commentInfo['comentarios'] = $comentarios;
 	?>
 
 </div>
+
+<script type="text/javascript">
+	
+</script>
 
 <?php $this->load->view('footer'); ?>

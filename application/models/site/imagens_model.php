@@ -8,7 +8,7 @@ class Imagens_model extends CI_Model {
 	}
 
 	public function getGalleryContent () {
-		$this->db->select('id, caminho');
+		$this->db->select('id, caminho, titulo, texto');
 		$imagens = $this->db->get('galeria')->result();
 
 		return $imagens;

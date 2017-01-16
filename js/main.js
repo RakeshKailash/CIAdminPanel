@@ -46,9 +46,9 @@ jQuery(document).ready(function(){
 	new WOW().init();
 
 
-(function(){
- jQuery('.smooth-scroll').scrollingTo();
-}());
+    (function(){
+       jQuery('.smooth-scroll').scrollingTo();
+   }());
 
 });
 
@@ -71,7 +71,7 @@ $(document).ready(function(){
     });
 
     $("#clients-logo").owlCarousel({
- 
+
         itemsCustom : false,
         pagination : false,
         items : 5,
@@ -84,19 +84,41 @@ $(document).ready(function(){
 
 
 // fancybox
-$(".fancybox").fancybox({
-    padding: 0,
+// $(".fancybox").fancybox({
+//     padding: 0,
 
-    openEffect : 'elastic',
-    openSpeed  : 450,
+//     openEffect : 'elastic',
+//     openSpeed  : 450,
 
-    closeEffect : 'elastic',
-    closeSpeed  : 350,
+//     closeEffect : 'elastic',
+//     closeSpeed  : 350,
 
-    closeClick : true,
+//     closeClick : true,
+//     helpers : {
+//         title : {
+//             type: 'inside',
+//             position: 'top',
+//             title: $(this.element).attr('caption')
+//         },
+//         overlay : {
+//             css : {
+//                 'background' : 'rgba(0,0,0,0.8)'
+//             }
+//         }
+//     }
+// });
+
+
+$(".fancybox")
+.attr('rel', 'gallery')
+.fancybox({
+    beforeLoad: function() {
+        this.title = $(this.element).attr('caption');
+    },
     helpers : {
-        title : { 
-            type: 'inside' 
+        title : {
+            type: 'over',
+            position: 'top'
         },
         overlay : {
             css : {
@@ -105,14 +127,3 @@ $(".fancybox").fancybox({
         }
     }
 });
-
-
-
-
-
-
- 
-
-
-
-
