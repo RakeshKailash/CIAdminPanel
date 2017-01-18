@@ -33,6 +33,7 @@
 				<ul class="nav side-menu">
 					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Home </a></li>
 					<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>"><i class="fa fa-comment"></i> Comentários </a></li>
+					<li><a href="<?=base_url('sistema/Postagens'); ?>"><i class="fa fa-pencil"></i> Postagens </a></li>
 				</ul>
 			</div>
 
