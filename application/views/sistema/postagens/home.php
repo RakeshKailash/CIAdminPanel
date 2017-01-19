@@ -82,7 +82,7 @@ $usuarios = $this->usuario_model->getUser();
 													<div class="col-md-6 col-xs-12" style="margin-top: 20px;">
 														<button type="button" class="btn btn-primary" id="select_img">Selecionar Imagem</button>
 														<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
-														<input type="file" name="imagem" style="display: none;" id="imagem" onchange="readURL(this)">
+														<input type="file" name="imagem" style="display: none;" id="imagem">
 													</div>
 												</div>
 											</div>

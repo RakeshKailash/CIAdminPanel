@@ -321,21 +321,21 @@
 		$("#has_img").val("0");
 	});
 
-	function readURL(input) {
-		if (input.files && input.files[0]) {
+	function changeSrcByFile(input, element) {
+		if (input) {
 			var reader = new FileReader();
 
 			reader.onload = function (e) {
-				$('.preview_img_form').attr('src', e.target.result);
+				$(element).attr('src', e.target.result);
 			}
 
-			reader.readAsDataURL(input.files[0]);
+			reader.readAsDataURL(input);
 		}
 	}
 
 	$("#imagem").change(function () {
 		if (($("#imagem").val()).length > 0) {
-			readURL($(this)[0]);
+			changeSrcByFile($(this)[0].files[0], $('.preview_img_form'));
 			$("#has_img").val("1");
 		} else {
 			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
@@ -351,10 +351,16 @@
 		var label_text = []
 		, arquivos = $("#imagens_galeria")[0].files
 		, texto_imgs = "<h4>" + arquivos.length
+		, preview_img
 		;
+
+		$("#preview_imgs").html(null);
 
 		for (var i = 0; i < arquivos.length; i++) {
 			label_text.push("&bull; " + arquivos[i].name);
+			preview_img = "<img src='#' class='preview_img_form preview_img_gal' title='"+arquivos[i].name+"'>";
+			$("#preview_imgs").append(preview_img);
+			changeSrcByFile(arquivos[i], $('.preview_img_form')[i]);
 		}
 
 		if (arquivos.length > 1) {
@@ -363,7 +369,7 @@
 			texto_imgs +=" imagem selecionada: </h4>";
 		}
 
-		$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>" + texto_imgs + label_text.join("<br />") + "</label>");
+		$("#img_selecionada").html(texto_imgs);
 	});
 
 	$("#btn_reset_form").click(function () {

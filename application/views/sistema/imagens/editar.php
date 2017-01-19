@@ -145,6 +145,9 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 											<?php endif; ?>
 
 											<label id="img_selecionada" for="imagens_galeria"><h4>Nenhuma imagem selecionada</h4></label> <br>
+											<div id="preview_imgs">
+												
+											</div>
 											<button type="button" class="btn btn-primary" id="img_select_galeria">Selecionar Imagens</button>
 											<button type="button" class="btn btn-warning" id="btn_reset_form">Limpar</button>
 											<button type="submit" class="btn btn-success" id="form_submit_galeria">Enviar</button>

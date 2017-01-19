@@ -654,3 +654,11 @@ span.comment-badge.bg-red {
 .user_status span {
 	transition: all linear 0.5s;
 }
+
+.preview_img_gal {
+	margin-right: 10px;
+}
+
+.preview_img_gal:last-child {
+	margin-right: 0;
+}
