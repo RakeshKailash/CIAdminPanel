@@ -73,12 +73,21 @@ $usuarios = $this->usuario_model->getUser();
 											</div>
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Capa:</label>
-												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" name="sobrenome" class="form-control" value="<?=$_SESSION['sobrenome']?>">
+												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
+													<div class="col-md-6 col-xs-12">
+														<div id='img_selecionada'>
+															<img src="javascript:void(0)" alt="Nenhuma imagem selecionada" class="preview_img_form">
+														</div>
+													</div>
+													<div class="col-md-6 col-xs-12" style="margin-top: 20px;">
+														<button type="button" class="btn btn-primary" id="select_img">Selecionar Imagem</button>
+														<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
+														<input type="file" name="imagem" style="display: none;" id="imagem" onchange="readURL(this)">
+													</div>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">Conteúdo:</label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-12">Conteúdo: <span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<div id="alerts"></div>
 													<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor">
@@ -144,22 +153,8 @@ $usuarios = $this->usuario_model->getUser();
 															<a class="btn" data-edit="redo" title="Refazer (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
 														</div>
 													</div>
+													<div id="editor" contenteditable="true"></div>
 													<textarea name="conteudo" id="descr" style="display:none;"></textarea>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">Imagem de Perfil:</label>
-												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
-													<div class="col-md-6 col-xs-12">
-														<div id='img_selecionada'>
-															<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
-														</div>
-													</div>
-													<div class="col-md-6 col-xs-12" style="margin-top: 20px;">
-														<button type="button" class="btn btn-primary" id="select_img">Selecionar Imagem</button>
-														<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
-														<input type="file" name="imagem" style="display: none;" id="imagem">
-													</div>
 												</div>
 											</div>
 											<div class="form-group">
@@ -167,8 +162,8 @@ $usuarios = $this->usuario_model->getUser();
 													<input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>">
 													<input type="hidden" name="has_img" value="<?=$_SESSION['imagem'] == 'user.png' ? '0' : '1'?>" id="has_img">
 													<button type="reset" class="btn btn-warning">Limpar</button>
-													<button type="submit" id="salvar_edicao_usuario" class="btn btn-success">Salvar</button>
-													<button type="button" id="alterar_senha_usuario" class="btn btn-primary">Alterar Senha</button>
+													<button type="submit" id="salvar_edicao_usuario" class="btn btn-primary">Salvar Rascunho</button>
+													<button type="submit" id="salvar_edicao_usuario" class="btn btn-success">Salvar e Postar</button>
 												</div>
 											</div>
 										</form>
@@ -182,5 +177,8 @@ $usuarios = $this->usuario_model->getUser();
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript" charset="utf-8" async defer>
+</script>
 
 <?php $this->load->view('footer') ?>

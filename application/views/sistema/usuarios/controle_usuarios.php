@@ -221,7 +221,7 @@ $usuarios = $this->usuario_model->getUser();
 												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
 													<div class="col-md-6 col-xs-12">
 														<div id='img_selecionada'>
-															<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="profile_img_userpage">
+															<img src="<?=base_url('images/uploads/profile/' . $_SESSION['imagem'])?>" alt="Não foi possível carregar a imagem" class="preview_img_form">
 														</div>
 													</div>
 													<div class="col-md-6 col-xs-12" style="margin-top: 20px;">

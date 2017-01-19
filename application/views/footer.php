@@ -321,9 +321,21 @@
 		$("#has_img").val("0");
 	});
 
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('.preview_img_form').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
 	$("#imagem").change(function () {
 		if (($("#imagem").val()).length > 0) {
-			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Imagem selecionada: " + $("#imagem").val() + "</label>");
+			readURL($(this)[0]);
 			$("#has_img").val("1");
 		} else {
 			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
