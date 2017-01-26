@@ -43,7 +43,7 @@ $usuarios = $this->usuario_model->getUser();
 							<div class="x_panel">
 								<div class="container">
 									<div class="col-md-12 col-xs-12">
-										<h2>Criar Nova Postagem</h2>
+										<h2>Criar/Editar Postagens</h2>
 										<div id="mensagens">
 											<?php if ($error) : ?>
 												<div class="alert alert-danger fade in">
@@ -64,7 +64,7 @@ $usuarios = $this->usuario_model->getUser();
 												</div>
 											<?php endif; ?>
 										</div>
-										<form class="form-horizontal form-label-left" id="form_criar_postagem" action="<?=base_url('sistema/postagens/create')?>" method="post" enctype="multipart/form-data">
+										<form class="form-horizontal form-label-left" id="form_criar_postagem" action="<?=base_url('sistema/postagens/save');?>" method="post" enctype="multipart/form-data">
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Título: <span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
@@ -159,15 +159,50 @@ $usuarios = $this->usuario_model->getUser();
 											</div>
 											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+													<!-- Herdado da edição de Usuários -->
 													<input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>">
 													<input type="hidden" name="has_img" value="<?=$_SESSION['imagem'] == 'user.png' ? '0' : '1'?>" id="has_img">
+													<!-- /Herdado da edição de Usuários -->
+
+													<input type="hidden" name="save_type" id="save_type" value="0">
+													<input type="hidden" id="id_postagem" name="id_postagem" value="<?=isset($_SESSION['edit_post_id']) ? $_SESSION['edit_post_id'] : '0' ?>">
 													<button type="reset" class="btn btn-warning">Limpar</button>
-													<button type="submit" id="salvar_edicao_usuario" class="btn btn-primary">Salvar Rascunho</button>
-													<button type="submit" id="salvar_edicao_usuario" class="btn btn-success">Salvar e Postar</button>
+													<button type="button" id="salvar_rascunho_post" class="btn btn-primary">Salvar Rascunho</button>
+													<button type="button" id="salvar_postar_post" class="btn btn-success">Salvar e Postar</button>
 												</div>
 											</div>
-										</form>
+										</form> <!-- /Criar Editar Postagens -->
+										<?php if ($_SESSION['tipoUsuario'] != 2): ?>
+											<div class="ln_solid"></div>
+											<h2>Galeria de Postagens</h2>
+											<table class="table">
+												<thead>
+													<tr>
+														<th style="text-align: center;">Capa da Postagem</th>
+														<th>Título</th>
+														<th class="hidden-xs">Autor</th>
+														<th class="hidden-xs">Criada em</th>
+														<th class="hidden-xs">Status</th>
+														<th class="hidden-xs">Última Modificação</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php foreach ($postagens as $postagem): ?>
+														<tr class="linha_postagem" data-userid="<?=$postagem->id?>">
+															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url($postagem->capa)?>" alt="Não foi possível localizar a imagem"></td>
+															<td><?=$postagem->titulo;?></td>
+															<td class="hidden-xs"><?=$postagem->autor?></td>
+															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($postagem->dataCriacao));?></td>
+															<td class="hidden-xs"><?=!!$postagem->listar ? 'Publicada' : 'Rascunho';?></td>
+															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($postagem->ultimaVersao))?></td>
+														</tr>
+													<?php endforeach ?>
+												</tbody>
+											</table>
+										<?php endif ?>
 									</div>
+
+
 								</div>
 							</div>
 						</div>
@@ -179,6 +214,19 @@ $usuarios = $this->usuario_model->getUser();
 </div>
 
 <script type="text/javascript" charset="utf-8" async defer>
+
+	$("#salvar_rascunho_post").click(function () {
+	// $.post(base_url + "sistema/postagens/save", $("#form_criar_postagem").serialize());
+	$("#save_type").val(0);
+	$("#form_criar_postagem").submit();
+});
+
+	$("#salvar_postar_post").click(function () {
+	// $.post(base_url + "sistema/postagens/save", $("#form_criar_postagem").serialize());
+	$("#save_type").val(1);
+	$("#form_criar_postagem").submit();
+});
+
 </script>
 
 <?php $this->load->view('footer') ?>
