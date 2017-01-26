@@ -175,6 +175,16 @@ $usuarios = $this->usuario_model->getUser();
 										<?php if ($_SESSION['tipoUsuario'] != 2): ?>
 											<div class="ln_solid"></div>
 											<h2>Galeria de Postagens</h2>
+											<div class="gallery_item_display">
+												<img class="img_gallery_item_display" src="https://tctechcrunch2011.files.wordpress.com/2015/04/codecode.jpg">
+												<div class="author_gallery_item_display">
+													<span>Por: Fulano</span>
+												</div>
+												<div class="info_gallery_item_display">
+													<p class="title_gallery_item_display">Notícia aleatória</p>
+													<p class="description_gallery_item_display">Preview da notícia vem aqui...</p>
+												</div>
+											</div>
 											<table class="table">
 												<thead>
 													<tr>
