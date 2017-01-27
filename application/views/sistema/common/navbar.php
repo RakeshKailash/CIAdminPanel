@@ -25,7 +25,7 @@
 				</li>
 
 				<li role="presentation" class="dropdown">
-				<a href="javascript:void(0);" id="notif_icon" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+					<a href="javascript:void(0);" id="notif_icon" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
 						<i class="fa fa-wrench"></i>
 						<span class="count-update-badge badge bg-green"><?=(count($atualizacoes['naoVisualizadas']) > 0 ? count($atualizacoes['naoVisualizadas']) : null)?></span>
 					</a>
@@ -64,8 +64,14 @@
 </div>
 
 <script type="text/javascript">
-	window.setInterval(function () {
+	refreshSession();
+
+	function refreshSession () {
 		var url = base_url + 'sistema/main/refresh_session';
 		$.get(url);
+	}
+
+	window.setInterval(function () {
+		refreshSession();
 	}, 10000);
 </script>

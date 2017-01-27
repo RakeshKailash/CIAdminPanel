@@ -307,7 +307,7 @@ $usuarios = $this->usuario_model->getUser();
 			$("#email_usuario_modal").html(usuario.email);
 			var options = ['Monitor', 'Criador de Conteúdo', 'Administrador'];
 
-			if (usuario.id == curUserProps.id || curUserProps.tipoUsuario == 1 || curUserProps.tipoUsuario == 2) {
+			if (usuario.id == curUserProps.id || usuario.tipoUsuario == 'Responsável pelo Site' || usuario.tipoUsuario == 'Administrador' || curUserProps.tipoUsuario == 1 || curUserProps.tipoUsuario == 2) {
 				$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
 			} else {
 				$("#privilegios_usuario_modal").html(createSelectWith(options, usuario.tipoUsuario));
