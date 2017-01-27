@@ -43,7 +43,18 @@ class Postagens_model extends CI_Model
 			$this->db->where('id', $id);
 		}
 
-		return $this->db->get('postagens')->result();
+		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, postagens.capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
+
+		$this->db->join('usuarios', 'usuarios.id = postagens.autor');
+
+		$query = $this->db->get('postagens');
+
+		if (! $query)
+		{
+			return false;
+		}
+
+		return $query->result();
 	}
 
 	private function insertPost ($data=null)

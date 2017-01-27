@@ -175,17 +175,7 @@ $usuarios = $this->usuario_model->getUser();
 										<?php if ($_SESSION['tipoUsuario'] != 2): ?>
 											<div class="ln_solid"></div>
 											<h2>Galeria de Postagens</h2>
-											<div class="gallery_item_display">
-												<img class="img_gallery_item_display" src="https://tctechcrunch2011.files.wordpress.com/2015/04/codecode.jpg">
-												<div class="author_gallery_item_display">
-													<span>Por: Fulano</span>
-												</div>
-												<div class="info_gallery_item_display">
-													<p class="title_gallery_item_display">Notícia aleatória</p>
-													<p class="description_gallery_item_display">Preview da notícia vem aqui...</p>
-												</div>
-											</div>
-											<table class="table">
+											<!-- <table class="table">
 												<thead>
 													<tr>
 														<th style="text-align: center;">Capa da Postagem</th>
@@ -196,19 +186,44 @@ $usuarios = $this->usuario_model->getUser();
 														<th class="hidden-xs">Última Modificação</th>
 													</tr>
 												</thead>
-												<tbody>
-													<?php foreach ($postagens as $postagem): ?>
-														<tr class="linha_postagem" data-userid="<?=$postagem->id?>">
+												<tbody> -->
+														<!-- <tr class="linha_postagem" data-userid="<?=$postagem->id?>">
 															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url($postagem->capa)?>" alt="Não foi possível localizar a imagem"></td>
 															<td><?=$postagem->titulo;?></td>
 															<td class="hidden-xs"><?=$postagem->autor?></td>
 															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($postagem->dataCriacao));?></td>
 															<td class="hidden-xs"><?=!!$postagem->listar ? 'Publicada' : 'Rascunho';?></td>
 															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($postagem->ultimaVersao))?></td>
-														</tr>
+														</tr> -->
+													<?php foreach ($postagens as $postagem): ?>
+														<div class="gallery_item_display" data-userid="<?=$postagem->id?>">
+															<img class="img_gallery_item_display" src="<?=base_url($postagem->capa)?>">
+															<div class="author_gallery_item_display">
+																<span>Por: <?=$postagem->autor?></span>
+															</div>
+															<div class="container_menu_gallery_item_display">
+																<i class="fa fa-ellipsis-v more_gallery_item_display inactive" aria-hidden="true"></i>
+																<ul class="menu_gallery_item_display inactive">
+																	<li class="item_menu_gallery_item_display">
+																		<i class="fa fa-external-link icon_menu_gallery_item" aria-hidden="true"></i>
+																		<span class="text_menu_gallery_item">Detalhes</span>
+																	</li>
+																	<li class="item_menu_gallery_item_display">
+																		<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
+																		<span class="text_menu_gallery_item">Visitar</span>
+																	</li>
+																	<li class="item_menu_gallery_item_display">
+																		<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
+																		<span class="text_menu_gallery_item">Editar</span>
+																	</li>
+																</ul>
+															</div>
+															<div class="info_gallery_item_display">
+																<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
+																<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
+															</div>
+														</div>
 													<?php endforeach ?>
-												</tbody>
-											</table>
 										<?php endif ?>
 									</div>
 
@@ -226,16 +241,34 @@ $usuarios = $this->usuario_model->getUser();
 <script type="text/javascript" charset="utf-8" async defer>
 
 	$("#salvar_rascunho_post").click(function () {
-	// $.post(base_url + "sistema/postagens/save", $("#form_criar_postagem").serialize());
-	$("#save_type").val(0);
-	$("#form_criar_postagem").submit();
-});
+		$("#save_type").val(0);
+		$("#form_criar_postagem").submit();
+	});
 
 	$("#salvar_postar_post").click(function () {
-	// $.post(base_url + "sistema/postagens/save", $("#form_criar_postagem").serialize());
-	$("#save_type").val(1);
-	$("#form_criar_postagem").submit();
-});
+		$("#save_type").val(1);
+		$("#form_criar_postagem").submit();
+	});
+
+	$(".more_gallery_item_display").click(function () {
+		if ($(this).hasClass('inactive')) {
+			$(".more_gallery_item_display").removeClass('active');
+			$(".more_gallery_item_display").next().removeClass('active');
+			$(".more_gallery_item_display").addClass('inactive');
+			$(".more_gallery_item_display").next().addClass('inactive');
+
+			$(this).addClass('active');
+			$(this).removeClass('inactive');
+			$(this).next().addClass('active');
+			$(this).next().removeClass('inactive');
+			return true;
+		}
+
+		$(this).addClass('inactive');
+		$(this).removeClass('active');
+		$(this).next().addClass('inactive');
+		$(this).next().removeClass('active');
+	});
 
 </script>
 
