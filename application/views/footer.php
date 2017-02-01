@@ -59,6 +59,13 @@
 <!-- form validation -->
 <script type="text/javascript">
 	$(document).ready(function() {
+		if ($(".alert")) {
+			window.setTimeout(function () {
+				$(".alert").removeClass('in');
+				$("#mensagens").css('height', '0');
+			}, 5000);
+		}
+
 		$.listen('parsley:field:validate', function() {
 			validateFront();
 		});

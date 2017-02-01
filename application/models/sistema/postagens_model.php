@@ -40,7 +40,7 @@ class Postagens_model extends CI_Model
 	{
 		if ($id)
 		{
-			$this->db->where('id', $id);
+			$this->db->where('postagens.`id`', $id);
 		}
 
 		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, postagens.capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');

@@ -31,7 +31,13 @@ class Postagens extends CI_Controller {
 
 	public function saveAndInsert ()
 	{
-		$validate = $this->validatePost();
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/postagens');
+		}
+
+		$validate = $this->validatePost('titulo', 'conteudo');
 
 		if (! $validate)
 		{
@@ -50,7 +56,13 @@ class Postagens extends CI_Controller {
 
 	public function save ()
 	{
-		$validate = $this->validatePost();
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/postagens');
+		}
+
+		$validate = $this->validatePost('titulo', 'conteudo');
 
 		if (! $validate)
 		{
@@ -74,15 +86,52 @@ class Postagens extends CI_Controller {
 		return redirect('sistema/postagens');
 	}
 
-	private function validatePost ()
+	public function retrieve ($id=null)
+	{
+		$posts = $this->postagens_model->getPosts($id)[0];
+		echo json_encode($posts);
+	}
+
+	public function update ()
 	{
 		if ($_SESSION['tipoUsuario'] == 1)
 		{
-			return "<p>Você não tem permissão para editar informações do site!</p>";
+			$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/postagens');
 		}
 
-		$this->form_validation->set_rules('titulo', 'Titulo', 'required');
-		$this->form_validation->set_rules('conteudo', 'Conteúdo', 'required');
+		$validate = $this->validatePost('titulo_post_modal', 'conteudo_post_modal');
+
+		if (! $validate)
+		{
+			$this->session->set_flashdata('warning', $validate);
+			return redirect('sistema/postagens');
+		}
+
+		$data['titulo'] = $this->input->post('titulo_post_modal');
+		$data['conteudo'] = $this->input->post('conteudo_post_modal');
+		$data['listar'] = !!$this->input->post('status_post_modal');
+		$id = $this->input->post('id_post');
+
+		if (! $this->postagens_model->savePost($data, $id))
+		{
+			$this->session->set_flashdata('error', "<p>Erro ao atualizar a Postagem! Tente novamente</p>");
+			return redirect('sistema/postagens');
+		}
+
+		$this->session->set_flashdata('success', "<p>Postagem alterada com sucesso!</p>");
+		return redirect('sistema/postagens');
+	}
+
+	private function validatePost ($titleField=null, $contentField=null)
+	{
+		if (! $titleField || ! $contentField)
+		{
+			return false;
+		}
+
+		$this->form_validation->set_rules($titleField, 'Titulo', 'required');
+		$this->form_validation->set_rules($contentField, 'Conteúdo', 'required');
 
 		if ($this->form_validation->run() == false)
 		{

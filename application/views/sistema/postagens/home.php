@@ -38,12 +38,75 @@ $usuarios = $this->usuario_model->getUser();
 					</div>
 					<div class="clearfix"></div>
 
+					<div class="modal" tabindex="-1" role="dialog" id="post_full_modal">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="title_user_modal">Visualizar/Editar Postagem</h4>
+								</div>
+								<div class="modal-body" id="img_modal_body" style="overflow: hidden;">
+									<div class="col-lg-12 col-xs-12 col-md-12">
+										<div class="col-md-12 col-lg-12 div_img_preview_modal">
+											<img class="img_preview_modal" src="<?=base_url('images/uploads/sections/mountain.jpg');?>">
+											<div class="buttons_container">
+												<i class="fa fa-times icon_buttons_post" aria-hidden="true" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Remover Capa"></i>
+												<i class="fa fa-file-image-o icon_buttons_post" aria-hidden="true" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Carregar nova Capa"></i>
+											</div>
+										</div>
+									</div>
+									<div class="tools_modal_inside col-md-12" style="margin-top: 30px;">
+										<div class="row">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<form action="<?=base_url('sistema/postagens/update')?>" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
+													<div class="form-group">
+														<label for="titulo_post_modal" class="control-label col-md-2 col-sm-2 col-xs-12">Título</label>
+														<div class="col-md-9 col-sm-9 col-xs-12">
+															<input id="titulo_post_modal" type="text" name="titulo_post_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="conteudo_post_modal" class="control-label col-md-2 col-sm-2 col-xs-12">Conteúdo</label>
+														<div class="col-md-9 col-sm-9 col-xs-12">
+															<textarea id="conteudo_post_modal" style="width: 100%;" rows="5" class="form-control col-md-12 col-xs-12" type="text" name="conteudo_post_modal"></textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
+														<div class="col-md-9 col-sm-9 col-xs-12">
+															<div>
+																<label>
+																	<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post_modal" value="1"> Publicar
+																</label>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
+															<input type="hidden" name="id_post" id="id_post_hidden" value="0">
+															<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+																<button type="submit" class="btn btn-success">Salvar</button>
+															<?php endif; ?>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="container">
 									<div class="col-md-12 col-xs-12">
-										<h2>Criar/Editar Postagens</h2>
+										<h2>Nova Postagem</h2>
 										<div id="mensagens">
 											<?php if ($error) : ?>
 												<div class="alert alert-danger fade in">
@@ -172,61 +235,42 @@ $usuarios = $this->usuario_model->getUser();
 												</div>
 											</div>
 										</form> <!-- /Criar Editar Postagens -->
-										<?php if ($_SESSION['tipoUsuario'] != 2): ?>
-											<div class="ln_solid"></div>
-											<h2>Galeria de Postagens</h2>
-											<!-- <table class="table">
-												<thead>
-													<tr>
-														<th style="text-align: center;">Capa da Postagem</th>
-														<th>Título</th>
-														<th class="hidden-xs">Autor</th>
-														<th class="hidden-xs">Criada em</th>
-														<th class="hidden-xs">Status</th>
-														<th class="hidden-xs">Última Modificação</th>
-													</tr>
-												</thead>
-												<tbody> -->
-														<!-- <tr class="linha_postagem" data-userid="<?=$postagem->id?>">
-															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url($postagem->capa)?>" alt="Não foi possível localizar a imagem"></td>
-															<td><?=$postagem->titulo;?></td>
-															<td class="hidden-xs"><?=$postagem->autor?></td>
-															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($postagem->dataCriacao));?></td>
-															<td class="hidden-xs"><?=!!$postagem->listar ? 'Publicada' : 'Rascunho';?></td>
-															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($postagem->ultimaVersao))?></td>
-														</tr> -->
-													<?php foreach ($postagens as $postagem): ?>
-														<div class="gallery_item_display" data-userid="<?=$postagem->id?>">
-															<img class="img_gallery_item_display" src="<?=base_url($postagem->capa)?>">
-															<div class="author_gallery_item_display">
-																<span>Por: <?=$postagem->autor?></span>
-															</div>
-															<div class="container_menu_gallery_item_display">
-																<i class="fa fa-ellipsis-v more_gallery_item_display inactive" aria-hidden="true"></i>
-																<ul class="menu_gallery_item_display inactive">
-																	<li class="item_menu_gallery_item_display">
-																		<i class="fa fa-external-link icon_menu_gallery_item" aria-hidden="true"></i>
-																		<span class="text_menu_gallery_item">Detalhes</span>
-																	</li>
-																	<li class="item_menu_gallery_item_display">
-																		<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
-																		<span class="text_menu_gallery_item">Visitar</span>
-																	</li>
-																	<li class="item_menu_gallery_item_display">
-																		<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
-																		<span class="text_menu_gallery_item">Editar</span>
-																	</li>
-																</ul>
-															</div>
-															<div class="info_gallery_item_display">
-																<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
-																<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
-															</div>
+										<div class="ln_solid"></div>
+										<h2>Galeria de Postagens</h2>
+										<div class="container_gallery_display">
+											<?php foreach ($postagens as $postagem): ?>
+												<div class="gallery_item_display" data-postid="<?=$postagem->id?>">
+													<div class="img_gallery_item_display" style=" background-image: url('<?=base_url($postagem->capa)?>');"></div>
+													<div class="author_gallery_item_display">
+														<span>Por: <?=$postagem->autor?></span>
+													</div>
+													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+														<div class="container_menu_gallery_item_display">
+															<i class="fa fa-ellipsis-v more_gallery_item_display inactive" aria-hidden="true"></i>
+															<ul class="menu_gallery_item_display inactive">
+																<li class="item_menu_gallery_item_display">
+																	<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
+																	<span class="text_menu_gallery_item">Detalhes</span>
+																</li>
+																<li class="item_menu_gallery_item_display">
+																	<i class="fa fa-external-link icon_menu_gallery_item" aria-hidden="true"></i>
+																	<span class="text_menu_gallery_item">Visitar</span>
+																</li>
+																<li class="item_menu_gallery_item_display">
+																	<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
+																	<span class="text_menu_gallery_item">Editar</span>
+																</li>
+															</ul>
 														</div>
-													<?php endforeach ?>
-										<?php endif ?>
+													<?php endif ?>
+													<div class="info_gallery_item_display">
+														<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
+														<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
+													</div>
+												</div>
+											<?php endforeach ?>
+										</div>
 									</div>
-
 
 								</div>
 							</div>
@@ -268,6 +312,35 @@ $usuarios = $this->usuario_model->getUser();
 		$(this).removeClass('active');
 		$(this).next().addClass('inactive');
 		$(this).next().removeClass('active');
+	});
+
+	$(".gallery_item_display").click(function () {
+		var idPostagem = $(this).data('postid');
+
+		$.get(base_url + 'sistema/postagens/retrieve/' + idPostagem, function (result) {
+			result = JSON.parse(result);
+
+			$("#id_post_hidden").val(result.id);
+			$("#titulo_post_modal").val(result.titulo);
+			$("#conteudo_post_modal").html(result.conteudo);
+			$(".img_preview_modal").attr('src', base_url + result.capa);
+
+			if (result.listar == 1 && !$("#status_post_modal").is(':checked')) {
+				$("#status_post_modal").trigger('click');
+			}
+
+			if (result.listar == 0 && $("#status_post_modal").is(':checked')) {
+				$("#status_post_modal").trigger('click');
+			}
+
+			$("#status_post_modal").val(result.listar);
+
+			$("#post_full_modal").modal('show');
+		});
+	});
+
+	$("#status_post_modal").click(function () {
+		$("#status_post_modal").val($("#status_post_modal").val() == 1 ? 0 : 1);
 	});
 
 </script>
