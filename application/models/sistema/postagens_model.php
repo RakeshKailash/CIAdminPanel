@@ -43,6 +43,7 @@ class Postagens_model extends CI_Model
 			$this->db->where('postagens.`id`', $id);
 		}
 
+		$this->db->order_by('postagens.`dataCriacao`', 'DESC');
 		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, postagens.capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
 
 		$this->db->join('usuarios', 'usuarios.id = postagens.autor');

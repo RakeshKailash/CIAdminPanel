@@ -237,12 +237,18 @@ $usuarios = $this->usuario_model->getUser();
 										</form> <!-- /Criar Editar Postagens -->
 										<div class="ln_solid"></div>
 										<h2>Galeria de Postagens</h2>
-										<div class="container_gallery_display">
-											<?php foreach ($postagens as $postagem): ?>
-												<div class="gallery_item_display" data-postid="<?=$postagem->id?>">
-													<div class="img_gallery_item_display" style=" background-image: url('<?=base_url($postagem->capa)?>');"></div>
-													<div class="author_gallery_item_display">
-														<span>Por: <?=$postagem->autor?></span>
+										<?php foreach ($postagens as $postagem): ?>
+											<div class="container_gallery_display" style="display: inline-block; position: relative;">
+												<div class="container_content_gallery_item_display" style="position: relative;">
+													<div class="gallery_item_display" data-postid="<?=$postagem->id?>">
+														<div class="img_gallery_item_display" style=" background-image: url('<?=base_url($postagem->capa)?>');"></div>
+														<div class="author_gallery_item_display">
+															<span>Por: <?=$postagem->autor?></span>
+														</div>
+														<div class="info_gallery_item_display">
+															<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
+															<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
+														</div>
 													</div>
 													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
 														<div class="container_menu_gallery_item_display">
@@ -263,13 +269,9 @@ $usuarios = $this->usuario_model->getUser();
 															</ul>
 														</div>
 													<?php endif ?>
-													<div class="info_gallery_item_display">
-														<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
-														<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
-													</div>
 												</div>
-											<?php endforeach ?>
-										</div>
+											</div>
+										<?php endforeach ?>
 									</div>
 
 								</div>
@@ -314,7 +316,7 @@ $usuarios = $this->usuario_model->getUser();
 		$(this).next().removeClass('active');
 	});
 
-	$(".gallery_item_display").click(function () {
+	$(".gallery_item_display").click(function (e) {
 		var idPostagem = $(this).data('postid');
 
 		$.get(base_url + 'sistema/postagens/retrieve/' + idPostagem, function (result) {
