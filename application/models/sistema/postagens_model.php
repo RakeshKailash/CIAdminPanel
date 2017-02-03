@@ -58,27 +58,96 @@ class Postagens_model extends CI_Model
 		return $query->result();
 	}
 
-	private function insertPost ($data=null)
+	public function orderPosts ($order)
 	{
-		if (! $this->db->insert('postagens', $data))
+		if ($order == null)
 		{
 			return false;
 		}
 
-		return true;
-	}
+		switch ($order) {
+			case 'order_newest':
+			$this->db->order_by('postagens.`dataCriacao`', 'DESC');
+			break;
 
-	private function updatePost ($data=null, $id=null)
-	{
-		$this->db->set($data);
-		$this->db->where('id', $id);
+			case 'order_oldest':
+			$this->db->order_by('postagens.`dataCriacao`', 'ASC');
+			break;
 
-		if (! $this->db->update('postagens'))
+			case 'order_views':
+			$this->db->order_by('postagens.`acessos`', 'DESC');
+			break;
+
+			case 'order_updated':
+			$this->db->order_by('postagens.`ultimaVersao`', 'DESC');
+			break;
+
+			case 'order_author':
+			$this->db->order_by('postagens.`autor`', 'ASC');
+			$this->db->order_by('postagens.`acessos`', 'DESC');
+			$this->db->order_by('postagens.`id`', 'DESC');
+			break;
+
+			case 'order_status':
+			$this->db->order_by('postagens.`listar`', 'DESC');
+			$this->db->order_by('postagens.`acessos`', 'DESC');
+			$this->db->order_by('postagens.`id`', 'DESC');
+			break;
+
+			default:
+			$this->db->order_by('postagens.`dataCriacao`', 'DESC');
+			break;
+		}
+
+		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, postagens.capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
+
+		$this->db->join('usuarios', 'usuarios.id = postagens.autor');
+
+		$result = $this->db->get('postagens');
+
+		if (! $result)
 		{
 			return false;
 		}
 
-		return true;
+		return $result->result();
+
 	}
 
-}
+	/*
+		Order:
+		- Mais Recentes
+		- Mais Antigos
+		- Visualizações
+		- Recentemente Alterados
+
+		Group:
+		- Autor
+		- Status
+
+	*/
+
+		private function insertPost ($data=null)
+		{
+			if (! $this->db->insert('postagens', $data))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		private function updatePost ($data=null, $id=null)
+		{
+			$this->db->set($data);
+			$this->db->where('id', $id);
+
+			if (! $this->db->update('postagens'))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+	}

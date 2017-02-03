@@ -237,41 +237,59 @@ $usuarios = $this->usuario_model->getUser();
 										</form> <!-- /Criar Editar Postagens -->
 										<div class="ln_solid"></div>
 										<h2>Galeria de Postagens</h2>
-										<?php foreach ($postagens as $postagem): ?>
-											<div class="container_gallery_display" style="display: inline-block; position: relative;">
-												<div class="container_content_gallery_item_display" style="position: relative;">
-													<div class="gallery_item_display" data-postid="<?=$postagem->id?>">
-														<div class="img_gallery_item_display" style=" background-image: url('<?=base_url($postagem->capa)?>');"></div>
-														<div class="author_gallery_item_display">
-															<span>Por: <?=$postagem->autor?></span>
-														</div>
-														<div class="info_gallery_item_display">
-															<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
-															<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
-														</div>
-													</div>
-													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
-														<div class="container_menu_gallery_item_display">
-															<i class="fa fa-ellipsis-v more_gallery_item_display inactive" aria-hidden="true"></i>
-															<ul class="menu_gallery_item_display inactive">
-																<li class="item_menu_gallery_item_display">
-																	<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
-																	<span class="text_menu_gallery_item">Detalhes</span>
-																</li>
-																<li class="item_menu_gallery_item_display">
-																	<i class="fa fa-external-link icon_menu_gallery_item" aria-hidden="true"></i>
-																	<span class="text_menu_gallery_item">Visitar</span>
-																</li>
-																<li class="item_menu_gallery_item_display">
-																	<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
-																	<span class="text_menu_gallery_item">Editar</span>
-																</li>
-															</ul>
-														</div>
-													<?php endif ?>
-												</div>
+										<div class="posts_gallery_filters col-md-12" style="margin-bottom: 30px; text-align: center;">
+											<div class="col-md-3 col-xs-12 gallery_filters">
+												<select class="form-control" name="order_by_posts" id="order_by_posts">
+													<option value="0" selected>-- Ordenar Por --</option>
+													<option value="order_newest">Mais Recentes</option>
+													<option value="order_oldest">Mais Antigos</option>
+													<option value="order_views">Visualizações</option>
+													<option value="order_updated">Recentemente Alterados</option>
+													<option value="order_author">Autor</option>
+													<option value="order_status">Status</option>
+												</select>
 											</div>
-										<?php endforeach ?>
+											<div class="col-md-2 col-xs-12 gallery_filters">
+												<button type="button" class="btn btn-success">Refinar Seleção</button>
+											</div>
+										</div>
+										<div class="gallery_posts">
+											<?php foreach ($postagens as $postagem): ?>
+												<div class="container_gallery_display">
+													<div class="container_content_gallery_item_display">
+														<div class="gallery_item_display" data-postid="<?=$postagem->id?>">
+															<div class="img_gallery_item_display" style="background-image: url('<?=base_url($postagem->capa)?>');"></div>
+															<div class="author_gallery_item_display">
+																<span>Por: <?=$postagem->autor?></span>
+															</div>
+															<div class="info_gallery_item_display">
+																<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
+																<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
+															</div>
+														</div>
+														<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+															<div class="container_menu_gallery_item_display">
+																<i class="fa fa-ellipsis-v more_gallery_item_display inactive" aria-hidden="true"></i>
+																<ul class="menu_gallery_item_display inactive">
+																	<li class="item_menu_gallery_item_display">
+																		<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
+																		<span class="text_menu_gallery_item">Detalhes</span>
+																	</li>
+																	<li class="item_menu_gallery_item_display">
+																		<i class="fa fa-external-link icon_menu_gallery_item" aria-hidden="true"></i>
+																		<span class="text_menu_gallery_item">Visitar</span>
+																	</li>
+																	<li class="item_menu_gallery_item_display">
+																		<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
+																		<span class="text_menu_gallery_item">Editar</span>
+																	</li>
+																</ul>
+															</div>
+														<?php endif ?>
+													</div>
+												</div>
+											<?php endforeach ?>
+										</div>
 									</div>
 
 								</div>
@@ -343,6 +361,62 @@ $usuarios = $this->usuario_model->getUser();
 
 	$("#status_post_modal").click(function () {
 		$("#status_post_modal").val($("#status_post_modal").val() == 1 ? 0 : 1);
+	});
+
+	$("#order_by_posts").change(function () {
+		var orderBy = $(this).val();
+
+		if (orderBy == '0') {
+			return false;
+		}
+
+		$(".gallery_posts").css('visibility', 'hidden');
+		$.get(base_url + 'sistema/postagens/filterPosts/' + orderBy, function (result) {
+			result = JSON.parse(result);
+
+			var posts = [];
+
+			for (var i = 0; i < result.length; i++) {
+				posts.push(
+					"<div class='container_gallery_display'>",
+					"<div class='container_content_gallery_item_display'>",
+					"<div class='gallery_item_display' data-postid='"+result[i].id+"'>",
+					"<div class='img_gallery_item_display' style='background-image: url("+base_url+result[i].capa+");'></div>",
+					"<div class='author_gallery_item_display'>",
+					"<span>Por: "+result[i].autor+"</span>",
+					"</div>",
+					"<div class='info_gallery_item_display'>",
+					"<p class='title_gallery_item_display'>"+result[i].titulo+"</p>",
+					"<p class='description_gallery_item_display'>"+result[i].conteudo.substring(0, 97)+"...</p>",
+					"</div>",
+					"</div>",
+					<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+					"<div class='container_menu_gallery_item_display'>",
+					"<i class='fa fa-ellipsis-v more_gallery_item_display inactive' aria-hidden='true'></i>",
+					"<ul class='menu_gallery_item_display inactive'>",
+					"<li class='item_menu_gallery_item_display'>",
+					"<i class='fa fa-info-circle icon_menu_gallery_item' aria-hidden='true'></i>",
+					"<span class='text_menu_gallery_item'>Detalhes</span>",
+					"</li>",
+					"<li class='item_menu_gallery_item_display'>",
+					"<i class='fa fa-external-link icon_menu_gallery_item' aria-hidden='true'></i>",
+					"<span class='text_menu_gallery_item'>Visitar</span>",
+					"</li>",
+					"<li class='item_menu_gallery_item_display'>",
+					"<i class='fa fa-pencil-square-o icon_menu_gallery_item' aria-hidden='true'></i>",
+					"<span class='text_menu_gallery_item'>Editar</span>",
+					"</li>",
+					"</ul>",
+					"</div>",
+				<?php endif ?>
+				"</div>",
+				"</div>");
+			}
+
+			$(".gallery_posts").html(posts.join(""));
+			$(".gallery_posts").css('visibility', 'visible');
+		});
+
 	});
 
 </script>

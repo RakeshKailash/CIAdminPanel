@@ -123,6 +123,22 @@ class Postagens extends CI_Controller {
 		return redirect('sistema/postagens');
 	}
 
+	public function filterPosts ($orderBy = null)
+	{
+		if (! $orderBy)
+		{
+			echo false;
+		}
+
+		$query = $this->postagens_model->orderPosts($orderBy);
+		if (!$query)
+		{
+			echo false;
+		}
+
+		echo json_encode($query);
+	}
+
 	private function validatePost ($titleField=null, $contentField=null)
 	{
 		if (! $titleField || ! $contentField)

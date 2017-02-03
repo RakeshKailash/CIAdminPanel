@@ -666,7 +666,8 @@ span.comment-badge.bg-red {
 .container_gallery_display {
 	margin-left: auto;
 	margin-right: auto;
-	/*width: 1080px;*/
+	display: inline-block;
+	position: relative;
 }
 
 .gallery_item_display {
@@ -842,4 +843,19 @@ span.comment-badge.bg-red {
 
 #mensagens {
 	transition: all linear 0.5s;
+}
+
+.posts_gallery_filters {
+	padding: 0;
+}
+
+.gallery_filters {
+	margin-bottom: 10px;
+	text-align: center;
+	padding-left: 0;
+}
+
+.gallery_filters:last-child {
+	margin-bottom: 0px;
+	padding-right: 0px;
 }
