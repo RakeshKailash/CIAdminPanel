@@ -125,7 +125,7 @@ class Postagens extends CI_Controller {
 
 	public function filterPosts ($orderBy = null)
 	{
-		if (! $orderBy)
+		if ($orderBy == null)
 		{
 			echo false;
 		}

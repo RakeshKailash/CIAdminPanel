@@ -241,12 +241,12 @@ $usuarios = $this->usuario_model->getUser();
 											<div class="col-md-3 col-xs-12 gallery_filters">
 												<select class="form-control" name="order_by_posts" id="order_by_posts">
 													<option value="0" selected>-- Ordenar Por --</option>
-													<option value="order_newest">Mais Recentes</option>
-													<option value="order_oldest">Mais Antigos</option>
-													<option value="order_views">Visualizações</option>
-													<option value="order_updated">Recentemente Alterados</option>
-													<option value="order_author">Autor</option>
-													<option value="order_status">Status</option>
+													<option value="newest">Mais Recentes</option>
+													<option value="oldest">Mais Antigos</option>
+													<option value="views">Visualizações</option>
+													<option value="updated">Recentemente Alterados</option>
+													<option value="author">Autor</option>
+													<option value="status">Status</option>
 												</select>
 											</div>
 											<div class="col-md-2 col-xs-12 gallery_filters">
@@ -314,7 +314,7 @@ $usuarios = $this->usuario_model->getUser();
 		$("#form_criar_postagem").submit();
 	});
 
-	$(".more_gallery_item_display").click(function () {
+	$(".gallery_posts").on('click', ".more_gallery_item_display", function () {
 		if ($(this).hasClass('inactive')) {
 			$(".more_gallery_item_display").removeClass('active');
 			$(".more_gallery_item_display").next().removeClass('active');
@@ -334,7 +334,7 @@ $usuarios = $this->usuario_model->getUser();
 		$(this).next().removeClass('active');
 	});
 
-	$(".gallery_item_display").click(function (e) {
+	$(".gallery_posts").on('click', '.gallery_item_display', function () {
 		var idPostagem = $(this).data('postid');
 
 		$.get(base_url + 'sistema/postagens/retrieve/' + idPostagem, function (result) {
@@ -370,7 +370,6 @@ $usuarios = $this->usuario_model->getUser();
 			return false;
 		}
 
-		$(".gallery_posts").css('visibility', 'hidden');
 		$.get(base_url + 'sistema/postagens/filterPosts/' + orderBy, function (result) {
 			result = JSON.parse(result);
 
@@ -414,7 +413,6 @@ $usuarios = $this->usuario_model->getUser();
 			}
 
 			$(".gallery_posts").html(posts.join(""));
-			$(".gallery_posts").css('visibility', 'visible');
 		});
 
 	});

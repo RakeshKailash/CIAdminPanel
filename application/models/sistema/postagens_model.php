@@ -66,29 +66,29 @@ class Postagens_model extends CI_Model
 		}
 
 		switch ($order) {
-			case 'order_newest':
+			case 'newest':
 			$this->db->order_by('postagens.`dataCriacao`', 'DESC');
 			break;
 
-			case 'order_oldest':
+			case 'oldest':
 			$this->db->order_by('postagens.`dataCriacao`', 'ASC');
 			break;
 
-			case 'order_views':
+			case 'views':
 			$this->db->order_by('postagens.`acessos`', 'DESC');
 			break;
 
-			case 'order_updated':
+			case 'updated':
 			$this->db->order_by('postagens.`ultimaVersao`', 'DESC');
 			break;
 
-			case 'order_author':
+			case 'author':
 			$this->db->order_by('postagens.`autor`', 'ASC');
 			$this->db->order_by('postagens.`acessos`', 'DESC');
 			$this->db->order_by('postagens.`id`', 'DESC');
 			break;
 
-			case 'order_status':
+			case 'status':
 			$this->db->order_by('postagens.`listar`', 'DESC');
 			$this->db->order_by('postagens.`acessos`', 'DESC');
 			$this->db->order_by('postagens.`id`', 'DESC');
