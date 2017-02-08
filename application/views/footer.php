@@ -186,10 +186,6 @@
 
 <!-- Meu JS -->
 <script type="text/javascript" charset="utf-8" async defer>
-	var icones = ['arrow-circle-down', 'arrow-circle-left', 'arrow-circle-right',
-	'arrow-circle-up', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'bolt', 'briefcase', 'building', 'building-o',
-	'bus', 'car', 'caret-down', 'caret-left', 'caret-right', 'caret-up', 'check', 'check-circle', 'check-circle-o', 'chevron-circle-down', 'chevron-circle-left', 'chevron-circle-right', 'chevron-circle-up', 'desktop', 'envelope', 'exclamation-triangle', 'home', 'lightbulb-o', 'motorcycle', 'question', 'question-circle', 'shopping-bag', 'shopping-basket', 'star', 'star-o', 'sun-o', 'truck', 'user'];
-
 	$(".botao_menu_mobile").click(function() {
 		if ($(".menu_mobile").hasClass('menu_visible')) {
 			$(".menu_mobile").addClass('menu_hidden');
@@ -198,22 +194,6 @@
 			$(".menu_mobile").addClass('menu_visible');
 			$(".menu_mobile").removeClass('menu_hidden');
 		}
-	});
-
-	$(document).ready(function () {
-
-		var icon_selector = [];
-
-		for (var k = 0; k < icones.length; k++) {
-			icon_selector.push("<i class='fa fa-"+icones[k]+" icone_seletor' data-value='"+icones[k]+"'></i>");
-		}
-
-		$(".select_icon").html(icon_selector.join(""));
-		$(".icone_seletor").click(function () {
-			$("#input_icone").val($(this).data('value'));
-			$(".previa_icone").attr('class', 'fa fa-' + $(this).data('value') + ' previa_icone');
-		});
-
 	});
 
 	function setTarget (from, to, event) {

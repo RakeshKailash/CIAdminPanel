@@ -38,7 +38,7 @@ $usuarios = $this->usuario_model->getUser();
 					</div>
 					<div class="clearfix"></div>
 
-					<div class="modal" tabindex="-1" role="dialog" id="post_full_modal">
+					<!-- <div class="modal" tabindex="-1" role="dialog" id="post_full_modal">
 						<div class="modal-dialog modal-lg" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -60,15 +60,80 @@ $usuarios = $this->usuario_model->getUser();
 											<div class="col-md-12 col-sm-12 col-xs-12">
 												<form action="<?=base_url('sistema/postagens/update')?>" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
 													<div class="form-group">
-														<label for="titulo_post_modal" class="control-label col-md-2 col-sm-2 col-xs-12">Título</label>
-														<div class="col-md-9 col-sm-9 col-xs-12">
+														<label for="titulo_post_modal" class="control-label col-md-12 col-sm-12 col-xs-12" style="text-align: left; padding-left: 10px;">Título</label>
+														<div class="col-md-12 col-sm-12 col-xs-12">
 															<input id="titulo_post_modal" type="text" name="titulo_post_modal" class="form-control">
 														</div>
 													</div>
 													<div class="form-group">
-														<label for="conteudo_post_modal" class="control-label col-md-2 col-sm-2 col-xs-12">Conteúdo</label>
-														<div class="col-md-9 col-sm-9 col-xs-12">
-															<textarea id="conteudo_post_modal" style="width: 100%;" rows="5" class="form-control col-md-12 col-xs-12" type="text" name="conteudo_post_modal"></textarea>
+														<label class="control-label col-md-12 col-sm-12 col-xs-12" for="conteudo_post_modal" style="text-align: left; padding-left: 10px;">Conteúdo: <span class="required">*</span></label>
+														<div class="col-md-12 col-sm-12 col-xs-12">
+															<div id="alerts"></div>
+															<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor[data-use='modal']">
+																<div class="btn-group">
+																	<a class="btn dropdown-toggle" data-toggle="dropdown" title="Fonte"><i class="fa icon-font"></i><b class="caret"></b></a>
+																	<ul class="dropdown-menu">
+																	</ul>
+																</div>
+																<div class="btn-group">
+																	<a class="btn dropdown-toggle" data-toggle="dropdown" title="Tamannho da Fonte"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
+																	<ul class="dropdown-menu">
+																		<li>
+																			<a data-edit="fontSize 5">
+																				<p style="font-size:17px">Grande</p>
+																			</a>
+																		</li>
+																		<li>
+																			<a data-edit="fontSize 3">
+																				<p style="font-size:14px">Normal</p>
+																			</a>
+																		</li>
+																		<li>
+																			<a data-edit="fontSize 1">
+																				<p style="font-size:11px">Pequeno</p>
+																			</a>
+																		</li>
+																	</ul>
+																</div>
+																<div class="btn-group">
+																	<a class="btn" data-edit="bold" title="Negrito (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+																	<a class="btn" data-edit="italic" title="Itálico (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+																	<a class="btn" data-edit="strikethrough" title="Riscado"><i class="icon-strikethrough"></i></a>
+																	<a class="btn" data-edit="underline" title="Sublinhado (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+																</div>
+																<div class="btn-group">
+																	<a class="btn" data-edit="insertunorderedlist" title="Lista Não-ordenada"><i class="icon-list-ul"></i></a>
+																	<a class="btn" data-edit="insertorderedlist" title="Lista Ordenada"><i class="icon-list-ol"></i></a>
+																	<a class="btn" data-edit="outdent" title="Reduzir Indentação (Shift+Tab)"><i class="icon-indent-left"></i></a>
+																	<a class="btn" data-edit="indent" title="Indentar (Tab)"><i class="icon-indent-right"></i></a>
+																</div>
+																<div class="btn-group">
+																	<a class="btn" data-edit="justifyleft" title="Alinhar à Esquerda (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
+																	<a class="btn" data-edit="justifycenter" title="Centralizar (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
+																	<a class="btn" data-edit="justifyright" title="Alinhar à Direita (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
+																	<a class="btn" data-edit="justifyfull" title="Justificar (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
+																</div>
+																<div class="btn-group">
+																	<a class="btn dropdown-toggle" data-toggle="dropdown" title="Link"><i class="icon-link"></i></a>
+																	<div class="dropdown-menu input-append">
+																		<input class="span2" placeholder="URL" type="text" data-edit="createLink" />
+																		<button class="btn" type="button">Add</button>
+																	</div>
+																	<a class="btn" data-edit="unlink" title="Remover Link"><i class="icon-cut"></i></a>
+
+																</div>
+
+																<div class="btn-group">
+																	<a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a>
+																	<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+																</div>
+																<div class="btn-group">
+																	<a class="btn" data-edit="undo" title="Desfazer (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+																	<a class="btn" data-edit="redo" title="Refazer (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+																</div>
+															</div>
+															<div id="editor" contenteditable="true" data-use="modal"></div>
+															<textarea name="conteudo_post_modal" id="descr" data-use="modal" style="display:none;"></textarea>
 														</div>
 													</div>
 													<div class="form-group">
@@ -99,14 +164,14 @@ $usuarios = $this->usuario_model->getUser();
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="container">
 									<div class="col-md-12 col-xs-12">
-										<h2>Nova Postagem</h2>
+										<h2>Criar ou Editar Postagem</h2>
 										<div id="mensagens">
 											<?php if ($error) : ?>
 												<div class="alert alert-danger fade in">
@@ -131,7 +196,7 @@ $usuarios = $this->usuario_model->getUser();
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Título: <span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" name="titulo" class="form-control" required="required">
+													<input type="text" name="titulo" id="titulo" class="form-control" required="required">
 												</div>
 											</div>
 											<div class="form-group">
@@ -221,6 +286,16 @@ $usuarios = $this->usuario_model->getUser();
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
+												<div class="col-md-9 col-sm-9 col-xs-12">
+													<div>
+														<label>
+															<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post" value="1"> Publicar
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 													<!-- Herdado da edição de Usuários -->
 													<input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>">
@@ -240,7 +315,7 @@ $usuarios = $this->usuario_model->getUser();
 										<div class="posts_gallery_filters col-md-12" style="margin-bottom: 30px; text-align: center;">
 											<div class="col-md-3 col-xs-12 gallery_filters">
 												<select class="form-control" name="order_by_posts" id="order_by_posts">
-													<option value="0" selected>-- Ordenar Por --</option>
+													<option value="default" selected>-- Ordenar Por --</option>
 													<option value="newest">Mais Recentes</option>
 													<option value="oldest">Mais Antigos</option>
 													<option value="views">Visualizações</option>
@@ -264,7 +339,7 @@ $usuarios = $this->usuario_model->getUser();
 															</div>
 															<div class="info_gallery_item_display">
 																<p class="title_gallery_item_display"><?=$postagem->titulo;?></p>
-																<p class="description_gallery_item_display"><?=strip_tags(substr($postagem->conteudo, 0, 97)) . '...'?></p>
+																<p class="description_gallery_item_display"><?=strip_tags(mb_substr($postagem->conteudo, 0, 97)) . '...'?></p>
 															</div>
 														</div>
 														<?php if ($_SESSION['tipoUsuario'] != 1): ?>
@@ -337,26 +412,7 @@ $usuarios = $this->usuario_model->getUser();
 	$(".gallery_posts").on('click', '.gallery_item_display', function () {
 		var idPostagem = $(this).data('postid');
 
-		$.get(base_url + 'sistema/postagens/retrieve/' + idPostagem, function (result) {
-			result = JSON.parse(result);
-
-			$("#id_post_hidden").val(result.id);
-			$("#titulo_post_modal").val(result.titulo);
-			$("#conteudo_post_modal").html(result.conteudo);
-			$(".img_preview_modal").attr('src', base_url + result.capa);
-
-			if (result.listar == 1 && !$("#status_post_modal").is(':checked')) {
-				$("#status_post_modal").trigger('click');
-			}
-
-			if (result.listar == 0 && $("#status_post_modal").is(':checked')) {
-				$("#status_post_modal").trigger('click');
-			}
-
-			$("#status_post_modal").val(result.listar);
-
-			$("#post_full_modal").modal('show');
-		});
+		window.location = base_url + 'sistema/postagens/editar/' + idPostagem;
 	});
 
 	$("#status_post_modal").click(function () {
@@ -366,56 +422,59 @@ $usuarios = $this->usuario_model->getUser();
 	$("#order_by_posts").change(function () {
 		var orderBy = $(this).val();
 
-		if (orderBy == '0') {
-			return false;
-		}
+		// if (orderBy == '0') {
+		// 	return false;
+		// }
 
 		$.get(base_url + 'sistema/postagens/filterPosts/' + orderBy, function (result) {
 			result = JSON.parse(result);
 
-			var posts = [];
-
-			for (var i = 0; i < result.length; i++) {
-				posts.push(
-					"<div class='container_gallery_display'>",
-					"<div class='container_content_gallery_item_display'>",
-					"<div class='gallery_item_display' data-postid='"+result[i].id+"'>",
-					"<div class='img_gallery_item_display' style='background-image: url("+base_url+result[i].capa+");'></div>",
-					"<div class='author_gallery_item_display'>",
-					"<span>Por: "+result[i].autor+"</span>",
-					"</div>",
-					"<div class='info_gallery_item_display'>",
-					"<p class='title_gallery_item_display'>"+result[i].titulo+"</p>",
-					"<p class='description_gallery_item_display'>"+result[i].conteudo.substring(0, 97)+"...</p>",
-					"</div>",
-					"</div>",
-					<?php if ($_SESSION['tipoUsuario'] != 1): ?>
-					"<div class='container_menu_gallery_item_display'>",
-					"<i class='fa fa-ellipsis-v more_gallery_item_display inactive' aria-hidden='true'></i>",
-					"<ul class='menu_gallery_item_display inactive'>",
-					"<li class='item_menu_gallery_item_display'>",
-					"<i class='fa fa-info-circle icon_menu_gallery_item' aria-hidden='true'></i>",
-					"<span class='text_menu_gallery_item'>Detalhes</span>",
-					"</li>",
-					"<li class='item_menu_gallery_item_display'>",
-					"<i class='fa fa-external-link icon_menu_gallery_item' aria-hidden='true'></i>",
-					"<span class='text_menu_gallery_item'>Visitar</span>",
-					"</li>",
-					"<li class='item_menu_gallery_item_display'>",
-					"<i class='fa fa-pencil-square-o icon_menu_gallery_item' aria-hidden='true'></i>",
-					"<span class='text_menu_gallery_item'>Editar</span>",
-					"</li>",
-					"</ul>",
-					"</div>",
-				<?php endif ?>
-				"</div>",
-				"</div>");
-			}
-
-			$(".gallery_posts").html(posts.join(""));
+			fillPostsGallery(result);
 		});
 
 	});
+
+	function fillPostsGallery (elements) {
+		var posts = [];
+		for (var i = 0; i < elements.length; i++) {
+			posts.push(
+				"<div class='container_gallery_display'>",
+				"<div class='container_content_gallery_item_display'>",
+				"<div class='gallery_item_display' data-postid='"+elements[i].id+"'>",
+				"<div class='img_gallery_item_display' style='background-image: url("+base_url+elements[i].capa+");'></div>",
+				"<div class='author_gallery_item_display'>",
+				"<span>Por: "+elements[i].autor+"</span>",
+				"</div>",
+				"<div class='info_gallery_item_display'>",
+				"<p class='title_gallery_item_display'>"+elements[i].titulo+"</p>",
+				"<p class='description_gallery_item_display'>"+elements[i].conteudo.substring(0, 97)+"...</p>",
+				"</div>",
+				"</div>",
+				<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+				"<div class='container_menu_gallery_item_display'>",
+				"<i class='fa fa-ellipsis-v more_gallery_item_display inactive' aria-hidden='true'></i>",
+				"<ul class='menu_gallery_item_display inactive'>",
+				"<li class='item_menu_gallery_item_display'>",
+				"<i class='fa fa-info-circle icon_menu_gallery_item' aria-hidden='true'></i>",
+				"<span class='text_menu_gallery_item'>Detalhes</span>",
+				"</li>",
+				"<li class='item_menu_gallery_item_display'>",
+				"<i class='fa fa-external-link icon_menu_gallery_item' aria-hidden='true'></i>",
+				"<span class='text_menu_gallery_item'>Visitar</span>",
+				"</li>",
+				"<li class='item_menu_gallery_item_display'>",
+				"<i class='fa fa-pencil-square-o icon_menu_gallery_item' aria-hidden='true'></i>",
+				"<span class='text_menu_gallery_item'>Editar</span>",
+				"</li>",
+				"</ul>",
+				"</div>",
+			<?php endif ?>
+			"</div>",
+			"</div>");
+		}
+
+		$(".gallery_posts").html(posts.join(""));
+	}
 
 </script>
 

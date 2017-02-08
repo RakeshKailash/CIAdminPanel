@@ -55,7 +55,16 @@ class Postagens_model extends CI_Model
 			return false;
 		}
 
-		return $query->result();
+		$result = $query->result();
+
+		if (!$id)
+		{
+			foreach ($result as &$post) {
+				$post->conteudo = strip_tags($post->conteudo);
+			}
+		}
+
+		return $result;
 	}
 
 	public function orderPosts ($order)

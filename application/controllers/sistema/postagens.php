@@ -83,13 +83,30 @@ class Postagens extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('success', "<p>Postagem salva com sucesso!</p>");
-		return redirect('sistema/postagens');
+		$this->load->view('sistema/postagens/home', $info);
 	}
 
 	public function retrieve ($id=null)
 	{
 		$posts = $this->postagens_model->getPosts($id)[0];
 		echo json_encode($posts);
+	}
+
+	public function editar ($id=null)
+	{
+		if (! $id)
+		{
+			return redirect('sistema/postagens');
+		}
+
+		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
+		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
+		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
+		$info['registro'] = $this->secoes_sistema->getInfo(5)[0];
+		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$info['edit_post'] = $this->postagens_model->getPosts($id)[0];
+
+		$this->load->view('sistema/postagens/editar', $info);
 	}
 
 	public function update ()
