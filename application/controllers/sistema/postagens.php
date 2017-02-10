@@ -83,7 +83,7 @@ class Postagens extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('success', "<p>Postagem salva com sucesso!</p>");
-		$this->load->view('sistema/postagens/home', $info);
+		return redirect('sistema/postagens');
 	}
 
 	public function retrieve ($id=null)

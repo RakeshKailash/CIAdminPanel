@@ -172,7 +172,7 @@ $usuarios = $this->usuario_model->getUser();
 												<div class="col-md-9 col-sm-9 col-xs-12">
 													<div>
 														<label>
-															<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post" value="1"> Publicar
+															<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post" value="1" <?=!!$edit_post->listar ? 'checked' : ''?>> Publicar
 														</label>
 													</div>
 												</div>
@@ -185,10 +185,9 @@ $usuarios = $this->usuario_model->getUser();
 													<!-- /Herdado da edição de Usuários -->
 
 													<input type="hidden" name="save_type" id="save_type" value="0">
-													<input type="hidden" id="id_postagem" name="id_postagem" value="<?=isset($_SESSION['edit_post_id']) ? $_SESSION['edit_post_id'] : '0' ?>">
-													<button type="reset" class="btn btn-warning">Limpar</button>
-													<button type="button" id="salvar_rascunho_post" class="btn btn-primary">Salvar Rascunho</button>
-													<button type="button" id="salvar_postar_post" class="btn btn-success">Salvar e Postar</button>
+													<input type="hidden" id="id_postagem" name="id_postagem" value="<?=$edit_post->id;?>">
+													<button type="button" class="btn btn-warning"><a href="<?=base_url('sistema/postagens')?>">Cancelar</a></button>
+													<button type="submit" class="btn btn-success">Salvar Edições</button>
 												</div>
 											</div>
 										</form> <!-- /Criar Editar Postagens -->
