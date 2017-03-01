@@ -104,30 +104,23 @@ class Postagens extends CI_Controller {
 
 		if ($id)
 		{
-			// $data['capa'] = 1;
-			if ($has_img)
+			$post = $this->postagens_model->getPosts($id)[0];
+			$data['capa'] = $post->id_capa;
+
+			if ($has_img && $change_img)
 			{
-				$post = $this->postagens_model->getPosts($id)[0];
 				$replaceImg = $this->imagens_model->update($post->id_capa, 'images/uploads/posts', 'imagem');
-				if ($replaceImg)
-				{
-					$data['capa'] = $replaceImg;
-				}
 			}
 
 			if (! $has_img)
 			{
-				$post = $this->postagens_model->getPosts($id)[0];
 				$replaceImg = $this->imagens_model->update($post->id_capa, 'images/uploads/posts', null);
-				if ($replaceImg)
-				{
-					$data['capa'] = $replaceImg;
-				}
 			}
+
 		}
 
 		$data['conteudo'] = $this->input->post('conteudo');
-		$data['listar'] = $this->input->post('save_type');
+		$data['listar'] = empty($this->input->post('status_post')) ? 0 : $this->input->post('status_post');
 		$id = $this->input->post('id_postagem');
 
 		if (! $this->postagens_model->savePost($data, $id))

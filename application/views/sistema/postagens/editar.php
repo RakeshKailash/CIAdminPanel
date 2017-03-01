@@ -88,7 +88,8 @@ $usuarios = $this->usuario_model->getUser();
 														<div id='img_selecionada'>
 														<?php if (sizeof($edit_post->capa) > 0) : ?>
 															<img src="<?=base_url($edit_post->capa);?>" alt="Nenhuma imagem selecionada" class="preview_img_form">
-														<?php else: ?>
+														<?php endif ?>
+														<?php if (sizeof($edit_post->capa) <= 0) : ?>
 															<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>
 														<?php endif ?>
 														</div>
