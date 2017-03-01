@@ -44,9 +44,10 @@ class Postagens_model extends CI_Model
 		}
 
 		$this->db->order_by('postagens.`dataCriacao`', 'DESC');
-		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, postagens.capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
+		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, imagens.caminho AS capa, imagens.id AS id_capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
 
 		$this->db->join('usuarios', 'usuarios.id = postagens.autor');
+		$this->db->join('imagens', 'imagens.id = postagens.capa');
 
 		$query = $this->db->get('postagens');
 
@@ -108,55 +109,49 @@ class Postagens_model extends CI_Model
 			break;
 		}
 
-		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, postagens.capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
+		$this->db->select('postagens.id, postagens.titulo, postagens.conteudo, imagens.caminho AS capa, usuarios.nome AS autor, postagens.dataCriacao, postagens.ultimaVersao, postagens.listar, postagens.acessos');
 
 		$this->db->join('usuarios', 'usuarios.id = postagens.autor');
+		$this->db->join('imagens', 'imagens.id = postagens.capa');
 
-		$result = $this->db->get('postagens');
+		$query = $this->db->get('postagens');
 
-		if (! $result)
+		if (! $query)
 		{
 			return false;
 		}
 
-		return $result->result();
+		$result = $query->result();
+
+		foreach ($result as &$post) {
+			$post->conteudo = strip_tags($post->conteudo);
+		}
+
+		return $result;
 
 	}
 
-	/*
-		Order:
-		- Mais Recentes
-		- Mais Antigos
-		- Visualizações
-		- Recentemente Alterados
-
-		Group:
-		- Autor
-		- Status
-
-	*/
-
-		private function insertPost ($data=null)
+	private function insertPost ($data=null)
+	{
+		if (! $this->db->insert('postagens', $data))
 		{
-			if (! $this->db->insert('postagens', $data))
-			{
-				return false;
-			}
-
-			return true;
+			return false;
 		}
 
-		private function updatePost ($data=null, $id=null)
-		{
-			$this->db->set($data);
-			$this->db->where('id', $id);
-
-			if (! $this->db->update('postagens'))
-			{
-				return false;
-			}
-
-			return true;
-		}
-
+		return true;
 	}
+
+	private function updatePost ($data=null, $id=null)
+	{
+		$this->db->set($data);
+		$this->db->where('id', $id);
+
+		if (! $this->db->update('postagens'))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+}

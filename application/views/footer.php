@@ -322,6 +322,7 @@
 
 	$("#imagem").change(function () {
 		if (($("#imagem").val()).length > 0) {
+			$("#img_selecionada").html("<img src='javascript:void(0)' alt='Erro ao carregar a imagem' class='preview_img_form'>");
 			changeSrcByFile($(this)[0].files[0], $('.preview_img_form'));
 			$("#has_img").val("1");
 		} else {

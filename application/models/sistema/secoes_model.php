@@ -159,6 +159,22 @@ class Secoes_model extends CI_Model
 
 	}
 
+	public function getSectionImage ($sectionId=null) {
+		if (! $sectionId) {
+			return false;
+		}
+
+		$query = "SELECT * FROM imagens WHERE imagens.`id` = (SELECT imagem FROM secoes WHERE secoes.`id` = ".$sectionId.")";
+
+		$result = $this->db->query($query)->result();
+
+		if (! $result) {
+			return false;
+		}
+
+		return $result[0];
+	}
+
 	public function getSitePreferences ($prefName=null)
 	{
 		if ($prefName)

@@ -38,140 +38,12 @@ $usuarios = $this->usuario_model->getUser();
 					</div>
 					<div class="clearfix"></div>
 
-					<!-- <div class="modal" tabindex="-1" role="dialog" id="post_full_modal">
-						<div class="modal-dialog modal-lg" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									<h4 class="modal-title" id="title_user_modal">Visualizar/Editar Postagem</h4>
-								</div>
-								<div class="modal-body" id="img_modal_body" style="overflow: hidden;">
-									<div class="col-lg-12 col-xs-12 col-md-12">
-										<div class="col-md-12 col-lg-12 div_img_preview_modal">
-											<img class="img_preview_modal" src="<?=base_url('images/uploads/sections/mountain.jpg');?>">
-											<div class="buttons_container">
-												<i class="fa fa-times icon_buttons_post" aria-hidden="true" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Remover Capa"></i>
-												<i class="fa fa-file-image-o icon_buttons_post" aria-hidden="true" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Carregar nova Capa"></i>
-											</div>
-										</div>
-									</div>
-									<div class="tools_modal_inside col-md-12" style="margin-top: 30px;">
-										<div class="row">
-											<div class="col-md-12 col-sm-12 col-xs-12">
-												<form action="<?=base_url('sistema/postagens/update')?>" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
-													<div class="form-group">
-														<label for="titulo_post_modal" class="control-label col-md-12 col-sm-12 col-xs-12" style="text-align: left; padding-left: 10px;">Título</label>
-														<div class="col-md-12 col-sm-12 col-xs-12">
-															<input id="titulo_post_modal" type="text" name="titulo_post_modal" class="form-control">
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-md-12 col-sm-12 col-xs-12" for="conteudo_post_modal" style="text-align: left; padding-left: 10px;">Conteúdo: <span class="required">*</span></label>
-														<div class="col-md-12 col-sm-12 col-xs-12">
-															<div id="alerts"></div>
-															<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor[data-use='modal']">
-																<div class="btn-group">
-																	<a class="btn dropdown-toggle" data-toggle="dropdown" title="Fonte"><i class="fa icon-font"></i><b class="caret"></b></a>
-																	<ul class="dropdown-menu">
-																	</ul>
-																</div>
-																<div class="btn-group">
-																	<a class="btn dropdown-toggle" data-toggle="dropdown" title="Tamannho da Fonte"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
-																	<ul class="dropdown-menu">
-																		<li>
-																			<a data-edit="fontSize 5">
-																				<p style="font-size:17px">Grande</p>
-																			</a>
-																		</li>
-																		<li>
-																			<a data-edit="fontSize 3">
-																				<p style="font-size:14px">Normal</p>
-																			</a>
-																		</li>
-																		<li>
-																			<a data-edit="fontSize 1">
-																				<p style="font-size:11px">Pequeno</p>
-																			</a>
-																		</li>
-																	</ul>
-																</div>
-																<div class="btn-group">
-																	<a class="btn" data-edit="bold" title="Negrito (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
-																	<a class="btn" data-edit="italic" title="Itálico (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
-																	<a class="btn" data-edit="strikethrough" title="Riscado"><i class="icon-strikethrough"></i></a>
-																	<a class="btn" data-edit="underline" title="Sublinhado (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
-																</div>
-																<div class="btn-group">
-																	<a class="btn" data-edit="insertunorderedlist" title="Lista Não-ordenada"><i class="icon-list-ul"></i></a>
-																	<a class="btn" data-edit="insertorderedlist" title="Lista Ordenada"><i class="icon-list-ol"></i></a>
-																	<a class="btn" data-edit="outdent" title="Reduzir Indentação (Shift+Tab)"><i class="icon-indent-left"></i></a>
-																	<a class="btn" data-edit="indent" title="Indentar (Tab)"><i class="icon-indent-right"></i></a>
-																</div>
-																<div class="btn-group">
-																	<a class="btn" data-edit="justifyleft" title="Alinhar à Esquerda (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
-																	<a class="btn" data-edit="justifycenter" title="Centralizar (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
-																	<a class="btn" data-edit="justifyright" title="Alinhar à Direita (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
-																	<a class="btn" data-edit="justifyfull" title="Justificar (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
-																</div>
-																<div class="btn-group">
-																	<a class="btn dropdown-toggle" data-toggle="dropdown" title="Link"><i class="icon-link"></i></a>
-																	<div class="dropdown-menu input-append">
-																		<input class="span2" placeholder="URL" type="text" data-edit="createLink" />
-																		<button class="btn" type="button">Add</button>
-																	</div>
-																	<a class="btn" data-edit="unlink" title="Remover Link"><i class="icon-cut"></i></a>
-
-																</div>
-
-																<div class="btn-group">
-																	<a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a>
-																	<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
-																</div>
-																<div class="btn-group">
-																	<a class="btn" data-edit="undo" title="Desfazer (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
-																	<a class="btn" data-edit="redo" title="Refazer (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
-																</div>
-															</div>
-															<div id="editor" contenteditable="true" data-use="modal"></div>
-															<textarea name="conteudo_post_modal" id="descr" data-use="modal" style="display:none;"></textarea>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
-														<div class="col-md-9 col-sm-9 col-xs-12">
-															<div>
-																<label>
-																	<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post_modal" value="1"> Publicar
-																</label>
-															</div>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
-															<input type="hidden" name="id_post" id="id_post_hidden" value="0">
-															<?php if ($_SESSION['tipoUsuario'] != 1): ?>
-																<button type="submit" class="btn btn-success">Salvar</button>
-															<?php endif; ?>
-														</div>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-								</div>
-							</div>
-						</div>
-					</div> -->
-
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="container">
 									<div class="col-md-12 col-xs-12">
-										<h2>Criar ou Editar Postagem</h2>
+										<h2>Nova Postagem</h2>
 										<div id="mensagens">
 											<?php if ($error) : ?>
 												<div class="alert alert-danger fade in">
@@ -204,7 +76,7 @@ $usuarios = $this->usuario_model->getUser();
 												<div class="col-md-6 col-sm-6 col-xs-12" style="text-align: center;">
 													<div class="col-md-6 col-xs-12">
 														<div id='img_selecionada'>
-															<img src="javascript:void(0)" alt="Nenhuma imagem selecionada" class="preview_img_form">
+															<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>
 														</div>
 													</div>
 													<div class="col-md-6 col-xs-12" style="margin-top: 20px;">
@@ -286,8 +158,8 @@ $usuarios = $this->usuario_model->getUser();
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
-												<div class="col-md-9 col-sm-9 col-xs-12">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
 													<div>
 														<label>
 															<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post" value="1"> Publicar
@@ -298,15 +170,14 @@ $usuarios = $this->usuario_model->getUser();
 											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 													<!-- Herdado da edição de Usuários -->
-													<input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>">
+													<!-- <input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>"> -->
 													<input type="hidden" name="has_img" value="<?=$_SESSION['imagem'] == 'user.png' ? '0' : '1'?>" id="has_img">
 													<!-- /Herdado da edição de Usuários -->
 
 													<input type="hidden" name="save_type" id="save_type" value="0">
-													<input type="hidden" id="id_postagem" name="id_postagem" value="<?=isset($_SESSION['edit_post_id']) ? $_SESSION['edit_post_id'] : '0' ?>">
+													<input type="hidden" id="id_postagem" name="id_postagem" value="0">
 													<button type="reset" class="btn btn-warning">Limpar</button>
-													<button type="button" id="salvar_rascunho_post" class="btn btn-primary">Salvar Rascunho</button>
-													<button type="button" id="salvar_postar_post" class="btn btn-success">Salvar e Postar</button>
+													<button type="button" id="salvar_postar_post" class="btn btn-success">Salvar Postagem</button>
 												</div>
 											</div>
 										</form> <!-- /Criar Editar Postagens -->

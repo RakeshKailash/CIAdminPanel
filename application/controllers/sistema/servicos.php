@@ -54,12 +54,14 @@ class Servicos extends CI_Controller {
 		if (! $has_img)
 		{
 			$campo = null;
-			$this->imagens_model->replaceSectionImg(2, $campo);
+			$prevImg = $this->secoes_sistema->getSectionImage(2);
+			$this->imagens_model->update($prevImg->id, 'images/uploads/sections', $campo);
 		}
 
 		if ($has_img && $change_img)
 		{
-			$this->imagens_model->replaceSectionImg(2, $campo);
+			$prevImg = $this->secoes_sistema->getSectionImage(2);
+			$this->imagens_model->update($prevImg->id, 'images/uploads/sections', $campo);
 		}
 
 		if (! $this->secoes_sistema->update($dados, 2))

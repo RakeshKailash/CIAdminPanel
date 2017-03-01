@@ -9,55 +9,107 @@ class Imagens_model extends CI_Model {
 
 	public function replaceSectionImg ($secao=1, $campo=null)
 	{
-
-		$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
-		if ($campo) {
-
-			$config_upload['upload_path'] = $caminho_pasta . 'images/uploads/sections/';
-			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
-			$config_upload['max_size'] = '5120';
-			$config_upload['max_width'] = '0';
-			$config_upload['max_height'] = '0';
-			$config_upload['encrypt_name'] = true;
-
-			$this->load->library('upload', $config_upload);
-
-			if (! $this->upload->do_upload($campo)) {
-				throw new Exception($this->upload->display_errors());
-			}
-
-			$info_img = $this->upload->data();
-
-		} else {
-			$info_img = array('file_name' => null, 'file_size' => 0);
-		}
-
-		$this->db->select('imagens.id, imagens.caminho');
-		$this->db->from('imagens');
-		$this->db->join('secoes', "secoes.id = $secao AND imagens.id = secoes.imagem");
-
-		$img_anterior = $this->db->get()->result()[0];
-
-		unlink($caminho_pasta . $img_anterior->caminho);
-
-		$info_retorno['imagem']['nome'] = $info_img['file_name'];
-		$info_retorno['imagem']['tamanho'] = $info_img['file_size'];
-		$info_retorno['imagem']['caminho'] = $info_img['file_name'] != null ? ('images/uploads/sections/' . $info_img['file_name']) : null;
-
-		$data_insert = array('nome' => $info_img['file_name'], 'tamanho' => $info_img['file_size'], 'caminho' => $info_retorno['imagem']['caminho']);
-
-		$this->db->where('id', $img_anterior->id);
-		$update_img = $this->db->update('imagens', $data_insert);
-
-		if ( ! $update_img) {
-			// $info_retorno['error']['count']++;
+		if (! $secao)
+		{
 			return false;
 		}
 
-		$info_retorno['imagem']['id'] = $img_anterior->id;
+		$path = 'images/uploads/sections/';
 
+		$info_img = $this->uploadImg($path, $campo);
+
+		if (! $info_img)
+		{
+			return false;
+		}
+
+		$img_anterior = $this->getImg('secoes', $secao);
+		$replace = $this->replaceImg($img_anterior, $info_img, $path);
+
+		if (! $replace)
+		{
+			return false;
+		}
+
+		$info_retorno['imagem'] = $replace;
 
 		return $info_retorno;
+	}
+
+
+	public function replacePostImg ($post=null, $campo=null)
+	{
+		if (! $post)
+		{
+			return false;
+		}
+
+		$path = 'images/uploads/posts/';
+
+		$info_img = $this->uploadImg($path, $campo);
+
+		if (! $info_img)
+		{
+			return false;
+		}
+
+		$img_anterior = $this->getImg('postagens', $post);
+
+		$replace = $this->replaceImg($img_anterior, $info_img, $path);
+
+		if (! $replace)
+		{
+			return false;
+		}
+
+		$info_retorno['imagem'] = $replace;
+
+		return $info_retorno;
+	}
+
+	public function insert ($campo=null, $path='images/uploads/')
+	{
+		if (! $campo)
+		{
+			$imgData['nome'] = null;
+			$imgData['tamanho'] = 0;
+			$imgData['caminho'] = null;
+
+			return $this->insertImg($imgData);
+		}
+
+		$info_img = $this->uploadImg($path, $campo);
+
+		$imgData['nome'] = $info_img['file_name'];
+		$imgData['tamanho'] = $info_img['file_size'];
+		$imgData['caminho'] = $path . $info_img['file_name'];
+
+		return $this->insertImg($imgData);
+	}
+
+	public function update ($imgId=null, $path='images/uploads', $field=null)
+	{
+		if (! $imgId)
+		{
+			return false;
+		}
+
+		$prevImg = $this->getImgs($imgId)[0];
+
+		if (! $field)
+		{
+			$query = $this->replaceImg($prevImg, null, $path);
+		}
+
+		$newImg = $this->uploadImg($path, $field);
+		$query = $this->replaceImg($prevImg, $newImg, $path);
+
+		if (! $query)
+		{
+			return false;
+		}
+
+		return $query->id;
 	}
 
 	public function fillGallery ($campo=null)
@@ -187,4 +239,112 @@ class Imagens_model extends CI_Model {
 
 		unlink($caminho_pasta . $zip_name);
 	}
+
+	private function uploadImg ($path=null, $field=null)
+	{
+		if (! $path)
+		{
+			return false;
+		}
+
+		if ($field) {
+			$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
+			$config_upload['upload_path'] = $caminho_pasta . $path;
+			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
+			$config_upload['max_size'] = '5120';
+			$config_upload['max_width'] = '0';
+			$config_upload['max_height'] = '0';
+			$config_upload['encrypt_name'] = true;
+
+			$this->load->library('upload', $config_upload);
+
+			if (! $this->upload->do_upload($field)) {
+				// throw new Exception($this->upload->display_errors());
+				return false;
+			}
+
+			$info_img = $this->upload->data();
+
+		} else {
+			$info_img = array('file_name' => null, 'file_size' => 0);
+		}
+
+		return $info_img;
+	}
+
+	private function getImgs ($id=null)
+	{
+		if ($id)
+		{
+			$this->db->where('imagens.id = ' . $id);
+		}
+
+		$this->db->select('imagens.id, imagens.caminho');
+
+		return $this->db->get('imagens')->result();
+	}
+
+	private function replaceImg ($prevImg=null, $newImg=null, $path=null)
+	{
+		if (! $prevImg || ! $path)
+		{
+			return false;
+		}
+
+		if ($newImg)
+		{
+			$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
+			unlink($caminho_pasta . $prevImg->caminho);
+
+			$retorno['nome'] = $newImg['file_name'];
+			$retorno['tamanho'] = $newImg['file_size'];
+			$retorno['caminho'] = $newImg['file_name'] != null ? ($path . '/' . $newImg['file_name']) : null;
+		}
+
+		if (! $newImg)
+		{
+			$retorno['nome'] = null;
+			$retorno['tamanho'] = 0;
+			$retorno['caminho'] = null;
+		}
+
+		$data_insert = array('nome' => $newImg['file_name'], 'tamanho' => $newImg['file_size'], 'caminho' => $retorno['caminho']);
+
+		$this->db->where('id', $prevImg->id);
+		$update_img = $this->db->update('imagens', $data_insert);
+
+		if ( ! $update_img) {
+			// $info_retorno['error']['count']++;
+			return false;
+		}
+
+		$retorno['id'] = $prevImg->id;
+
+		return $retorno;
+	}
+
+	private function insertImg ($imgInfo=null)
+	{
+		if (! $imgInfo)
+		{
+			return false;
+		}
+
+		$query = $this->db->insert('imagens', $imgInfo);
+
+		if (! $query)
+		{
+			return false;
+		}
+
+		$idImg = $this->db->insert_id();
+
+		if (! $idImg)
+		{
+			return false;
+		}
+
+		return $idImg;
+	}
+
 }

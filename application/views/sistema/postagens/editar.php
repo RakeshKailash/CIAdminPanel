@@ -86,7 +86,11 @@ $usuarios = $this->usuario_model->getUser();
 												<div class="col-md-10 col-sm-10 col-xs-12" style="text-align: center;">
 													<div class="col-md-4 col-xs-12">
 														<div id='img_selecionada'>
-															<img src="javascript:void(0)" alt="Nenhuma imagem selecionada" class="preview_img_form">
+														<?php if (sizeof($edit_post->capa) > 0) : ?>
+															<img src="<?=base_url($edit_post->capa);?>" alt="Nenhuma imagem selecionada" class="preview_img_form">
+														<?php else: ?>
+															<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>
+														<?php endif ?>
 														</div>
 													</div>
 													<div class="col-md-2 col-xs-12" style="margin-top: 20px;">
@@ -180,8 +184,8 @@ $usuarios = $this->usuario_model->getUser();
 											<div class="form-group">
 												<div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-2">
 													<!-- Herdado da edição de Usuários -->
-													<input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>">
-													<input type="hidden" name="has_img" value="<?=$_SESSION['imagem'] == 'user.png' ? '0' : '1'?>" id="has_img">
+													<!-- <input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>"> -->
+													<input type="hidden" name="has_img" value="<?=sizeof($edit_post->capa) > 0 ? '1' : '0'?>" id="has_img">
 													<!-- /Herdado da edição de Usuários -->
 
 													<input type="hidden" name="save_type" id="save_type" value="0">

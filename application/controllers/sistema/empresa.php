@@ -46,12 +46,14 @@ class Empresa extends CI_Controller {
 		if (! $has_img)
 		{
 			$campo = null;
-			$this->imagens_model->replaceSectionImg(3, $campo);
+			$prevImg = $this->secoes_sistema->getSectionImage(3);
+			$this->imagens_model->update($prevImg->id, 'images/uploads/sections', $campo);
 		}
 
 		if ($has_img && $change_img)
 		{
-			$this->imagens_model->replaceSectionImg(3, $campo);
+			$prevImg = $this->secoes_sistema->getSectionImage(3);
+			$this->imagens_model->update($prevImg->id, 'images/uploads/sections', $campo);
 		}
 
 		$dados['conteudo'] = $this->input->post('conteudo');

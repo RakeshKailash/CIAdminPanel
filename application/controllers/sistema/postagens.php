@@ -39,17 +39,37 @@ class Postagens extends CI_Controller {
 
 		$validate = $this->validatePost('titulo', 'conteudo');
 
-		if (! $validate)
+		if ($validate != true)
 		{
 			$this->session->set_flashdata('error', $validate);
 			return redirect('sistema/postagens');
 		}
 
+		$id = $this->input->post('id_postagem');
+
 		$data['titulo'] = $this->input->post('titulo');
-		$data['capa'] = null;
+		$has_img = !! $this->input->post('has_img');
+		$change_img = $has_img && ! empty($_FILES['imagem']['name']);
+
+		if (! $id && $has_img)
+		{
+			$insertImg = $this->imagens_model->insert('imagem', 'images/uploads/posts/');
+			$data['capa'] = $insertImg ? $insertImg : 1;
+		}
+
+		if ($id)
+		{
+			$data['capa'] = 1;
+			if ($has_img)
+			{
+				$post = $this->postagens_model->getPosts($id)[0];
+				$replaceImg = $this->imagens_model->update($post->id_capa, 'images/uploads/posts', 'imagem');
+				$data['capa'] = $replaceImg ? $replaceImg : 1;
+			}
+		}
+
 		$data['conteudo'] = $this->input->post('conteudo');
 		$data['listar'] = 1;
-		$id = $this->input->post('id_postagem');
 
 		$this->postagens_model->savePost($data, $id);
 	}
@@ -66,12 +86,46 @@ class Postagens extends CI_Controller {
 
 		if (! $validate)
 		{
-			$this->session->set_flashdata('warning', $validate);
 			return redirect('sistema/postagens');
 		}
 
+		$id = $this->input->post('id_postagem');
 		$data['titulo'] = $this->input->post('titulo');
-		$data['capa'] = null;
+
+		$has_img = !! $this->input->post('has_img');
+		$change_img = $has_img && ! empty($_FILES['imagem']['name']);
+
+		if (! $id)
+		{
+			$campo = $has_img ? 'imagem' : null;
+			$insertImg = $this->imagens_model->insert($campo, 'images/uploads/posts/');
+			$data['capa'] = $insertImg ? $insertImg : null;
+		}
+
+		if ($id)
+		{
+			// $data['capa'] = 1;
+			if ($has_img)
+			{
+				$post = $this->postagens_model->getPosts($id)[0];
+				$replaceImg = $this->imagens_model->update($post->id_capa, 'images/uploads/posts', 'imagem');
+				if ($replaceImg)
+				{
+					$data['capa'] = $replaceImg;
+				}
+			}
+
+			if (! $has_img)
+			{
+				$post = $this->postagens_model->getPosts($id)[0];
+				$replaceImg = $this->imagens_model->update($post->id_capa, 'images/uploads/posts', null);
+				if ($replaceImg)
+				{
+					$data['capa'] = $replaceImg;
+				}
+			}
+		}
+
 		$data['conteudo'] = $this->input->post('conteudo');
 		$data['listar'] = $this->input->post('save_type');
 		$id = $this->input->post('id_postagem');
@@ -130,6 +184,29 @@ class Postagens extends CI_Controller {
 		$data['listar'] = !!$this->input->post('status_post_modal');
 		$id = $this->input->post('id_post');
 
+		$has_img = !! $this->input->post('has_img');
+		$change_img = $has_img && ! empty($_FILES['imagem']['name']);
+
+		if (! $id && $has_img)
+		{
+			$insertImg = $this->imagens_model->insert('imagem', 'images/uploads/posts/');
+			$data['capa'] = $insertImg ? $insertImg : null;
+		}
+
+		if ($id)
+		{
+			$data['capa'] = 1;
+			if ($has_img)
+			{
+				$post = $this->postagens_model->getPosts($id)[0];
+				$replaceImg = $this->imagens_model->update($post->id_capa, 'images/uploads/posts', 'imagem');
+				if ($replaceImg)
+				{
+					$data['capa'] = $replaceImg;
+				}
+			}
+		}
+
 		if (! $this->postagens_model->savePost($data, $id))
 		{
 			$this->session->set_flashdata('error', "<p>Erro ao atualizar a Postagem! Tente novamente</p>");
@@ -137,7 +214,7 @@ class Postagens extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('success', "<p>Postagem alterada com sucesso!</p>");
-		return redirect('sistema/postagens');
+		return redirect('sistema/postagens/editar/'.$id);
 	}
 
 	public function filterPosts ($orderBy = null)
@@ -168,7 +245,8 @@ class Postagens extends CI_Controller {
 
 		if ($this->form_validation->run() == false)
 		{
-			return validation_errors('<p>','<p>');
+			$this->session->set_flashdata('error', validation_errors('<p>','<p>'));
+			return false;
 		}
 
 		return true;
