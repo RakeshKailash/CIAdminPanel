@@ -67,7 +67,8 @@ a:hover {
   padding: 140px 0;
 }
 .navbar-default .navbar-nav > li > a:hover {
-  color: #e54040;
+  /*color: #e54040;*/
+  color: #009EE3;
 }
 .navbar.navbar-default {
   border: 0;
@@ -123,7 +124,8 @@ a:hover {
   text-transform: uppercase;
 }
 #top-bar .main-menu li a:hover {
-  color: #e54040;
+  /*color: #e54040;*/
+  color: #009EE3;
 }
 .navbar-custom .nav li > a {
   position: relative;
@@ -194,7 +196,8 @@ a:hover {
   border-radius: 0;
 }
 #call-to-action {
-  background: #e54040;
+  /*background: #e54040;*/
+  background: #009EE3
   background-size: cover;
   background-attachment: fixed;
   padding: 80px 0;
@@ -220,7 +223,8 @@ a:hover {
 #call-to-action .block .btn-contact {
   background: #fff;
   border: none;
-  color: #e54040;
+  /*color: #e54040;*/
+  color: #009EE3;
   padding: 16px 35px;
   margin-top: 20px;
   font-size: 12px;

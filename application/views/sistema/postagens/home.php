@@ -183,7 +183,20 @@ $usuarios = $this->usuario_model->getUser();
 										</form> <!-- /Criar Editar Postagens -->
 										<div class="ln_solid"></div>
 										<h2>Galeria de Postagens</h2>
-										<div class="posts_gallery_filters col-md-12" style="margin-bottom: 30px; text-align: center;">
+										<div class="posts_gallery_subtitle col-md-12">
+											<p class="subtitle">
+												<i class="fa fa-check-circle" aria-hidden="true" style="color: #3FC1A5"></i>
+												<label class="control-label">Publicada</label>
+											</p>
+											<p class="subtitle">
+												<i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #F4A72D"></i>
+												<label class="control-label">Rascunho</label>
+											</p>
+											<p class="subtitle"><label class="control-label">
+												Clique nos ícones para alterar o status das postagens (<i class="fa fa-check-circle" aria-hidden="true" style="color: #3FC1A5"></i>/<i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #F4A72D"></i>)</label>
+											</p>
+										</div>
+										<div class="posts_gallery_filters col-md-12" style="margin-bottom: 20px; text-align: center;">
 											<div class="col-md-3 col-xs-12 gallery_filters">
 												<select class="form-control" name="order_by_posts" id="order_by_posts">
 													<option value="default" selected>-- Ordenar Por --</option>
@@ -195,16 +208,16 @@ $usuarios = $this->usuario_model->getUser();
 													<option value="status">Status</option>
 												</select>
 											</div>
-											<div class="col-md-2 col-xs-12 gallery_filters">
+											<!-- <div class="col-md-2 col-xs-12 gallery_filters">
 												<button type="button" class="btn btn-success">Refinar Seleção</button>
-											</div>
+											</div> -->
 										</div>
 										<div class="gallery_posts">
 											<?php foreach ($postagens as $postagem): ?>
 												<div class="container_gallery_display">
 													<div class="container_content_gallery_item_display">
 														<div class="gallery_item_display" data-postid="<?=$postagem->id?>">
-															<div class="img_gallery_item_display" style="background-image: url('<?=base_url($postagem->capa)?>');"></div>
+															<div class="img_gallery_item_display" <?=sizeof($postagem->capa) > 0 ? "style='background-image: url(".base_url($postagem->capa).");'" : "style='background: #222;'"?>></div>
 															<div class="author_gallery_item_display">
 																<span>Por: <?=$postagem->autor?></span>
 															</div>
@@ -213,25 +226,12 @@ $usuarios = $this->usuario_model->getUser();
 																<p class="description_gallery_item_display"><?=strip_tags(mb_substr($postagem->conteudo, 0, 97)) . '...'?></p>
 															</div>
 														</div>
-														<?php if ($_SESSION['tipoUsuario'] != 1): ?>
-															<div class="container_menu_gallery_item_display">
-																<i class="fa fa-ellipsis-v more_gallery_item_display inactive" aria-hidden="true"></i>
-																<ul class="menu_gallery_item_display inactive">
-																	<li class="item_menu_gallery_item_display">
-																		<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
-																		<span class="text_menu_gallery_item">Detalhes</span>
-																	</li>
-																	<li class="item_menu_gallery_item_display">
-																		<i class="fa fa-external-link icon_menu_gallery_item" aria-hidden="true"></i>
-																		<span class="text_menu_gallery_item">Visitar</span>
-																	</li>
-																	<li class="item_menu_gallery_item_display">
-																		<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
-																		<span class="text_menu_gallery_item">Editar</span>
-																	</li>
-																</ul>
-															</div>
-														<?php endif ?>
+														<?php
+														if ($_SESSION['tipoUsuario'] != 1) {
+															$this->load->view('sistema/postagens/post_menu');
+														}
+														?>
+														<i class="fa fa-<?=$postagem->listar ? 'check-circle listed_post true' : 'exclamation-circle listed_post false'?>" aria-hidden='true' data-status="<?=$postagem->listar?>"></i>
 													</div>
 												</div>
 											<?php endforeach ?>
@@ -284,6 +284,53 @@ $usuarios = $this->usuario_model->getUser();
 		var idPostagem = $(this).data('postid');
 
 		window.location = base_url + 'sistema/postagens/editar/' + idPostagem;
+	});
+
+	$(".container_menu_gallery_item_display").on('click', '.item_menu_gallery_item_display', function () {
+		var idPostagem = $(this).parent().parent().parent().children(".gallery_item_display").first().data('postid');
+
+		switch ($(this).data('item')) {
+			case 'edit' :
+				window.location = base_url + 'sistema/postagens/editar/' + idPostagem;
+			break;
+
+			case 'delete' :
+				window.location = base_url + 'sistema/postagens/delete/' + idPostagem;
+			break;
+
+			case 'visit' :
+				window.location = base_url + 'site/postagens/' + idPostagem;
+			break;
+		}
+	});
+
+	$(".container_content_gallery_item_display").on('click', '.listed_post', function () {
+		var idPostagem = $(this).siblings("div.gallery_item_display").first().data('postid')
+		, url = base_url + "sistema/postagens/switchStatus"
+		, info = {postid: idPostagem, status: ($(this).data('status'))}
+		, elemento = $(this)
+		;
+
+		$.post(url, info, function (result) {
+			result = JSON.parse(result);
+
+			if (!result[0]) {
+				return false;
+			}
+
+			if ($(elemento).hasClass('true')) {
+				$(elemento).removeClass("fa fa-check-circle listed_post true");
+				$(elemento).addClass("fa fa-exclamation-circle listed_post false");
+				$(elemento).data('status', 0);
+				return true;
+			}
+
+			$(elemento).removeClass("fa fa-exclamation-circle listed_post false");
+			$(elemento).addClass("fa fa-check-circle listed_post true");
+			$(elemento).data('status', 1);
+			return true;
+		});
+
 	});
 
 	$("#status_post_modal").click(function () {

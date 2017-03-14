@@ -7,9 +7,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	
+
 	<title><?php echo $title[1] ?> - Projeto CI</title>
-	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto:400,500,700" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto:400,500,700" rel="stylesheet">
 	<script src="<?php echo base_url('js/jquery.min.js'); ?>" type="text/javascript"></script>
 	<link href="<?php echo base_url('fonts/css/font-awesome.min.css'); ?>" rel="stylesheet">
 
@@ -49,6 +49,7 @@
         <link rel="stylesheet" href="<?=base_url('css/jquery.fancybox.css');?>">
         <!-- template main css file -->
         <link rel="stylesheet" href="<?=base_url('css/main.css');?>">
+        <link rel="stylesheet" href="<?=base_url('css/overrided_styles.css');?>">
         <!-- responsive css -->
         <link rel="stylesheet" href="<?=base_url('css/responsive.css');?>">
 

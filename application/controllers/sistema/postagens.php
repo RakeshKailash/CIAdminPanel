@@ -210,6 +210,28 @@ class Postagens extends CI_Controller {
 		return redirect('sistema/postagens/editar/'.$id);
 	}
 
+	public function delete ($id=null) {
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
+			return redirect('sistema/postagens');
+		}
+
+		if (! $id) {
+			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente.</p>");
+			return redirect('sistema/postagens');
+		}
+
+		if (! $this->postagens_model->deletePost($id))
+		{
+			$this->session->set_flashdata('error', "<p>Erro ao excluir postagem. Tente novamente</p>");
+			return redirect('sistema/postagens');
+		}
+
+		$this->session->set_flashdata('success', "<p>Postagem excluída com sucesso!</p>");
+		return redirect('sistema/postagens');
+	}
+
 	public function filterPosts ($orderBy = null)
 	{
 		if ($orderBy == null)
@@ -224,6 +246,36 @@ class Postagens extends CI_Controller {
 		}
 
 		echo json_encode($query);
+	}
+
+	public function switchStatus () {
+		if ($_SESSION['tipoUsuario'] == 1)
+		{
+			$result = array(0 => false);
+			echo json_encode($result);
+			return false;
+		}
+
+		if (! isset($_POST['postid']) || ! isset($_POST['status']))
+		{
+			$result = array(0 => false);
+			echo json_encode($result);
+			return false;
+		}
+
+		$idPost = $this->input->post('postid');
+		$data['listar'] = !$this->input->post('status');
+
+		if (! $this->postagens_model->savePost($data, $idPost))
+		{
+			$result = array(0 => false);
+			echo json_encode($result);
+			return false;
+		}
+
+		$result = array(0 => true);
+		echo json_encode($result);
+		return true;
 	}
 
 	private function validatePost ($titleField=null, $contentField=null)
