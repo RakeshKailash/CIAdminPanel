@@ -11,6 +11,9 @@ class Secoes_model extends CI_Model {
 	{
 		$this->db->select('secoes.id, secoes.nome, secoes.conteudo, imagens.caminho, secoes.icone, secoes.link, secoes.comentarios');
 		$this->db->from('secoes');
+		// Provisório: Excluir Postagens da lista de seções
+		$this->db->where('secoes.id != 6');
+		//
 		$this->db->join('imagens', 'imagens.id = secoes.imagem');
 
 		if ($id != null) {

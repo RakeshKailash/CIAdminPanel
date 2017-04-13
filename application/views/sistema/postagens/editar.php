@@ -159,10 +159,10 @@ $usuarios = $this->usuario_model->getUser();
 
 														</div>
 
-														<!-- <div class="btn-group">
-															<a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a>
+														<div class="btn-group">
+															<!-- <a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a> -->
 															<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
-														</div> -->
+														</div>
 														<div class="btn-group">
 															<a class="btn" data-edit="undo" title="Desfazer (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
 															<a class="btn" data-edit="redo" title="Refazer (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>

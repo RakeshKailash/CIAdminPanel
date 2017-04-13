@@ -45,7 +45,7 @@ foreach ($comentarios as $comentario) {
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4><?=$_SESSION['tipoUsuario'] != 1 ? 'Gerenciar' : 'Visualizar'?> Comentários</h4>
+							<h4><?=$_SESSION['tipoUsuario'] == 1 ? 'Gerenciar' : 'Visualizar'?> Comentários</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -112,7 +112,7 @@ foreach ($comentarios as $comentario) {
 															</div>
 														</div>
 													</div>
-													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+													<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 														<div class="col-md-4">
 															<div class="form-group col-md-12">
 																<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
@@ -141,7 +141,7 @@ foreach ($comentarios as $comentario) {
 										<?php endif ?>
 										<div class="container">
 											<div class="col-md-12">
-												<?php if ($totalComments > 0 && $_SESSION['tipoUsuario'] != 1): ?>
+												<?php if ($totalComments > 0 && $_SESSION['tipoUsuario'] == 1): ?>
 													<div class="checkbox" id="select_all_comments">
 														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
@@ -159,7 +159,7 @@ foreach ($comentarios as $comentario) {
 											<div class="comentario comentario_sistema">
 												<div class="container">
 													<span class="square-badge-comentarios">ID: <?=$comentario->idComentario;?></span>
-													<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+													<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 														<div class="checkbox check_comentarios">
 															<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
 														</div>
@@ -184,7 +184,7 @@ foreach ($comentarios as $comentario) {
 															<span class="label_comentarios_sistema title_label">Status:</span>
 															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
 														</p>
-														<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+														<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 															<?php if (!$comentario->aprovado): ?>
 																<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
 															<?php endif ?>

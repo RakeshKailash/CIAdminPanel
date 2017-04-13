@@ -25,6 +25,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			<?php $this->load->view('sistema/common/navbar');?>
 			<!-- /top navigation -->
 
+			<!-- modal de uploads -->
+			<!-- <?php $this->load->view('sistema/common/uploads_modal', $uploads);?> -->
+			<!-- /modal de uploads -->
+
 			<!-- page content -->
 			<div class="right_col" role="main">
 				<div class="">
@@ -34,7 +38,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4><?=$_SESSION['tipoUsuario'] != 1 ? 'Editar' : 'Visualizar'?> Serviços</h4>
+							<h4><?=$_SESSION['tipoUsuario'] == 1 ? 'Editar' : 'Visualizar'?> Serviços</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -63,7 +67,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												<strong>Atenção!</strong> <?php echo $warning; ?>
 											</div>
 										<?php endif; ?>
-										<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+										<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 											<div id="alerts"></div>
 											<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor">
 												<div class="btn-group">
@@ -120,7 +124,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												</div>
 
 												<div class="btn-group">
-													<a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a>
+													<!-- <a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a> -->
 													<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
 												</div>
 												<div class="btn-group">
@@ -130,10 +134,10 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 											</div>
 										<?php endif ?>
 
-										<div <?=$_SESSION['tipoUsuario'] != 1 ? 'id="editor"' : '';?>>
+										<div <?=$_SESSION['tipoUsuario'] == 1 ? 'id="editor"' : '';?>>
 											<?php echo $registro->conteudo; ?>
 										</div>
-										<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+										<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 											<textarea name="conteudo" id="descr" style="display:none;"><?php echo $registro->conteudo; ?></textarea>
 										<?php endif ?>
 										<br />
@@ -149,13 +153,13 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 										<div id='img_selecionada'>
 											<?php echo $imagem; ?>
 										</div>
-										<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+										<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 											<button type="button" class="btn btn-primary" id="select_img">Selecionar Imagem</button>
 											<button type="button" class="btn btn-danger" id="remove_img">Remover Imagem</button>
 										<?php endif ?>
 
 									</div> <!-- /X-Content -->
-									<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+									<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 										<div class="x_content"> <!-- X-Content -->
 
 											<button type="button" class="btn btn-warning" id="btn_reset_form">Limpar</button>

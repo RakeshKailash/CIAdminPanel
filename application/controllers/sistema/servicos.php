@@ -11,6 +11,7 @@ class Servicos extends CI_Controller {
 		$this->load->model('sistema/usuario_model');
 		$this->load->model('sistema/imagens_model');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
+		$this->load->model('sistema/uploads_model');
 		if (! $this->usuario_model->isLogged()) {
 			redirect('sistema/login');
 		}
@@ -28,6 +29,7 @@ class Servicos extends CI_Controller {
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
 		$info['registro'] = $this->secoes_sistema->getInfo(2)[0];
 		$info['secoes'] = $this->secoes_sistema->getInfo();
+		$info['uploads'] = $this->uploads_model->getFiles();
 		$this->load->view('sistema/servicos/editar', $info);
 	}
 

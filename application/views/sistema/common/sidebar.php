@@ -1,7 +1,3 @@
-<?php
-	$usertype_images = ['eye.png', 'pencil.png', 'badge.png', 'star.png'];
- ?>
-
 <div class="col-md-3 left_col">
 	<div class="left_col scroll-view">
 
@@ -18,7 +14,7 @@
 			</div>
 			<div class="profile_info">
 				<span>Bem-vindo,</span>
-				<h2><?php echo $_SESSION['nome']; ?> <img src="<?=base_url('images/'.$usertype_images[($_SESSION['tipoUsuario'] - 1)])?>" class="usertype_image"></h2>
+				<h2><?php echo $_SESSION['nome']; ?></h2>
 			</div>
 		</div>
 		<!-- /menu prile quick info -->
@@ -33,16 +29,16 @@
 				<ul class="nav side-menu">
 					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Home </a></li>
 					<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>"><i class="fa fa-comment"></i> Comentários </a></li>
-					<li><a href="<?=base_url('sistema/postagens'); ?>"><i class="fa fa-pencil"></i> Postagens </a></li>
+					<!-- <li><a href="<?=base_url('sistema/postagens'); ?>"><i class="fa fa-pencil"></i> Postagens </a></li> -->
 				</ul>
 			</div>
 
 			<div class="menu_section">
-			<h3><?=$_SESSION['tipoUsuario'] != 1 ? 'Editar' : 'Visualizar'?> Seções</h3>
+			<h3><?=$_SESSION['tipoUsuario'] == 1 ? 'Editar' : 'Visualizar'?> Seções</h3>
 				<ul class="nav side-menu">
 					<?php
 					foreach ($secoes as $secao_info):
-						if ($secao_info->nome != 'Home') :
+						if ($secao_info->nome != 'Home' && $secao_info->nome != 'Postagens') :
 							?>
 
 						<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>

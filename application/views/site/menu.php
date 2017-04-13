@@ -11,7 +11,7 @@
 			<?php foreach ($itens as $item): ?>
 					<li><a href="<?=base_url('site/' . $item->link);?>"><?=$item->nome?></a></li>
 				<?php endforeach ?>
-			</ul>			
+			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>

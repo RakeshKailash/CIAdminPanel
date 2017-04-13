@@ -220,6 +220,10 @@
 	setTarget('#select_img_contato', '#imagem_contato');
 	// /Editar Contato
 
+	// Modal Uploads
+	// setTarget('#new_upload', '#arquivos_upload');
+	// /Modal Uploads
+
 	$(document).ready(function() {
 		$(":input").inputmask();
 	});
@@ -309,12 +313,18 @@
 		$("#has_img").val("0");
 	});
 
-	function changeSrcByFile(input, element) {
+	function createImgPreview(input, element, elementType) {
 		if (input) {
 			var reader = new FileReader();
 
 			reader.onload = function (e) {
-				$(element).attr('src', e.target.result);
+				if (elementType == 'img') {
+					$(element).attr('src', e.target.result);
+				}
+
+				if (elementType == 'div') {
+					$(element).css('backgroundImage', "url("+e.target.result+")");
+				}
 			}
 
 			reader.readAsDataURL(input);
@@ -324,7 +334,7 @@
 	$("#imagem").change(function () {
 		if (($("#imagem").val()).length > 0) {
 			$("#img_selecionada").html("<img src='javascript:void(0)' alt='Erro ao carregar a imagem' class='preview_img_form'>");
-			changeSrcByFile($(this)[0].files[0], $('.preview_img_form'));
+			createImgPreview($(this)[0].files[0], $('.preview_img_form'), 'img');
 			$("#has_img").val("1");
 		} else {
 			$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
@@ -349,7 +359,7 @@
 			label_text.push("&bull; " + arquivos[i].name);
 			preview_img = "<img src='#' class='preview_img_form preview_img_gal' title='"+arquivos[i].name+"'>";
 			$("#preview_imgs").append(preview_img);
-			changeSrcByFile(arquivos[i], $('.preview_img_form')[i]);
+			createImgPreview(arquivos[i], $('.preview_img_form')[i], 'img');
 		}
 
 		if (arquivos.length > 1) {
@@ -458,6 +468,18 @@
 		// refreshCustomGraph();
 
 	});
+
+	// Experimental Section
+
+	$('.some-selector').unbind('click');
+	$(".btn-group").click(function (e) {
+		if ($(this).children("#pictureBtn").length > 0) {
+			e.preventDefault();
+			$(".model_gallery_uploads").css('display', 'block');
+		}
+	});
+
+	// /Experimental Section
 
 	//Custom Statiscs Stuff
 	// $("#reservation").on("apply.daterangepicker", function () {

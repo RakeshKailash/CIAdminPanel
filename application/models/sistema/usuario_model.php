@@ -10,7 +10,7 @@ class Usuario_model extends CI_Model {
 
 	public function getUser ($id=null)
 	{
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, online");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, cad_ativo");
 		if ($id)
 		{
 			$this->db->where('id', $id);
@@ -42,12 +42,41 @@ class Usuario_model extends CI_Model {
 			'senha' => $user_info['senha']
 			));
 
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, online");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, cad_ativo");
 
 		$result = $this->db->get('usuarios')->result_array()[0];
 		$result['inicio'] = time();
 
 		return $result;
+	}
+
+	public function createUser ($userData=null)
+	{
+		if (! $userData) {
+			return false;
+		}
+
+		if (! $userData['senha']) {
+			return false;
+		}
+
+		$userData['senha'] = hash_password($userData['senha']);
+
+		if (!$this->db->insert('usuarios', $userData)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function hash_password ($password)
+	{
+		if (! $password) {
+			return false;
+		}
+
+		$hashed_pass = password_hash($password, PASSWORD_BCRYPT);
+		return $hashed_pass;
 	}
 
 	function verif_password ($userid, $password)
@@ -76,6 +105,7 @@ class Usuario_model extends CI_Model {
 
 		return true;
 	}
+
 
 	function updateUserType ($id, $newType)
 	{
@@ -141,6 +171,27 @@ class Usuario_model extends CI_Model {
 		return $result;
 	}
 
+	function deleteUser ($userId)
+	{
+		if (! $userId || empty($userId) || ! is_numeric($userId)) {
+			return false;
+		}
+
+		$this->db->where("id = $userId");
+
+		if (! $this->db->delete('usuarios')) {
+			return false;
+		}
+
+		// $this->db->where("id_usuario", $userId);
+
+		// if (! $this->db->delete('sessions')) {
+		// 	return false;
+		// }
+
+		return true;
+	}
+
 	public function login($login, $password)
 	{
 		$userdata = $this->getInfo($login, $password);
@@ -151,8 +202,7 @@ class Usuario_model extends CI_Model {
 		$this->session->set_userdata($userdata);
 
 		$sets = array(
-			'ultimoAcesso' => date("Y-m-d H:i:s", time()),
-			'online' => 1
+			'ultimoAcesso' => date("Y-m-d H:i:s", time())
 			);
 
 		$this->db->set($sets);
@@ -174,15 +224,6 @@ class Usuario_model extends CI_Model {
 
 	public function logout ()
 	{
-		$this->db->set('online', 0);
-		$this->db->where('id', $_SESSION['id']);
-
-		if (! $this->db->update('usuarios'))
-		{
-			$this->session->sess_destroy();
-			return false;
-		}
-
 		if (! $this->sessions_model->refresh_info())
 		{
 			$this->session->sess_destroy();
@@ -207,7 +248,6 @@ class Usuario_model extends CI_Model {
 		}
 
 		return array('status' => 'Sucesso');
-
 	}
 
 	public function refreshUserdata ()
@@ -373,12 +413,13 @@ class Usuario_model extends CI_Model {
 	{
 		$query = "
 		SELECT
-		usuarios.id AS id,
-		IF(
-		TIMESTAMPDIFF(SECOND, FROM_UNIXTIME(sessions.`fim`), CURRENT_TIMESTAMP) < 15,
-		'online',
-		'offline'
-		) AS status
+		id,
+		IF (
+		FIND_IN_SET(
+		id,
+		CAST(
+		(SELECT
+		GROUP_CONCAT(usuarios.id) AS online
 		FROM
 		usuarios
 		JOIN sessions
@@ -387,8 +428,22 @@ class Usuario_model extends CI_Model {
 		(SELECT
 		MAX(id) AS id_m
 		FROM
-		sessions WHERE id_usuario = usuarios.`id`)
-		WHERE sessions.`id_usuario` = usuarios.`id`";
+		sessions
+		WHERE id_usuario = usuarios.`id`)
+		AND TIMESTAMPDIFF(
+		SECOND,
+		FROM_UNIXTIME(sessions.`fim`),
+		CURRENT_TIMESTAMP
+		) < 15
+		WHERE sessions.`id_usuario` = usuarios.`id`) AS CHAR
+		)
+		),
+		1,
+		0
+		) AS `status`
+		FROM
+		usuarios
+		ORDER BY id ";
 
 		$onlineUsers = $this->db->query($query);
 
@@ -409,7 +464,7 @@ class Usuario_model extends CI_Model {
 
 		$this->db->where('id', $id);
 
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario");
+		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, cad_ativo");
 
 		$query = $this->db->get('usuarios');
 

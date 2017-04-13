@@ -145,7 +145,7 @@ $usuarios = $this->usuario_model->getUser();
 														</div>
 
 														<div class="btn-group">
-															<a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a>
+															<!-- <a class="btn" title="Inserir imagem (ou arraste e solte)" id="pictureBtn"><i class="icon-picture"></i></a> -->
 															<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
 														</div>
 														<div class="btn-group">
@@ -227,7 +227,7 @@ $usuarios = $this->usuario_model->getUser();
 															</div>
 														</div>
 														<?php
-														if ($_SESSION['tipoUsuario'] != 1) {
+														if ($_SESSION['tipoUsuario'] == 1) {
 															$this->load->view('sistema/postagens/post_menu');
 														}
 														?>
@@ -368,7 +368,7 @@ $usuarios = $this->usuario_model->getUser();
 				"<p class='description_gallery_item_display'>"+elements[i].conteudo.substring(0, 97)+"...</p>",
 				"</div>",
 				"</div>",
-				<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+				<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 				"<div class='container_menu_gallery_item_display'>",
 				"<i class='fa fa-ellipsis-v more_gallery_item_display inactive' aria-hidden='true'></i>",
 				"<ul class='menu_gallery_item_display inactive'>",

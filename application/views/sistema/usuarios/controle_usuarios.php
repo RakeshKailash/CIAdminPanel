@@ -53,7 +53,7 @@ $usuarios = $this->usuario_model->getUser();
 									<div class="tools_modal_inside col-md-8">
 										<div class="row">
 											<div class="col-md-12 col-sm-12 col-xs-12">
-												<form action="<?=base_url('sistema/usuarios/update_another')?>" method="post" accept-charset="utf-8">
+												<form action="<?=base_url('sistema/usuarios/delete')?>" method="post" accept-charset="utf-8">
 													<table class="table">
 														<tr>
 															<th>ID</th>
@@ -87,8 +87,8 @@ $usuarios = $this->usuario_model->getUser();
 													<div class="form-group">
 														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
 															<input type="hidden" name="id_usuario_modal" id="id_usuario_hidden" value="0">
-															<?php if ($_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 4): ?>
-																<button type="submit" class="btn btn-success">Salvar</button>
+															<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+																<button type="submit" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i> Excluir Usuário</button>
 															<?php endif; ?>
 														</div>
 													</div>
@@ -118,6 +118,14 @@ $usuarios = $this->usuario_model->getUser();
 												<form action="<?=base_url('sistema/usuarios/update_current_password')?>" method="post" accept-charset="utf-8" class="form-horizontal form-label-left">
 													<div class="form-group">
 														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="oldpass_usuario_modal">Senha Atual</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="password" name="oldpass_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12">
 															<label class="control-label" for="newpass_usuario_modal">Nova Senha</label>
 														</div>
 														<div class="col-md-12 col-sm-6 col-xs-12">
@@ -133,16 +141,93 @@ $usuarios = $this->usuario_model->getUser();
 														</div>
 													</div>
 													<div class="form-group">
+														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
+															<input type="hidden" name="id_usuario_modal" value=<?=$_SESSION['id']?>>
+															<button type="submit" class="btn btn-success">Salvar</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal senha -->
+
+					<div class="modal" tabindex="-1" role="dialog" id="user_create_modal">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="title_user_modal">Novo Usuário</h4>
+								</div>
+								<div class="modal-body" id="create_modal_body" style="overflow: hidden;">
+									<div class="tools_modal_inside col-md-12">
+										<div class="row">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<form action="<?=base_url('sistema/usuarios/create')?>" method="post" accept-charset="utf-8" class="form-horizontal form-label-left">
+													<div class="form-group col-md-4 col-sm-12">
 														<div class="col-md-12 col-sm-6 col-xs-12">
-															<label class="control-label" for="oldpass_usuario_modal">Senha Antiga</label>
+															<label class="control-label" for="name_usuario_modal">Nome</label>
 														</div>
 														<div class="col-md-12 col-sm-6 col-xs-12">
-															<input type="password" name="oldpass_usuario_modal" class="form-control">
+															<input type="text" name="name_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group col-md-4 col-sm-12">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="surname_usuario_modal">Sobrenome</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="text" name="surname_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group col-md-4 col-sm-12">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="birth_usuario_modal">Data de Nascimento</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="text" name="birth_usuario_modal" data-inputmask="'mask': '99/99/9999'" class="form-control">
+														</div>
+													</div>
+													<div class="form-group col-md-6 col-sm-12">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="login_usuario_modal">Nome de Usuário (utilizado para acessar o sistema)</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="text" name="login_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group col-md-6 col-sm-12">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="email_confirm_usuario_modal">E-mail</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="text" name="email_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group col-md-6 col-sm-12">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="pass_usuario_modal">Senha (no mínimo 8 caracteres)</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="password" name="pass_usuario_modal" class="form-control">
+														</div>
+													</div>
+													<div class="form-group col-md-6 col-sm-12">
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<label class="control-label" for="repass_usuario_modal">Repita a Senha</label>
+														</div>
+														<div class="col-md-12 col-sm-6 col-xs-12">
+															<input type="password" name="repass_usuario_modal" class="form-control">
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
-															<input type="hidden" name="id_usuario_modal" value=<?=$_SESSION['id']?>>
 															<button type="submit" class="btn btn-success">Salvar</button>
 														</div>
 													</div>
@@ -244,11 +329,13 @@ $usuarios = $this->usuario_model->getUser();
 										<?php if ($_SESSION['tipoUsuario'] != 2): ?>
 											<div class="ln_solid"></div>
 											<h2>Gerenciar Usuários</h2>
+											<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+												<button type="button" class="btn btn-success create_user"><i class="fa fa-plus" aria-hidden="true"></i> Novo Usuário</button>
+											<?php endif; ?>
 											<table class="table">
 												<thead>
 													<tr>
 														<th></th>
-														<th style="text-align: center;">Imagem de Perfil</th>
 														<th>Nome Completo</th>
 														<th class="hidden-xs">Data de Nascimento</th>
 														<th class="hidden-xs">E-mail</th>
@@ -258,15 +345,19 @@ $usuarios = $this->usuario_model->getUser();
 												</thead>
 												<tbody>
 													<?php foreach ($usuarios as $usuario): ?>
-														<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
-															<th scope="row" class="user_status"><span class="badge"></span></th>
-															<td style="text-align: center;"><img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem"></td>
-															<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
-															<td class="hidden-xs"><?=$usuario->dataNascimento?></td>
-															<td class="hidden-xs"><?=$usuario->email?></td>
-															<td class="hidden-xs"><?=$usuario->login?></td>
-															<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($usuario->ultimoAcesso))?></td>
-														</tr>
+														<?php if ($usuario->id != $_SESSION['id']): ?>
+															<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
+																<td style="position: relative;">
+																	<span class="status_span"></span>
+																	<img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem">
+																</td>
+																<td><?=$usuario->nome . ' ' . $usuario->sobrenome?></td>
+																<td class="hidden-xs"><?=$usuario->dataNascimento?></td>
+																<td class="hidden-xs"><?=$usuario->email?></td>
+																<td class="hidden-xs"><?=$usuario->login?></td>
+																<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($usuario->ultimoAcesso))?></td>
+															</tr>
+														<?php endif ?>
 													<?php endforeach ?>
 												</tbody>
 											</table>
@@ -305,13 +396,7 @@ $usuarios = $this->usuario_model->getUser();
 			$("#title_user_modal").html("Editar Usuário: <b>" + usuario.nome + "</b>")
 			$("#nascimento_usuario_modal").html(usuario.dataNascimento);
 			$("#email_usuario_modal").html(usuario.email);
-			var options = ['Monitor', 'Criador de Conteúdo', 'Administrador'];
-
-			if (usuario.id == curUserProps.id || usuario.tipoUsuario == 'Responsável pelo Site' || usuario.tipoUsuario == 'Administrador' || curUserProps.tipoUsuario == 1 || curUserProps.tipoUsuario == 2) {
-				$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
-			} else {
-				$("#privilegios_usuario_modal").html(createSelectWith(options, usuario.tipoUsuario));
-			}
+			$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
 
 			$("#login_usuario_modal").html(usuario.login);
 			$("#acesso_usuario_modal").html(usuario.ultimoAcesso);
@@ -325,6 +410,10 @@ $usuarios = $this->usuario_model->getUser();
 	$("#alterar_senha_usuario").click(function () {
 		$("#user_pass_modal").modal('show');
 	})
+
+	$(".create_user").click(function () {
+		$("#user_create_modal").modal('show');
+	});
 
 	window.setInterval(function () {
 		getOnlineUsers();
@@ -346,47 +435,45 @@ $usuarios = $this->usuario_model->getUser();
 				status = 'offline';
 				badge_color = 'red';
 
-				if (retorno[i].status == "online") {
+				if (retorno[i].status == "1") {
 					status = 'online';
 					badge_color = 'green';
 				}
 
-				console.log(retorno);
+				// $(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").html(retorno[i].status);
 
-				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").html(retorno[i].status);
+				$(".linha_usuario[data-userid~='"+id+"'] > td > span.status_span").removeClass('bg-red');
+				$(".linha_usuario[data-userid~='"+id+"'] > td > span.status_span").removeClass('bg-green');
 
-				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").removeClass('bg-red');
-				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").removeClass('bg-green');
-
-				$(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").addClass('bg-' + badge_color);
+				$(".linha_usuario[data-userid~='"+id+"'] > td > span.status_span").addClass('bg-' + badge_color);
 			}
 		})
 	}
 
-	function createSelectWith (options, selectedItem) {
-		var htmlOptions = []
-		, htmlSelect = "<select class='form-control' id='select_user_type' name='tipo_usuario'>"
-		, value
-		, selected = ""
-		;
+	// function createSelectWith (options, selectedItem) {
+	// 	var htmlOptions = []
+	// 	, htmlSelect = "<select class='form-control' id='select_user_type' name='tipo_usuario'>"
+	// 	, value
+	// 	, selected = ""
+	// 	;
 
-		for (var i = 0; i < options.length; i++) {
-			if (options[i] == selectedItem) {
-				selected = "selected";
-			}
+	// 	for (var i = 0; i < options.length; i++) {
+	// 		if (options[i] == selectedItem) {
+	// 			selected = "selected";
+	// 		}
 
-			value = i + 1;
-			htmlOptions.push("<option "+selected+" value='"+value+"'>"+options[i]+"</option>");
+	// 		value = i + 1;
+	// 		htmlOptions.push("<option "+selected+" value='"+value+"'>"+options[i]+"</option>");
 
-			selected = "";
-		}
+	// 		selected = "";
+	// 	}
 
-		htmlSelect += htmlOptions.join('');
-		htmlSelect += "</select>";
+	// 	htmlSelect += htmlOptions.join('');
+	// 	htmlSelect += "</select>";
 
-		return htmlSelect;
+	// 	return htmlSelect;
 
-	}
+	// }
 </script>
 
 <?php $this->load->view('footer') ?>

@@ -37,7 +37,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4><?=$_SESSION['tipoUsuario'] != 1 ? 'Editar' : 'Visualizar'?> Contato</h4>
+							<h4><?=$_SESSION['tipoUsuario'] == 1 ? 'Editar' : 'Visualizar'?> Contato</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -150,7 +150,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												</div>
 											</div>
 										</div>
-										<?php if ($_SESSION['tipoUsuario'] != 1): ?>
+										<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 											<div class="ln_solid"></div>
 											<div class="form-group">
 												<button type="button" class="btn btn-warning" id="btn_reset_contato">Limpar</button>

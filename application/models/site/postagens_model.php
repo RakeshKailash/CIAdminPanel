@@ -35,8 +35,6 @@ class Postagens_model extends CI_Model {
 			$where
 			ORDER BY $orderBy $limit";
 
-		echo $query;
-
 		$postagens = $this->db->query($query);
 
 		if (! $postagens)

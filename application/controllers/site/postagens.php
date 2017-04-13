@@ -13,12 +13,13 @@ class Postagens extends CI_Controller {
 
 	public function index ()
 	{
-		$info['itens'] = $this->secoes_site->getSections();
-		$info['secao_info'] = $this->secoes_site->getSections(4)[0];
-		$info['postagens'] = $this->postagens_site->getPosts('postagens.`listar` = 1');
-		$info['comentarios'] = $this->secoes_site->getComments(6);
-		$this->load->view('site/postagens/postagens', $info);
-		$this->analise_site->insert_access(6);
+		// $info['itens'] = $this->secoes_site->getSections();
+		// $info['secao_info'] = $this->secoes_site->getSections(4)[0];
+		// $info['postagens'] = $this->postagens_site->getPosts('postagens.`listar` = 1');
+		// $info['comentarios'] = $this->secoes_site->getComments(6);
+		// $this->load->view('site/postagens/postagens', $info);
+		// $this->analise_site->insert_access(6);
+		return redirect('site');
 	}
 
 }

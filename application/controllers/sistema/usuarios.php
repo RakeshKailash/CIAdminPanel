@@ -131,24 +131,69 @@ class Usuarios extends CI_Controller {
 
 	}
 
-	public function update_another ()
+	// public function update_another ()
+	// {
+	// 	if (! $this->usuario_model->isLogged()) {
+	// 		redirect('sistema/login');
+	// 	}
+
+	// 	$tipoUsuario = $this->input->post('tipo_usuario');
+	// 	$id = $this->input->post('id_usuario_modal');
+
+	// 	$result = $this->usuario_model->updateUserType($id, $tipoUsuario);
+	// 	$usuario = $this->usuario_model->getUser($id)[0];
+
+	// 	$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' alterou as informações do usuário '".$usuario->nome."'";
+	// 	$atualizacao['usuario'] = $_SESSION['id'];
+	// 	$atualizacao['tipo'] = "Alteração de Conta de Usuário";
+
+	// 	$this->atualizacoes_sistema->insert($atualizacao);
+
+	// 	$this->session->set_flashdata($result);
+	// 	return redirect(base_url('sistema/usuarios'));
+	// }
+
+	public function create ()
 	{
 		if (! $this->usuario_model->isLogged()) {
 			redirect('sistema/login');
 		}
 
-		$tipoUsuario = $this->input->post('tipo_usuario');
-		$id = $this->input->post('id_usuario_modal');
+		$this->load->library('form_validation');
 
-		$result = $this->usuario_model->updateUserType($id, $tipoUsuario);
-		$usuario = $this->usuario_model->getUser($id)[0];
+		$this->form_validation->set_rules('name_usuario_modal', 'Nome', 'required');
+		$this->form_validation->set_rules('birth_usuario_modal', 'Data de Nascimento', 'required');
+		$this->form_validation->set_rules('login_usuario_modal', 'Nome de Usuário', 'required|alpha_numeric|is_unique[usuarios.login]');
+		$this->form_validation->set_rules('email_usuario_modal', 'E-mail', 'required|valid_email');
+		$this->form_validation->set_rules('pass_usuario_modal', 'Senha', 'required|alpha_numeric|min_length[8]');
+		$this->form_validation->set_rules('repass_usuario_modal', 'Repita a Senha', 'required|matches[pass_usuario_modal]');
 
-		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' alterou as informações do usuário '".$usuario->nome."'";
-		$atualizacao['usuario'] = $_SESSION['id'];
-		$atualizacao['tipo'] = "Alteração de Conta de Usuário";
+		if (!$this->form_validation->run()) {
+			if (! $this->form_validation->run())
+			{
+				$result = array('warning' => validation_errors('<p>','</p>'));
+				$this->session->set_flashdata($result);
+				return redirect(base_url('sistema/usuarios'));
+			}
+		}
 
-		$this->atualizacoes_sistema->insert($atualizacao);
+		$dataNascimento = DateTime::createFromFormat('d/m/Y', $_POST['birth_usuario_modal']);
+		$dataNascimento = $dataNascimento->format('Y-m-d');
 
+		$data['nome'] = $_POST['name_usuario_modal'];
+		$data['sobrenome'] = $_POST['surname_usuario_modal'];
+		$data['dataNascimento'] = $dataNascimento;
+		$data['login'] = $_POST['login_usuario_modal'];
+		$data['email'] = $_POST['email_usuario_modal'];
+		$data['senha'] = $_POST['pass_usuario_modal'];
+
+		if (!$this->usuario_model->createUser($data)) {
+			$result = array('error' => '<p>Ocorreu um erro, tente novamente.</p>');
+			$this->session->set_flashdata($result);
+			return redirect(base_url('sistema/usuarios'));
+		}
+
+		$result = array('success' => '<p>Usuário criado com sucesso.</p>');
 		$this->session->set_flashdata($result);
 		return redirect(base_url('sistema/usuarios'));
 	}
@@ -282,5 +327,27 @@ class Usuarios extends CI_Controller {
 		$return = array('success' => '<p>Senha alterada com sucesso!</p>');
 		$this->session->set_flashdata($return);
 		return redirect('sistema/usuarios');
+	}
+
+	public function delete () {
+		if (! $this->usuario_model->isLogged()) {
+			return redirect('sistema/usuarios');
+		}
+
+		if (! $this->usuario_model->deleteUser($_POST['id_usuario_modal'])) {
+			$return = array('error' => '<p>Erro ao excluir usuário</p>');
+			$this->session->set_flashdata($return);
+			return redirect('sistema/usuarios');
+		}
+
+		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' excluiu o usuário '".$usuario->nome."'";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Exclusão de Usuário";
+		$this->atualizacoes_sistema->insert($atualizacao);
+
+		$return = array('success' => '<p>Usuário excluído com sucesso!</p>');
+		$this->session->set_flashdata($return);
+		return redirect('sistema/usuarios');
+
 	}
 }
