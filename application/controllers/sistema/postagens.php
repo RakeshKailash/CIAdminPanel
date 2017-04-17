@@ -32,7 +32,7 @@ class Postagens extends CI_Controller {
 
 	// public function saveAndInsert ()
 	// {
-	// 	if ($_SESSION['tipoUsuario'] == 1)
+	// 	if ($_SESSION['tipoUsuario'] != 1)
 	// 	{
 	// 		$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
 	// 		return redirect('sistema/postagens');
@@ -77,7 +77,7 @@ class Postagens extends CI_Controller {
 
 	// public function save ()
 	// {
-	// 	if ($_SESSION['tipoUsuario'] == 1)
+	// 	if ($_SESSION['tipoUsuario'] != 1)
 	// 	{
 	// 		$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
 	// 		return redirect('sistema/postagens');
@@ -159,7 +159,7 @@ class Postagens extends CI_Controller {
 
 	// public function update ()
 	// {
-	// 	if ($_SESSION['tipoUsuario'] == 1)
+	// 	if ($_SESSION['tipoUsuario'] != 1)
 	// 	{
 	// 		$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
 	// 		return redirect('sistema/postagens');
@@ -212,7 +212,7 @@ class Postagens extends CI_Controller {
 	// }
 
 	// public function delete ($id=null) {
-	// 	if ($_SESSION['tipoUsuario'] == 1)
+	// 	if ($_SESSION['tipoUsuario'] != 1)
 	// 	{
 	// 		$this->session->set_flashdata('warning', "<p>Você não tem permissão para editar informações do site!</p>");
 	// 		return redirect('sistema/postagens');
@@ -250,7 +250,7 @@ class Postagens extends CI_Controller {
 	// }
 
 	// public function switchStatus () {
-	// 	if ($_SESSION['tipoUsuario'] == 1)
+	// 	if ($_SESSION['tipoUsuario'] != 1)
 	// 	{
 	// 		$result = array(0 => false);
 	// 		echo json_encode($result);

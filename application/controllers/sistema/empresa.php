@@ -32,7 +32,7 @@ class Empresa extends CI_Controller {
 
 	public function update()
 	{
-		if ($_SESSION['tipoUsuario'] == 1)
+		if ($_SESSION['tipoUsuario'] != 1)
 		{
 			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
 			return redirect('sistema/empresa/editar');

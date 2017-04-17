@@ -128,9 +128,6 @@ foreach ($comentarios as $comentario) {
 									<div class="col-md-12 col-xs-12">
 										<h2>
 											Administrar Comentários
-											<?php if ($totalComments > 0): ?>
-												<label class="lbl_exibir_comentario green"><span class="glyphicon glyphicon-eye-open icon_inline"></span> Exibir</label>
-											<?php endif ?>
 										</h2>
 										<h5 class="bg-blue badge"><?=$totalComments?> comentários registrados</h5>
 										<?php if ($enabledComments > 0): ?>
@@ -154,9 +151,59 @@ foreach ($comentarios as $comentario) {
 											</div>
 										</div>
 									</div>
-									<div class="col-md-12 col-xs-12 container_comentarios_sistema" style="display: none;">
+									<div class="col-md-12 col-xs-12">
+										<table class="table">
+											<thead>
+												<tr>
+													<th class="hidden-xs"></th>
+													<th class="hidden-xs"></th>
+													<th class="hidden-xs">Comentário</th>
+													<th class="hidden-xs">Data</th>
+													<th class="hidden-xs">Seção</th>
+													<th class="hidden-xs">Autor</th>
+													<th class="hidden-xs">E-mail do Autor</th>
+													<th class="hidden-xs">Situação</th>
+													<th class="hidden-xs"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php foreach ($comentarios as $comentario): ?>
+													<tr>
+														<td class="hidden-xs">
+															<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+																<div class="checkbox check_comentarios">
+																	<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
+																</div>
+															<?php endif ?>
+														</td>
+														<td class="hidden-xs"><?=$comentario->idComentario;?></td>
+														<td class="hidden-xs"><?=$comentario->textoComentario;?></td>
+														<td class="hidden-xs"><?=date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></td>
+														<td class="hidden-xs"><?=$comentario->nomeSecao;?></td>
+														<td class="hidden-xs"><?=$comentario->nomeAutor;?></td>
+														<td class="hidden-xs"><?=empty($comentario->emailAutor) ? "<i>Não informado<i>" : $comentario->emailAutor;?></td>
+														<td class="hidden-xs">
+															<i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?>
+														</td>
+														<td class="hidden-xs">
+															<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+																<?php if (!$comentario->aprovado): ?>
+																	<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
+																<?php endif ?>
+																<?php if ($comentario->aprovado): ?>
+																	<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
+																<?php endif ?>
+																<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
+															<?php endif ?>
+														</td>
+													</tr>
+												<?php endforeach ?>
+											</tbody>
+										</table>
+									</div>
+									<!-- <div class="col-md-12 col-xs-12 container_comentarios_sistema">
 										<?php foreach ($comentarios as $comentario) : ?>
-											<div class="comentario comentario_sistema">
+											<div class="comentario comentario_sistema col-md-5">
 												<div class="container">
 													<span class="square-badge-comentarios">ID: <?=$comentario->idComentario;?></span>
 													<?php if ($_SESSION['tipoUsuario'] == 1): ?>
@@ -197,7 +244,7 @@ foreach ($comentarios as $comentario) {
 												</div>
 											</div>
 										<?php endforeach ?>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>
@@ -208,20 +255,6 @@ foreach ($comentarios as $comentario) {
 	</div>
 
 	<script type="text/javascript">
-		$(".lbl_exibir_comentario").click(function () {
-			if ($(".container_comentarios_sistema").css('display') == 'none') {
-				$(".container_comentarios_sistema").css('display', 'block');
-				$(".lbl_exibir_comentario").html("<span class='glyphicon glyphicon-eye-close icon_inline'></span> Esconder");
-				$(".lbl_exibir_comentario").addClass('red');
-				$(".lbl_exibir_comentario").removeClass('green');
-			} else {
-				$(".container_comentarios_sistema").css('display', 'none');
-				$(".lbl_exibir_comentario").html("<span class='glyphicon glyphicon-eye-open icon_inline'></span> Exibir");
-				$(".lbl_exibir_comentario").addClass('green');
-				$(".lbl_exibir_comentario").removeClass('red');
-			}
-		});
-
 		$(".btn_deletar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
 		});
@@ -237,17 +270,17 @@ foreach ($comentarios as $comentario) {
 		$("#select_all_comments .flat").on('ifChecked', function () {
 			checkboxControl.check(".checkbox.check_comentarios");
 
-			if ($(".container_comentarios_sistema").css('display') == 'none') {
-				$(".lbl_exibir_comentario").trigger('click');
-			}
+			$(".checkbox.check_comentarios").parents("tr").css("background", "#eee");
 
 			if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
 				$(".buttons_comments").css('display', 'inline-block');
 			}
+
 		});
 
 		$("#select_all_comments .flat").on('ifUnchecked', function () {
 			checkboxControl.uncheck(".checkbox.check_comentarios");
+			$(".checkbox.check_comentarios").parents("tr").css("background", "#fff");
 			$(".buttons_comments").css('display', 'none');
 		});
 
@@ -263,6 +296,14 @@ foreach ($comentarios as $comentario) {
 			} else {
 				$(".buttons_comments").css('display', 'none');
 			}
+		});
+
+		$(".checkbox.check_comentarios .flat").on('ifChecked', function () {
+			$(this).parents("tr").css("background", "#eee");
+		});
+
+		$(".checkbox.check_comentarios .flat").on('ifUnchecked', function () {
+			$(this).parents("tr").css("background", "#fff");
 		});
 
 		$("#btn_delete_multiple").click(function () {

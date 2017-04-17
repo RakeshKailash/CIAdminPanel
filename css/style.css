@@ -536,12 +536,12 @@ span.comment-badge.bg-red {
 }
 
 .container_comentarios_sistema {
-	overflow-y: scroll;
-	max-height: 500px;
-	padding-top: 10px;
-	background: #f1f1f1;
-	border-radius: 3px;
-	border: 2px solid #f1f1f1;
+	/*overflow-y: scroll;*/
+	/*max-height: 500px;*/
+	/*padding-top: 10px;*/
+	/*background: #f1f1f1;*/
+	/*border-radius: 3px;*/
+	/*border: 2px solid #f1f1f1;*/
 }
 
 .comentario {
@@ -564,6 +564,10 @@ span.comment-badge.bg-red {
 .comentario.comentario_sistema {
 	color: #555;
 	position: relative;
+}
+
+.comentario_sistema:nth-child(odd) {
+	margin-right: 10px;
 }
 
 .label_comentarios_sistema {
@@ -604,9 +608,9 @@ span.comment-badge.bg-red {
 }
 
 .check_comentarios {
-	position: absolute;
+	/*position: absolute;
 	top: -5px;
-	right: 5px;
+	right: 5px;*/
 }
 
 .lbl_exibir_comentario {
