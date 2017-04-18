@@ -156,7 +156,7 @@ foreach ($comentarios as $comentario) {
 											<thead>
 												<tr>
 													<th class="hidden-xs"></th>
-													<th class="hidden-xs"></th>
+													<th class="hidden-xs">ID</th>
 													<th class="hidden-xs">Comentário</th>
 													<th class="hidden-xs">Data</th>
 													<th class="hidden-xs">Seção</th>
@@ -201,50 +201,6 @@ foreach ($comentarios as $comentario) {
 											</tbody>
 										</table>
 									</div>
-									<!-- <div class="col-md-12 col-xs-12 container_comentarios_sistema">
-										<?php foreach ($comentarios as $comentario) : ?>
-											<div class="comentario comentario_sistema col-md-5">
-												<div class="container">
-													<span class="square-badge-comentarios">ID: <?=$comentario->idComentario;?></span>
-													<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-														<div class="checkbox check_comentarios">
-															<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
-														</div>
-													<?php endif ?>
-													<div class="col-md-4 col-xs-12">
-														<span class='autor_comentario'><?=$comentario->nomeAutor;?></span>
-														<span class='data_comentario'><?=", em ".date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></span>
-														<p class='texto_comentario'><?=$comentario->textoComentario;?></p>
-													</div>
-													<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
-														<p>
-															<span class="label_comentarios_sistema title_label">E-mail:</span>
-															<span class="label_comentarios_sistema"><?=empty($comentario->emailAutor) ? "Não informado" : $comentario->emailAutor;?></span>
-														</p>
-														<p>
-															<span class="label_comentarios_sistema title_label">Seção:</span>
-															<span class="label_comentarios_sistema"><?=$comentario->nomeSecao;?></span>
-														</p>
-													</div>
-													<div class="col-md-4 col-xs-12 detalhes_comentario_sistema">
-														<p>
-															<span class="label_comentarios_sistema title_label">Status:</span>
-															<span class="label_comentarios_sistema"><i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?></span>
-														</p>
-														<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-															<?php if (!$comentario->aprovado): ?>
-																<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
-															<?php endif ?>
-															<?php if ($comentario->aprovado): ?>
-																<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
-															<?php endif ?>
-															<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
-														<?php endif ?>
-													</div>
-												</div>
-											</div>
-										<?php endforeach ?>
-									</div> -->
 								</div>
 							</div>
 						</div>
