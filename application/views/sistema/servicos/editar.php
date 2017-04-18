@@ -144,7 +144,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 									</div>
 
-									<h2>Imagem</h2>
+									<h2>Capa da Seção</h2>
 									<div class="x_content"> <!-- X-Content -->
 
 										<input type="file" name="imagem" style="display: none;" id="imagem">

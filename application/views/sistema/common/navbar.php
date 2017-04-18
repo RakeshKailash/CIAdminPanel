@@ -13,10 +13,7 @@
 						<span class=" fa fa-angle-down"></span>
 					</a>
 					<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-						<li><a href="<?=base_url('sistema/usuarios') ?>"><i class="fa fa-user pull-right"></i> Conta de Usuário</a>
-						</li>
-						<li>
-							<a href="<?="Ajuda" ?>"><i class="fa fa-question-circle pull-right"></i> Ajuda</a>
+						<li><a href="<?=base_url('sistema/usuarios') ?>"><i class="fa fa-user pull-right"></i> Contas de Usuário</a>
 						</li>
 						<li>
 							<a href="<?=base_url('sistema/logout'); ?>"><i class="fa fa-sign-out pull-right"></i> Sair</a>

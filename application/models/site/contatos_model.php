@@ -40,7 +40,7 @@ class Contatos_model extends CI_Model {
 			'smtp_host' => 'ssl://smtp.googlemail.com',
 			'smtp_port' => 465,
 			'smtp_user' => 'marcelo.boemeke@gmail.com',
-			'smtp_pass' => 'markonoha031098',
+			'smtp_pass' => 'rakesh72Mark',
 			'mailtype' => 'html',
 			'charset' => 'utf8',
 			'wordwrap' => TRUE);
@@ -61,7 +61,7 @@ class Contatos_model extends CI_Model {
 		$this->email->set_newline("\r\n");
 		$this->email->from($data['from']);
 		$this->email->to($mailTo);
-		$this->email->subject($data['subject']);
+		$this->email->subject("Mensagem Recebida em seu site: " . $data['subject']);
 		$this->email->message($mensagem);
 
 		$result = array('status' => 'success', 'message' => '<p>Mensagem enviada com sucesso!</p>');
@@ -73,7 +73,7 @@ class Contatos_model extends CI_Model {
 		$email['nome_autor'] = $data['name'];
 		$email['email_autor'] = $data['from'];
 		$email['destino'] = $mailTo;
-		$email['assunto'] = $data['subject'];
+		$email['assunto'] = "Mensagem Recebida em seu site: \"".$data['subject']."\"";
 		$email['mensagem'] = $data['message'];
 		$email['data'] = date('Y-m-d H:i:s', $dataHora);
 

@@ -17,9 +17,8 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 	<div class="contact-form">
 
-		<div id="mensagens"></div>
-
 		<form id="contact-form" method="post" data-parsley-validate action="javascript:void(0)" role="form">
+			<div id="mensagens_contato"></div>
 
 			<div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
 				<input type="text" placeholder="Seu Nome" class="form-control" name="nome" id="name">
@@ -65,7 +64,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 		$.post(base_url+'site/contato/sendMail', postValues, function (retorno) {
 			retorno = JSON.parse(retorno);
-			$("#mensagens").html(statusMessages.createMessage(retorno.status, retorno.message));
+			$("#mensagens_contato").html(statusMessages.createMessage(retorno.status, retorno.message));
 			$(".loading_gif").css('display', 'none');
 			$("#contact-submit").removeAttr('disabled');
 			$("#contact-submit").css('background', '#e54040');
