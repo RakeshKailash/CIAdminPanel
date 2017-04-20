@@ -190,8 +190,9 @@ $usuarios = $this->usuario_model->getUser();
 														<div class="col-md-12 col-sm-6 col-xs-12">
 															<label class="control-label" for="birth_usuario_modal">Data de Nascimento</label>
 														</div>
-														<div class="col-md-12 col-sm-6 col-xs-12">
+														<div class="col-md-12 col-sm-6 col-xs-12 daterange_container">
 															<input type="text" name="birth_usuario_modal" data-inputmask="'mask': '99/99/9999'" class="form-control">
+															<!-- <input id="nascimento_novo_usuario" name="birth_usuario_modal" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text"> -->
 														</div>
 													</div>
 													<div class="form-group col-md-6 col-sm-12">
@@ -355,7 +356,7 @@ $usuarios = $this->usuario_model->getUser();
 																<td class="hidden-xs"><?=$usuario->dataNascimento?></td>
 																<td class="hidden-xs"><?=$usuario->email?></td>
 																<td class="hidden-xs"><?=$usuario->login?></td>
-																<td class="hidden-xs"><?=date( 'd/m/Y H:i:s', strtotime($usuario->ultimoAcesso))?></td>
+																<td class="hidden-xs"><?=$usuario->ultimoAcesso?></td>
 															</tr>
 														<?php endif ?>
 													<?php endforeach ?>
@@ -380,7 +381,7 @@ $usuarios = $this->usuario_model->getUser();
 
 	$(".linha_usuario").click(function () {
 		var id = $(this).data('userid');
-		var url = base_url + 'sistema/usuarios/getInfo/'+id;
+		var url = base_url + 'sistema/usuarios/get_info/'+id;
 		$.get(url, function(retorno) {
 			retorno = JSON.parse(retorno);
 
@@ -396,7 +397,7 @@ $usuarios = $this->usuario_model->getUser();
 			$("#title_user_modal").html("Editar Usuário: <b>" + usuario.nome + "</b>")
 			$("#nascimento_usuario_modal").html(usuario.dataNascimento);
 			$("#email_usuario_modal").html(usuario.email);
-			$("#privilegios_usuario_modal").html(usuario.tipoUsuario);
+			$("#privilegios_usuario_modal").html(usuario.tipoUsuarioNome);
 
 			$("#login_usuario_modal").html(usuario.login);
 			$("#acesso_usuario_modal").html(usuario.ultimoAcesso);

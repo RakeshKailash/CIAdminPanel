@@ -10,11 +10,13 @@ class Usuario_model extends CI_Model {
 
 	public function getUser ($id=null)
 	{
-		$this->db->select("id, nome, sobrenome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS dataNascimento, login, email, imagem, ultimoAcesso, ultimaVerifNotif, tipoUsuario, cad_ativo");
-		if ($id)
-		{
-			$this->db->where('id', $id);
+		$this->db->select("usuarios.id, usuarios.nome, usuarios.sobrenome, DATE_FORMAT(usuarios.dataNascimento, '%d/%m/%Y') AS dataNascimento, usuarios.login, usuarios.email, usuarios.imagem, DATE_FORMAT(usuarios.ultimoAcesso, '%d/%m/%Y, às %H:%ih') AS ultimoAcesso, usuarios.ultimaVerifNotif, usuarios.tipoUsuario, tipos_usuarios.nome AS tipoUsuarioNome, usuarios.cad_ativo");
+
+		if ($id) {
+			$this->db->where('usuarios.id', $id);
 		}
+
+		$this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');
 
 		$result = $this->db->get('usuarios')->result();
 		return $result;
@@ -60,16 +62,16 @@ class Usuario_model extends CI_Model {
 			return false;
 		}
 
-		$userData['senha'] = hash_password($userData['senha']);
+		$userData['senha'] = $this->hash_password($userData['senha']);
 
 		if (!$this->db->insert('usuarios', $userData)) {
 			return false;
 		}
 
-		return true;
+		return $this->db->insert_id();
 	}
 
-	private function hash_password ($password)
+	function hash_password ($password)
 	{
 		if (! $password) {
 			return false;

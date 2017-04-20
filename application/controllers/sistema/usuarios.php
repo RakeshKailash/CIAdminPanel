@@ -27,7 +27,7 @@ class Usuarios extends CI_Controller {
 		$this->load->view('sistema/usuarios/controle_usuarios', $info);
 	}
 
-	public function getInfo ($userId=null)
+	public function get_info ($userId=null)
 	{
 		if (! $this->usuario_model->isLogged()) {
 			redirect('sistema/login');
@@ -40,24 +40,31 @@ class Usuarios extends CI_Controller {
 			return false;
 		}
 
-		$this->db->where('usuarios.id', $userId);
-		$this->db->select(
-			"usuarios.id,
-			usuarios.nome,
-			usuarios.sobrenome,
-			DATE_FORMAT(usuarios.dataNascimento, '%d/%m/%Y') AS dataNascimento,
-			usuarios.login,
-			usuarios.email,
-			usuarios.imagem,
-			DATE_FORMAT(usuarios.ultimoAcesso, '%d/%m/%Y, às %H:%i:%s') AS ultimoAcesso,
-			DATE_FORMAT(usuarios.ultimaVerifNotif, '%d/%m/%Y %H:%i:%s') AS ultimaVerifNotif,
-			tipos_usuarios.nome AS tipoUsuario"
-			);
+		// $this->db->where('usuarios.id', $userId);
+		// $this->db->select(
+		// 	"usuarios.id,
+		// 	usuarios.nome,
+		// 	usuarios.sobrenome,
+		// 	DATE_FORMAT(usuarios.dataNascimento, '%d/%m/%Y') AS dataNascimento,
+		// 	usuarios.login,
+		// 	usuarios.email,
+		// 	usuarios.imagem,
+		// 	DATE_FORMAT(usuarios.ultimoAcesso, '%d/%m/%Y, às %H:%i:%s') AS ultimoAcesso,
+		// 	DATE_FORMAT(usuarios.ultimaVerifNotif, '%d/%m/%Y %H:%i:%s') AS ultimaVerifNotif,
+		// 	tipos_usuarios.nome AS tipoUsuario"
+		// 	);
 
-		$this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');
-		$query = $this->db->get('usuarios');
+		// $this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');
+		// $query = $this->db->get('usuarios');
+		$usuario = $this->usuario_model->getUser($userId);
 
-		$result = array('status' => 1, 'user' => $query->result()[0]);
+		if (! $usuario) {
+			$result = array('status' => false);
+			echo json_encode($result);
+			return false;
+		}
+
+		$result = array('status' => 1, 'user' => $usuario[0]);
 		echo json_encode($result);
 	}
 
@@ -123,7 +130,6 @@ class Usuarios extends CI_Controller {
 		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' alterou suas informações";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Conta de Usuário";
-
 		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata($result);
@@ -187,11 +193,20 @@ class Usuarios extends CI_Controller {
 		$data['email'] = $_POST['email_usuario_modal'];
 		$data['senha'] = $_POST['pass_usuario_modal'];
 
-		if (!$this->usuario_model->createUser($data)) {
+		$insert_user = $this->usuario_model->createUser($data);
+
+		if (!$insert_user) {
 			$result = array('error' => '<p>Ocorreu um erro, tente novamente.</p>');
 			$this->session->set_flashdata($result);
 			return redirect(base_url('sistema/usuarios'));
 		}
+
+		$usuario = $this->usuario_model->getUser($insert_user)[0];
+
+		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' criou o usuário \"".$usuario->nome."\"";
+		$atualizacao['usuario'] = $_SESSION['id'];
+		$atualizacao['tipo'] = "Criação de Usuário";
+		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$result = array('success' => '<p>Usuário criado com sucesso.</p>');
 		$this->session->set_flashdata($result);
@@ -334,13 +349,15 @@ class Usuarios extends CI_Controller {
 			return redirect('sistema/usuarios');
 		}
 
+		$usuario = $this->usuario_model->getUser($_POST['id_usuario_modal'])[0];
+
 		if (! $this->usuario_model->deleteUser($_POST['id_usuario_modal'])) {
 			$return = array('error' => '<p>Erro ao excluir usuário</p>');
 			$this->session->set_flashdata($return);
 			return redirect('sistema/usuarios');
 		}
 
-		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' excluiu o usuário '".$usuario->nome."'";
+		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' excluiu o usuário \"".$usuario->nome."\"";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Exclusão de Usuário";
 		$this->atualizacoes_sistema->insert($atualizacao);
