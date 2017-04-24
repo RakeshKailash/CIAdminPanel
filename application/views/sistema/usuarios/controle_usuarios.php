@@ -86,7 +86,7 @@ $usuarios = $this->usuario_model->getUser();
 													</table>
 													<div class="form-group">
 														<div class="col-md-12 col-sm-6 col-xs-12 col-lg-3">
-															<input type="hidden" name="id_usuario_modal" id="id_usuario_hidden" value="0">
+															<input type="hidden" name="id_usuario_modal" id="id_usuario_hidden" value="">
 															<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 																<button type="submit" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i> Excluir Usuário</button>
 															<?php endif; ?>
@@ -342,6 +342,7 @@ $usuarios = $this->usuario_model->getUser();
 														<th class="hidden-xs">E-mail</th>
 														<th class="hidden-xs">Login</th>
 														<th class="hidden-xs">Último Acesso</th>
+														<th></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -357,6 +358,7 @@ $usuarios = $this->usuario_model->getUser();
 																<td class="hidden-xs"><?=$usuario->email?></td>
 																<td class="hidden-xs"><?=$usuario->login?></td>
 																<td class="hidden-xs"><?=$usuario->ultimoAcesso?></td>
+																<td class="delete_user_td" style="vertical-align: middle;"><a href="<?=base_url('sistema/usuarios/delete/'.$usuario->id);?>" title="Excluir usuário"><span class="glyphicon glyphicon-remove anim_icon icone_delete" style="font-size: 18pt;"></span></a></td>
 															</tr>
 														<?php endif ?>
 													<?php endforeach ?>
@@ -379,33 +381,37 @@ $usuarios = $this->usuario_model->getUser();
 
 	getOnlineUsers();
 
-	$(".linha_usuario").click(function () {
-		var id = $(this).data('userid');
-		var url = base_url + 'sistema/usuarios/get_info/'+id;
-		$.get(url, function(retorno) {
-			retorno = JSON.parse(retorno);
+	$(".linha_usuario").click(function (e) {
+		var target = e.target || e.srcElement;
+		if (target.className != "glyphicon glyphicon-remove anim_icon icone_delete") {
 
-			if (retorno.status == 0) {
-				return false;
-			}
+			var id = $(this).data('userid');
+			var url = base_url + 'sistema/usuarios/get_info/'+id;
+			$.get(url, function(retorno) {
+				retorno = JSON.parse(retorno);
 
-			var usuario = retorno.user;
+				if (retorno.status == 0) {
+					return false;
+				}
 
-			$("#id_usuario_modal").html(usuario.id);
-			$("#id_usuario_hidden").val(usuario.id);
-			$("#nome_usuario_modal").html(usuario.nome + " " + usuario.sobrenome);
-			$("#title_user_modal").html("Editar Usuário: <b>" + usuario.nome + "</b>")
-			$("#nascimento_usuario_modal").html(usuario.dataNascimento);
-			$("#email_usuario_modal").html(usuario.email);
-			$("#privilegios_usuario_modal").html(usuario.tipoUsuarioNome);
+				var usuario = retorno.user;
 
-			$("#login_usuario_modal").html(usuario.login);
-			$("#acesso_usuario_modal").html(usuario.ultimoAcesso);
-			$("#img_modal_full").prop('src', base_url + 'images/uploads/profile/' + usuario.imagem);
+				$("#id_usuario_modal").html(usuario.id);
+				$("#id_usuario_hidden").val(usuario.id);
+				$("#nome_usuario_modal").html(usuario.nome + " " + usuario.sobrenome);
+				$("#title_user_modal").html("Editar Usuário: <b>" + usuario.nome + "</b>")
+				$("#nascimento_usuario_modal").html(usuario.dataNascimento);
+				$("#email_usuario_modal").html(usuario.email);
+				$("#privilegios_usuario_modal").html(usuario.tipoUsuarioNome);
 
-			$("#user_full_modal").modal('show');
+				$("#login_usuario_modal").html(usuario.login);
+				$("#acesso_usuario_modal").html(usuario.ultimoAcesso);
+				$("#img_modal_full").prop('src', base_url + 'images/uploads/profile/' + usuario.imagem);
 
-		});
+				$("#user_full_modal").modal('show');
+
+			});
+		}
 	});
 
 	$("#alterar_senha_usuario").click(function () {
@@ -450,6 +456,17 @@ $usuarios = $this->usuario_model->getUser();
 			}
 		})
 	}
+
+	// $(".anim_icon.icone_delete").click(function () {
+	// 	console.log("abc");
+	// 	var user_id = $(this).parent("tr").data('userid');
+
+	// 	if(!user_id || user_id.length < 1) {
+	// 		return false;
+	// 	}
+
+	// 	window.location('sistema/usuarios/delete'+user_id);
+	// });
 
 	// function createSelectWith (options, selectedItem) {
 	// 	var htmlOptions = []

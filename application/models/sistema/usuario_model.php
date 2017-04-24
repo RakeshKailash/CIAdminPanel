@@ -181,6 +181,25 @@ class Usuario_model extends CI_Model {
 
 		$this->db->where("id = $userId");
 
+		$this->db->select('imagem');
+		$query = $this->db->get('usuarios');
+
+		if (!$query) {
+			return false;
+		}
+
+		$user_pic = $query->result()[0];
+
+		if ($user_pic->imagem != 'user.png') {
+			$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH) . 'images/uploads/profile/';
+
+			if (! unlink($caminho_pasta . $user_pic->imagem)) {
+				return false;
+			}
+		}
+
+		$this->db->where("id = $userId");
+
 		if (! $this->db->delete('usuarios')) {
 			return false;
 		}

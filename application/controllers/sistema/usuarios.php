@@ -127,7 +127,7 @@ class Usuarios extends CI_Controller {
 			}
 		}
 
-		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' alterou suas informações";
+		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" alterou suas informações";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Conta de Usuário";
 		$this->atualizacoes_sistema->insert($atualizacao);
@@ -203,7 +203,7 @@ class Usuarios extends CI_Controller {
 
 		$usuario = $this->usuario_model->getUser($insert_user)[0];
 
-		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' criou o usuário \"".$usuario->nome."\"";
+		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" criou o usuário \"".$usuario->nome."\"";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Criação de Usuário";
 		$this->atualizacoes_sistema->insert($atualizacao);
@@ -344,20 +344,28 @@ class Usuarios extends CI_Controller {
 		return redirect('sistema/usuarios');
 	}
 
-	public function delete () {
+	public function delete ($id) {
 		if (! $this->usuario_model->isLogged()) {
 			return redirect('sistema/usuarios');
 		}
 
-		$usuario = $this->usuario_model->getUser($_POST['id_usuario_modal'])[0];
+		$userid = !empty($id) ? $id : $_POST['id_usuario_modal'];
 
-		if (! $this->usuario_model->deleteUser($_POST['id_usuario_modal'])) {
+		if (empty($userid) || $userid < 1 || ! is_numeric($userid)) {
 			$return = array('error' => '<p>Erro ao excluir usuário</p>');
 			$this->session->set_flashdata($return);
 			return redirect('sistema/usuarios');
 		}
 
-		$atualizacao['titulo'] = "Usuário '".$_SESSION['nome']."' excluiu o usuário \"".$usuario->nome."\"";
+		$usuario = $this->usuario_model->getUser($userid)[0];
+
+		if (! $this->usuario_model->deleteUser($userid)) {
+			$return = array('error' => '<p>Erro ao excluir usuário</p>');
+			$this->session->set_flashdata($return);
+			return redirect('sistema/usuarios');
+		}
+
+		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" excluiu o usuário \"".$usuario->nome."\"";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Exclusão de Usuário";
 		$this->atualizacoes_sistema->insert($atualizacao);

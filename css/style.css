@@ -488,15 +488,24 @@ span.comment-badge.bg-red {
 	vertical-align: text-top;
 }
 
-.icon_inline.icone_delete {
+.icone_delete {
 	color: #D33734;
 }
 
-.icon_inline.icone_save {
+.anim_icon {
+	transition: all linear 0.2s;
+}
+
+.anim_icon.icone_delete:hover {
+	color: #BA413F;
+	text-shadow: 0 4px 0 rgba(0, 0, 0, 0.6);
+}
+
+.icone_save {
 	color: #86CC68;
 }
 
-.icon_inline.icone_alert {
+.icone_alert {
 	color: #F39C12;
 }
 
