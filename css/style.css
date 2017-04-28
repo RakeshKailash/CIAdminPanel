@@ -647,11 +647,11 @@ span.comment-badge.bg-red {
 	height: 50px;
 }
 
-.linha_usuario {
+.linha_tabela {
 	cursor: pointer;
 }
 
-.linha_usuario:hover {
+.linha_tabela:hover {
 	background: #eee;
 }
 
@@ -1130,4 +1130,8 @@ span.comment-badge.bg-red {
 	top: 10px;
 	left: 10px;
 	display: inline-block;
+}
+
+.texto_comentario {
+	font-size: 12pt;
 }

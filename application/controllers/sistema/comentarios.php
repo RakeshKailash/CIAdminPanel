@@ -31,6 +31,12 @@ class Comentarios extends CI_Controller {
 		$this->load->view('sistema/comentarios/gerenciar', $info);
 	}
 
+	function getInfo ($id=null)
+	{
+		$comentario = $this->secoes_sistema->getCommentById($id);
+		echo json_encode($comentario);
+	}
+
 	function deletar ($ids=null)
 	{
 		// if ($_SESSION['tipoUsuario'] != 1)

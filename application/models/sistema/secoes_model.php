@@ -45,10 +45,34 @@ class Secoes_model extends CI_Model
 		return true;
 	}
 
+	public function getCommentById ($commentId=null)
+	{
+		if (! $commentId) {
+			return false;
+		}
+
+		$query = "SELECT
+		comentarios.`idComentario`,
+		comentarios.`nomeAutor`,
+		IF (comentarios.`emailAutor` != NULL && LENGTH(comentarios.`emailAutor`) > 0,comentarios.`emailAutor`, 'Não informado' ) AS emailAutor,
+		DATE_FORMAT(comentarios.`dataComentario`, '%d/%m/%Y, às %H:%ih') AS dataComentario,
+		comentarios.`textoComentario`,
+		comentarios.`secaoComentario`,
+		secoes.`nome` AS `nomeSecao`,
+		comentarios.`aprovado`
+		FROM
+		comentarios
+		JOIN secoes
+		ON secoes.`id` = comentarios.secaoComentario
+		WHERE `idComentario` = $commentId";
+
+		$result = $this->db->query($query)->result()[0];
+		return $result;
+	}
+
 	public function getComments ($secaoId=null)
 	{
-		if ($secaoId)
-		{
+		if ($secaoId) {
 			$query = "SELECT
 			comentarios.`idComentario`,
 			comentarios.`nomeAutor`,
@@ -65,8 +89,7 @@ class Secoes_model extends CI_Model
 			WHERE `secaoComentario` = $secaoId AND aprovado = 1";
 		}
 
-		if (!$secaoId)
-		{
+		if (!$secaoId) {
 			$query = "SELECT
 			comentarios.`idComentario`,
 			comentarios.`nomeAutor`,
@@ -81,7 +104,6 @@ class Secoes_model extends CI_Model
 			JOIN secoes
 			ON secoes.`id` = comentarios.secaoComentario
 			ORDER BY `dataComentario` DESC";
-
 		}
 
 		$result = $this->db->query($query)->result();
@@ -125,8 +147,7 @@ class Secoes_model extends CI_Model
 		FROM
 		secoes";
 
-		if ($id)
-		{
+		if ($id) {
 			$query .= " WHERE secao.`id` = $id";
 		}
 
@@ -149,8 +170,7 @@ class Secoes_model extends CI_Model
 			$query = "UPDATE secoes
 			SET `comentarios` = $idValue
 			WHERE secoes.`id` = $idKey";
-			if (! $this->db->query($query))
-			{
+			if (! $this->db->query($query)) {
 				return false;
 			}
 		}
@@ -177,15 +197,13 @@ class Secoes_model extends CI_Model
 
 	public function getSitePreferences ($prefName=null)
 	{
-		if ($prefName)
-		{
+		if ($prefName) {
 			$this->db->where('nome', $prefName);
 		}
 
 		$result = $this->db->get('preferencias')->result();
 
-		if (!$result)
-		{
+		if (!$result) {
 			return false;
 		}
 
@@ -194,8 +212,7 @@ class Secoes_model extends CI_Model
 
 	public function setSitePreferences ($prefs = array(null))
 	{
-		if (!$prefs)
-		{
+		if (!$prefs) {
 			return false;
 		}
 

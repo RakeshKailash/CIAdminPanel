@@ -172,7 +172,6 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 								</div>
 								<div class="x_content">
 									<div class="galeria_imagens">
-
 										<div class="row">
 											<?php foreach ($imagens_galeria as $imagem_galeria) : ?>
 												<div class="col-xs-12 col-md-3">
@@ -191,7 +190,6 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												</div>
 											<?php endforeach; ?>
 										</div>
-
 									</div>
 								</div>
 							</div>

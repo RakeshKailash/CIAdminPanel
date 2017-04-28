@@ -387,7 +387,6 @@
 	});
 
 	$(".miniatura_galeria_sistema").click(function () {
-
 		var id = $(this).data('id');
 		var url = base_url + 'sistema/imagens/getInfo/'+id;
 		$.get(url, function(retorno) {
@@ -405,7 +404,6 @@
 
 			$("#img_full_modal").modal('show');
 		});
-
 	});
 
 	$(window).scroll(function () {

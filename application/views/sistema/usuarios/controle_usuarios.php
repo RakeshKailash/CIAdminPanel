@@ -353,7 +353,7 @@ $usuarios = $this->usuario_model->getUser();
 												<tbody>
 													<?php foreach ($usuarios as $usuario): ?>
 														<?php if ($usuario->id != $_SESSION['id']): ?>
-															<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
+															<tr class="linha_usuario linha_tabela" data-userid="<?=$usuario->id?>">
 																<td>
 																	<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 																		<div class="checkbox check_usuarios">

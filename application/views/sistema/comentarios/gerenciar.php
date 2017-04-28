@@ -49,6 +49,59 @@ foreach ($comentarios as $comentario) {
 						</div>
 					</div>
 					<div class="clearfix"></div>
+
+					<div class="modal" tabindex="-1" role="dialog" id="comment_modal">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title">Visualizar Comentário</h4>
+								</div>
+								<div class="modal-body" id="comment_modal_body">
+									<div class="tools_modal_inside">
+										<div class="row">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<div class="col-md-3 col-sm-12 col-xs-12">
+													<p><b>Por: </b></p>
+													<p class="nome_autor">Anônimo</p>
+												</div>
+												<div class="col-md-3 col-sm-12 col-xs-12">
+													<p><b>Em: </b></p>
+													<p class="data_comentario">28/04/2017, às 11:34h</p>
+												</div>
+												<div class="col-md-3 col-sm-12 col-xs-12">
+													<p><b>Na seção: </b></p>
+													<p class="secao_comentario">Imagens</p>
+												</div>
+												<div class="col-md-3 col-sm-12 col-xs-12">
+													<p><b>E-mail do autor: </b></p>
+													<p class="email_autor">fulano@gmail.com</p>
+												</div>
+												<div class="col-md-12 col-sm-12 col-xs-12">
+													<span class="texto_comentario">Apenas um exemplo tosco de comentário comprido para encher o td</span>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="margin-top: 20px;">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<form action="javascript:void(0)" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
+													<div class="form-group">
+														<div class="col-md-12 col-sm-12 col-xs-12">
+															<input type="hidden" name="id_comment_modal" id="id_comment_modal" value="0">
+															<button type="button" class="btn btn-default btn_aprovar_comentario btn_modal"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
+															<button type="button" class="btn btn-warning btn_desativar_comentario btn_modal" data-id="<?=$comentario->idComentario;?>">Desativar</button>
+															<button type="button" class="btn btn-danger btn_deletar_comentario btn_modal" data-id="<?=$comentario->idComentario;?>">Excluir</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
@@ -168,7 +221,7 @@ foreach ($comentarios as $comentario) {
 											</thead>
 											<tbody>
 												<?php foreach ($comentarios as $comentario): ?>
-													<tr>
+													<tr class="linha_comentarios linha_tabela" data-id="<?=$comentario->idComentario;?>">
 														<td>
 															<div class="checkbox check_comentarios">
 																<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
@@ -207,6 +260,59 @@ foreach ($comentarios as $comentario) {
 	</div>
 
 	<script type="text/javascript">
+		$(".linha_comentarios").click(function (e) {
+			var target = e.target || e.srcElement;
+			if (isNotAButton(target.className)) {
+
+				var id = $(this).data('id');
+				var url = base_url + 'sistema/comentarios/getInfo/'+id;
+				$.get(url, function(retorno) {
+					retorno = JSON.parse(retorno);
+
+					var situacao = "<span class='badge bg-orange'><i class='fa fa-times-circle'></i> Aguardando Aprovação</span>";
+
+					$(".nome_autor").html(retorno.nomeAutor);
+					$(".data_comentario").html(retorno.dataComentario);
+					$(".secao_comentario").html(retorno.nomeSecao);
+					$(".email_autor").html(retorno.emailAutor);
+					$(".texto_comentario").html("<i>"+retorno.textoComentario+"</i>");
+
+					$(".btn_modal").attr('data-id', retorno.idComentario);
+
+					if (retorno.aprovado == 1) {
+						$(".btn_aprovar_comentario.btn_modal").css('display', 'none');
+						$(".btn_desativar_comentario.btn_modal").css('display', 'inline-block');
+						situacao = "<span class='badge bg-green'><i class='fa fa-check-circle'></i> Aprovado para Exibição</span>";
+					}
+
+					if (retorno.aprovado == 0) {
+						$(".btn_aprovar_comentario.btn_modal").css('display', 'inline-block');
+						$(".btn_desativar_comentario.btn_modal").css('display', 'none');
+					}
+
+					$(".modal-title").html("Visualizar comentário "+situacao);
+					$("#comment_modal").modal('show');
+				});
+			}
+		});
+
+		function isNotAButton ($className)
+		{
+			if ($className == "btn btn-default btn_aprovar_comentario") {
+				return false;
+			}
+
+			if ($className == "btn btn-danger btn_deletar_comentario") {
+				return false;
+			}
+
+			if ($className == "btn btn-warning btn_desativar_comentario") {
+				return false;
+			}
+
+			return true;
+		}
+
 		$(".btn_deletar_comentario").click(function () {
 			window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
 		});

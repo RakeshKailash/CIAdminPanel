@@ -278,7 +278,7 @@ class Usuarios extends CI_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('newpass_usuario_modal', 'Nova Senha', 'required|matches[newpass_confirm_usuario_modal]');
+		$this->form_validation->set_rules('newpass_usuario_modal', 'Nova Senha', 'required|matches[newpass_confirm_usuario_modal]|min_length[8]');
 		$this->form_validation->set_rules('newpass_confirm_usuario_modal', 'Confirme a Nova Senha', 'required');
 		$this->form_validation->set_rules('oldpass_usuario_modal', 'Senha Antiga', 'required');
 
