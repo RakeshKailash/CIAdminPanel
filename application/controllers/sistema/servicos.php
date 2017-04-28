@@ -35,12 +35,6 @@ class Servicos extends CI_Controller {
 
 	public function update ()
 	{
-		if ($_SESSION['tipoUsuario'] != 1)
-		{
-			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
-			return redirect('/sistema/servicos/editar');
-		}
-
 		if ($this->input->post('conteudo') == null)
 		{
 			$this->session->set_flashdata('warning', "<p>Preencha todos os campos para atualizar a seção!</p>");

@@ -311,6 +311,19 @@
 		$("#has_img").val("0");
 	});
 
+	$(".flat.usuario_check").on('ifChanged', function () {
+		if ( $(".flat:checked").length > 1 ) {
+			var usuarios = getMultipleUsers();
+
+			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/usuarios/delete/' + usuarios['ids']);
+			$(".excluir_multiplas_legenda").html(usuarios['mensagem']);
+			$("#excluir_multiplas_div").css('display', 'block');
+		} else {
+			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+			$("#excluir_multiplas_div").css('display', 'none');
+		}
+	});
+
 	function createImgPreview(input, element, elementType) {
 		if (input) {
 			var reader = new FileReader();
@@ -506,6 +519,32 @@
 		}
 
 		retorno['ids'] = imagens_deletar.join('_');
+		retorno['mensagem'] = mensagem;
+
+		return retorno;
+	};
+
+	function getMultipleUsers () {
+		var usuarios_deletar = []
+		, mensagem
+		, retorno = []
+		;
+
+		$(".flat.usuario_check:checked").each(function () {
+			usuarios_deletar.push($(this).val());
+		});
+
+		if (usuarios_deletar.length == $(".flat.usuario_check").length) {
+			mensagem = "Todos os " + $(".flat.usuario_check").length + " usuários selecionados.";
+			// $("#select_full_gallery").prop('checked', true);
+			// $("#select_full_gallery_div > .icheckbox_flat-green").addClass('checked');
+		} else {
+			mensagem = usuarios_deletar.length + " de " + $(".flat.usuario_check").length + " usuários selecionados.";
+			// $("#select_full_gallery").prop('checked', false);
+			// $("#select_full_gallery_div > .icheckbox_flat-green").removeClass('checked');
+		}
+
+		retorno['ids'] = usuarios_deletar.join('_');
 		retorno['mensagem'] = mensagem;
 
 		return retorno;

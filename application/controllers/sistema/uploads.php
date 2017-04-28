@@ -15,10 +15,10 @@ class Uploads extends CI_Controller {
 	}
 
 	public function uploadFiles () {
-		if ($_SESSION['tipoUsuario'] != 1) {
-			echo 0;
-			return false;
-		}
+		// if ($_SESSION['tipoUsuario'] != 1) {
+		// 	echo 0;
+		// 	return false;
+		// }
 
 		if (! $this->uploads_model->uploadFile('arquivos_upload')) {
 			echo 0;

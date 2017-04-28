@@ -33,11 +33,11 @@ class Comentarios extends CI_Controller {
 
 	function deletar ($ids=null)
 	{
-		if ($_SESSION['tipoUsuario'] != 1)
-		{
-			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
-			return redirect(base_url('sistema/Comentarios/gerenciar'));
-		}
+		// if ($_SESSION['tipoUsuario'] != 1)
+		// {
+		// 	$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+		// 	return redirect(base_url('sistema/Comentarios/gerenciar'));
+		// }
 
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para exclusão.");
@@ -57,11 +57,11 @@ class Comentarios extends CI_Controller {
 
 	function aprovar ($ids=null)
 	{
-		if ($_SESSION['tipoUsuario'] != 1)
-		{
-			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
-			return redirect(base_url('sistema/Comentarios/gerenciar'));
-		}
+		// if ($_SESSION['tipoUsuario'] != 1)
+		// {
+		// 	$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+		// 	return redirect(base_url('sistema/Comentarios/gerenciar'));
+		// }
 
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para aprovação.");
@@ -81,11 +81,11 @@ class Comentarios extends CI_Controller {
 
 	function desativar ($ids=null)
 	{
-		if ($_SESSION['tipoUsuario'] != 1)
-		{
-			$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
-			return redirect(base_url('sistema/Comentarios/gerenciar'));
-		}
+		// if ($_SESSION['tipoUsuario'] != 1)
+		// {
+		// 	$this->session->set_flashdata('error', "<p>Você não tem permissão para editar informações do site!</p>");
+		// 	return redirect(base_url('sistema/Comentarios/gerenciar'));
+		// }
 
 		if ($ids == null) {
 			$this->session->set_flashdata('warning', "Nenhum comentário selecionado para desativar.");

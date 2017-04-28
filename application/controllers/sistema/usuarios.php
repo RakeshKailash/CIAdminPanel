@@ -11,14 +11,13 @@ class Usuarios extends CI_Controller {
 		$this->load->model('sistema/usuario_model');
 		$this->load->model('sistema/imagens_model');
 		$this->load->model('sistema/atualizacoes_model', 'atualizacoes_sistema');
+		if (! $this->usuario_model->isLogged()) {
+			redirect('sistema/login');
+		}
 	}
 
 	public function index ()
 	{
-		if (! $this->usuario_model->isLogged()) {
-			redirect('sistema/login');
-		}
-
 		$info['atualizacoes']['todasAtualizacoes'] = $this->atualizacoes_sistema->retrieve();
 		$info['atualizacoes']['limitadas'] = $this->atualizacoes_sistema->retrieve(null, 5);
 		$info['atualizacoes']['naoVisualizadas'] = $this->atualizacoes_sistema->retrieveUnviewed();
@@ -29,10 +28,6 @@ class Usuarios extends CI_Controller {
 
 	public function get_info ($userId=null)
 	{
-		if (! $this->usuario_model->isLogged()) {
-			redirect('sistema/login');
-		}
-
 		if (! $userId)
 		{
 			$result = array('status' => false);
@@ -40,22 +35,6 @@ class Usuarios extends CI_Controller {
 			return false;
 		}
 
-		// $this->db->where('usuarios.id', $userId);
-		// $this->db->select(
-		// 	"usuarios.id,
-		// 	usuarios.nome,
-		// 	usuarios.sobrenome,
-		// 	DATE_FORMAT(usuarios.dataNascimento, '%d/%m/%Y') AS dataNascimento,
-		// 	usuarios.login,
-		// 	usuarios.email,
-		// 	usuarios.imagem,
-		// 	DATE_FORMAT(usuarios.ultimoAcesso, '%d/%m/%Y, às %H:%i:%s') AS ultimoAcesso,
-		// 	DATE_FORMAT(usuarios.ultimaVerifNotif, '%d/%m/%Y %H:%i:%s') AS ultimaVerifNotif,
-		// 	tipos_usuarios.nome AS tipoUsuario"
-		// 	);
-
-		// $this->db->join('tipos_usuarios', 'tipos_usuarios.id = usuarios.tipoUsuario');
-		// $query = $this->db->get('usuarios');
 		$usuario = $this->usuario_model->getUser($userId);
 
 		if (! $usuario) {
@@ -70,10 +49,6 @@ class Usuarios extends CI_Controller {
 
 	public function update_current ()
 	{
-		if (! $this->usuario_model->isLogged()) {
-			redirect('sistema/login');
-		}
-
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('email_usuario', 'E-mail', 'required|valid_email');
@@ -161,10 +136,6 @@ class Usuarios extends CI_Controller {
 
 	public function create ()
 	{
-		if (! $this->usuario_model->isLogged()) {
-			redirect('sistema/login');
-		}
-
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('name_usuario_modal', 'Nome', 'required');
@@ -179,7 +150,7 @@ class Usuarios extends CI_Controller {
 			{
 				$result = array('warning' => validation_errors('<p>','</p>'));
 				$this->session->set_flashdata($result);
-				return redirect(base_url('sistema/usuarios'));
+				return redirect('sistema/usuarios');
 			}
 		}
 
@@ -344,34 +315,57 @@ class Usuarios extends CI_Controller {
 		return redirect('sistema/usuarios');
 	}
 
-	public function delete ($id) {
-		if (! $this->usuario_model->isLogged()) {
+	public function delete ($ids) {
+		// $userid = !empty($id) ? $id : $_POST['id_usuario_modal'];
+
+		// if (empty($userid) || $userid < 1 || ! is_numeric($userid)) {
+		// 	$return = array('error' => '<p>Erro ao excluir usuário</p>');
+		// 	$this->session->set_flashdata($return);
+		// 	return redirect('sistema/usuarios');
+		// }
+
+		// $usuario = $this->usuario_model->getUser($userid)[0];
+
+		// if (! $this->usuario_model->deleteUser($userid)) {
+		// 	$return = array('error' => '<p>Erro ao excluir usuário</p>');
+		// 	$this->session->set_flashdata($return);
+		// 	return redirect('sistema/usuarios');
+		// }
+
+		// $atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" excluiu o usuário \"".$usuario->nome."\"";
+		// $atualizacao['usuario'] = $_SESSION['id'];
+		// $atualizacao['tipo'] = "Exclusão de Usuário";
+		// $this->atualizacoes_sistema->insert($atualizacao);
+
+		// $return = array('success' => '<p>Usuário excluído com sucesso!</p>');
+		// $this->session->set_flashdata($return);
+		// return redirect('sistema/usuarios');
+
+		if($ids == null) {
+			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");
 			return redirect('sistema/usuarios');
 		}
 
-		$userid = !empty($id) ? $id : $_POST['id_usuario_modal'];
-
-		if (empty($userid) || $userid < 1 || ! is_numeric($userid)) {
-			$return = array('error' => '<p>Erro ao excluir usuário</p>');
-			$this->session->set_flashdata($return);
-			return redirect('sistema/usuarios');
+		if (strpos($ids, "_") !== false) {
+			$ids = explode("_", $ids);
+		} else {
+			$ids = array(0 => $ids);
 		}
 
-		$usuario = $this->usuario_model->getUser($userid)[0];
-
-		if (! $this->usuario_model->deleteUser($userid)) {
-			$return = array('error' => '<p>Erro ao excluir usuário</p>');
-			$this->session->set_flashdata($return);
-			return redirect('sistema/usuarios');
+		foreach ($ids as $id) {
+			if (! $this->usuario_model->deleteUser($id)) {
+				$this->session->set_flashdata('error', "<p>Erro ao excluir o(s) usuário(s)</p>");
+				return redirect('sistema/usuarios');
+			}
 		}
 
-		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" excluiu o usuário \"".$usuario->nome."\"";
+		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" excluiu um ou mais usuários";
 		$atualizacao['usuario'] = $_SESSION['id'];
-		$atualizacao['tipo'] = "Exclusão de Usuário";
+		$atualizacao['tipo'] = "Exclusão de Usuários";
+
 		$this->atualizacoes_sistema->insert($atualizacao);
 
-		$return = array('success' => '<p>Usuário excluído com sucesso!</p>');
-		$this->session->set_flashdata($return);
+		$this->session->set_flashdata('success', "<p>Exclusão realizada com sucesso!</p>");
 		return redirect('sistema/usuarios');
 
 	}

@@ -14,7 +14,7 @@
 			</div>
 			<div class="profile_info">
 				<span>Bem-vindo,</span>
-				<h2><?php echo $_SESSION['nome']; ?></h2>
+				<h2><?php echo $_SESSION['nome'];?></h2>
 			</div>
 		</div>
 		<!-- /menu prile quick info -->
@@ -29,29 +29,33 @@
 				<ul class="nav side-menu">
 					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Home </a></li>
 					<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>"><i class="fa fa-comment"></i> Comentários </a></li>
-					<!-- <li><a href="<?=base_url('sistema/postagens'); ?>"><i class="fa fa-pencil"></i> Postagens </a></li> -->
 				</ul>
 			</div>
 
 			<div class="menu_section">
-			<h3><?=$_SESSION['tipoUsuario'] == 1 ? 'Editar' : 'Visualizar'?> Seções</h3>
+				<h3>Editar Seções</h3>
 				<ul class="nav side-menu">
 					<?php
 					foreach ($secoes as $secao_info):
-						if ($secao_info->nome != 'Home' && $secao_info->nome != 'Postagens') :
-							?>
+						if ($secao_info->nome == 'Contato') {
+							if ($_SESSION['tipoUsuario'] == 1) { ?>
+							<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
+							<?
+						}
+					}
+					else if ($secao_info->nome != 'Home' && $secao_info->nome != 'Postagens') : ?>
 
-						<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
+					<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
 
-					<?php endif;
-					endforeach; ?>
-				</ul>
-			</div>
-
+				<?php endif;
+				endforeach; ?>
+			</ul>
 		</div>
 
-		<!-- /sidebar menu -->
-
-
 	</div>
+
+	<!-- /sidebar menu -->
+
+
+</div>
 </div>

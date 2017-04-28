@@ -31,7 +31,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4><?=$_SESSION['tipoUsuario'] == 1 ? 'Editar' : 'Visualizar'?> Imagens</h4>
+							<h4>Editar Imagens</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -97,9 +97,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 															<div class="form-group">
 																<div class="col-md-6 col-sm-6 col-xs-12 col-lg-3">
 																	<input type="hidden" name="id_img_modal" id="id_img_modal" value="0">
-																	<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-																		<button type="submit" class="btn btn-success">Salvar</button>
-																	<?php endif ?>
+																	<button type="submit" class="btn btn-success">Salvar</button>
 																</div>
 															</div>
 														</form>
@@ -118,66 +116,58 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
-							<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-								<div class="x_panel">
-									<form action="<?=base_url('sistema/imagens/add'); ?>" method="post" enctype="multipart/form-data">
-										<h2>Galeria de Imagens</h2>
-										<div class="x_content">
-											<br>
+							<div class="x_panel">
+								<form action="<?=base_url('sistema/imagens/add'); ?>" method="post" enctype="multipart/form-data">
+									<h2>Galeria de Imagens</h2>
+									<div class="x_content">
+										<br>
 
-											<label id="img_selecionada" for="imagens_galeria"><h4>Nenhuma imagem selecionada</h4></label> <br>
-											<div id="preview_imgs">
+										<label id="img_selecionada" for="imagens_galeria"><h4>Nenhuma imagem selecionada</h4></label> <br>
+										<div id="preview_imgs">
 
-											</div>
-											<button type="button" class="btn btn-primary" id="img_select_galeria">Selecionar Imagens</button>
-											<button type="button" class="btn btn-warning" id="btn_reset_form">Limpar</button>
-											<button type="submit" class="btn btn-success" id="form_submit_galeria">Enviar</button>
-
-											<input type="file" name="imagens_galeria[]" id="imagens_galeria" multiple style="display: none;">
-											<input type="submit" name="enviar" id="submit_galeria" style="display: none;">
 										</div>
-									</form>
-								</div>
-							<?php endif ?>
+										<button type="button" class="btn btn-primary" id="img_select_galeria">Selecionar Imagens</button>
+										<button type="button" class="btn btn-warning" id="btn_reset_form">Limpar</button>
+										<button type="submit" class="btn btn-success" id="form_submit_galeria">Enviar</button>
+
+										<input type="file" name="imagens_galeria[]" id="imagens_galeria" multiple style="display: none;">
+										<input type="submit" name="enviar" id="submit_galeria" style="display: none;">
+									</div>
+								</form>
+							</div>
 							<div class="x_panel" id="conteudo_galeria">
 								<h2>Prévia da Galeria</h2>
-								<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-									<?php if ($error) : ?>
-										<div class="alert alert-danger fade in">
-											<a href="#" class="close" data-dismiss="alert">×</a>
-											<strong>Erro!</strong> <?=$error; ?>
-										</div>
-									<?php endif; ?>
-									<?php if ($success) : ?>
-										<div class="alert alert-success fade in">
-											<a href="#" class="close" data-dismiss="alert">×</a>
-											<strong>Sucesso!</strong> <?=$success; ?>
-										</div>
-									<?php endif; ?>
-									<?php if ($warning) : ?>
-										<div class="alert alert-warning fade in">
-											<a href="#" class="close" data-dismiss="alert">×</a>
-											<strong>Atenção!</strong> <?=$warning; ?>
-										</div>
-									<?php endif; ?>
-								<?php endif ?>
-								<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-									<h5>Clique nas imagens para editar suas informações.</h5>
-									<h5>Utilize o <span class="glyphicon glyphicon-remove" style="color: #D33734;"></span> para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
-									<h5>Utilize o <span class="glyphicon glyphicon-save" style="color: #86CC68;"></span> para baixar uma imagem, ou marque duas ou mais para baixar múltiplas.</h5>
-
-									<div class="col-md-12 col-sm-12 col-xs-12 <?=(count($imagens_galeria) > 0) ? 'element-visible' : 'element-hidden';?>" id="select_full_gallery_div">
-										<input type="checkbox" name="select_full_gallery" id="select_full_gallery" value="1" class="flat" />
-										<label for="select_full_gallery">Selecionar todas as imagens</label>
+								<?php if ($error) : ?>
+									<div class="alert alert-danger fade in">
+										<a href="#" class="close" data-dismiss="alert">×</a>
+										<strong>Erro!</strong> <?=$error; ?>
+									</div>
+								<?php endif; ?>
+								<?php if ($success) : ?>
+									<div class="alert alert-success fade in">
+										<a href="#" class="close" data-dismiss="alert">×</a>
+										<strong>Sucesso!</strong> <?=$success; ?>
+									</div>
+								<?php endif; ?>
+								<?php if ($warning) : ?>
+									<div class="alert alert-warning fade in">
+										<a href="#" class="close" data-dismiss="alert">×</a>
+										<strong>Atenção!</strong> <?=$warning; ?>
 									</div>
 								<?php endif ?>
+								<h5>Clique nas imagens para editar suas informações.</h5>
+								<h5>Utilize o <span class="glyphicon glyphicon-remove" style="color: #D33734;"></span> para excluir uma imagem, ou marque duas ou mais para excluir múltiplas.</h5>
+								<h5>Utilize o <span class="glyphicon glyphicon-save" style="color: #86CC68;"></span> para baixar uma imagem, ou marque duas ou mais para baixar múltiplas.</h5>
+
+								<div class="col-md-12 col-sm-12 col-xs-12 <?=(count($imagens_galeria) > 0) ? 'element-visible' : 'element-hidden';?>" id="select_full_gallery_div">
+									<input type="checkbox" name="select_full_gallery" id="select_full_gallery" value="1" class="flat" />
+									<label for="select_full_gallery">Selecionar todas as imagens</label>
+								</div>
 
 								<div class="col-md-12 col-sm-12 col-xs-12" id="excluir_multiplas_div" style="display: none;">
 									<br>
-									<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-										<label class="excluir_multiplas_legenda"></label> <br>
-										<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-default" id="botao_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplas</button></a>
-									<?php endif ?>
+									<label class="excluir_multiplas_legenda"></label> <br>
+									<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-default" id="botao_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplas</button></a>
 									<a href="javascript:void(0)" class="download_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-default" id="botao_download_multiple"><span class="glyphicon glyphicon-save icon_inline icone_save"></span> Baixar Múltiplas</button></a>
 								</div>
 								<div class="x_content">
@@ -188,11 +178,9 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												<div class="col-xs-12 col-md-3">
 													<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?=$imagem_galeria->id; ?>">
 														<img src="<?=base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar">
-														<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-															<a href="<?=base_url('sistema/imagens/excluir/' . $imagem_galeria->id)?>">
-																<span class="glyphicon glyphicon-remove icon_img_gallery icon_img_delete"></span>
-															</a>
-														<?php endif ?>
+														<a href="<?=base_url('sistema/imagens/excluir/' . $imagem_galeria->id)?>">
+															<span class="glyphicon glyphicon-remove icon_img_gallery icon_img_delete"></span>
+														</a>
 														<a href="<?=base_url('sistema/imagens/download/'. $imagem_galeria->id)?>">
 															<span class="glyphicon glyphicon-save icon_img_gallery icon_img_save"></span>
 														</a>

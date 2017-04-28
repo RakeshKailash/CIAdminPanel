@@ -9,8 +9,7 @@ class Imagens_model extends CI_Model {
 
 	public function replaceSectionImg ($secao=1, $campo=null)
 	{
-		if (! $secao)
-		{
+		if (! $secao) {
 			return false;
 		}
 
@@ -18,16 +17,14 @@ class Imagens_model extends CI_Model {
 
 		$info_img = $this->uploadImg($path, $campo);
 
-		if (! $info_img)
-		{
+		if (! $info_img) {
 			return false;
 		}
 
 		$img_anterior = $this->getImg('secoes', $secao);
 		$replace = $this->replaceImg($img_anterior, $info_img, $path);
 
-		if (! $replace)
-		{
+		if (! $replace) {
 			return false;
 		}
 
@@ -39,8 +36,7 @@ class Imagens_model extends CI_Model {
 
 	public function replacePostImg ($post=null, $campo=null)
 	{
-		if (! $post)
-		{
+		if (! $post) {
 			return false;
 		}
 
@@ -48,8 +44,7 @@ class Imagens_model extends CI_Model {
 
 		$info_img = $this->uploadImg($path, $campo);
 
-		if (! $info_img)
-		{
+		if (! $info_img) {
 			return false;
 		}
 
@@ -57,8 +52,7 @@ class Imagens_model extends CI_Model {
 
 		$replace = $this->replaceImg($img_anterior, $info_img, $path);
 
-		if (! $replace)
-		{
+		if (! $replace) {
 			return false;
 		}
 
@@ -69,8 +63,7 @@ class Imagens_model extends CI_Model {
 
 	public function insert ($campo=null, $path='images/uploads/')
 	{
-		if (! $campo)
-		{
+		if (! $campo) {
 			$imgData['nome'] = null;
 			$imgData['tamanho'] = 0;
 			$imgData['caminho'] = null;
@@ -89,32 +82,72 @@ class Imagens_model extends CI_Model {
 
 	public function update ($imgId=null, $path='images/uploads', $field=null)
 	{
-		if (! $imgId)
-		{
+		if (! $imgId) {
 			return false;
 		}
 
 		$prevImg = $this->getImgs($imgId)[0];
 
-		if (! $field)
-		{
+		if (! $field) {
 			$query = $this->replaceImg($prevImg, null, $path);
 		}
 
 		$newImg = $this->uploadImg($path, $field);
 		$query = $this->replaceImg($prevImg, $newImg, $path);
 
-		if (! $query)
-		{
+		if (! $query) {
 			return false;
 		}
 
 		return $query->id;
 	}
 
+	public function updateInfo ($imgId=null, $title=null, $caption=null)
+	{
+		if (! $imgId) {
+			return false;
+		}
+
+		$sets = array(
+			'titulo' => $title,
+			'texto' => $caption
+		);
+
+		$this->db->where('id', $imgId);
+		if (! $this->db->update('galeria', $sets)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function delete ($imgId=null)
+	{
+		if (! $imgId) {
+			return false;
+		}
+
+		$imagem = $this->getSingleImg($imgId);
+
+		if (! $imagem) {
+			return false;
+		}
+
+		$caminho_pasta = str_replace('\\', "/", FCPATH);
+
+		if(! unlink($caminho_pasta . $imagem->caminho)) {
+			return false;
+		}
+
+		if(! $this->db->delete('galeria', array('id' => $imgId))) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function fillGallery ($campo=null)
 	{
-
 		$caminho_pasta = str_replace('\\', "/", FCPATH);
 
 		$config_upload['upload_path'] = $caminho_pasta . 'images/uploads/gallery';
@@ -165,14 +198,12 @@ class Imagens_model extends CI_Model {
 	{
 		$this->db->where('id', $id);
 		$result = $this->db->get('galeria')->result()[0];
-
 		return $result;
 	}
 
 	public function download ($images=null)
 	{
-		if ($images === null)
-		{
+		if ($images === null) {
 			return array('warning' => 'error', 'mensagem' => "Nenhuma imagem selecionada para download.", 'link' => null);
 		}
 
@@ -180,8 +211,6 @@ class Imagens_model extends CI_Model {
 		$this->db->select('nome');
 		$this->db->where_in('id', $ids);
 		$imagesDb = $this->db->get('galeria')->result();
-
-		// return $imagesDb;
 
 		$caminho_imgs = str_replace('\\', "/", FCPATH) . 'images/uploads/gallery/';
 		$caminho_pasta = str_replace('\\', "/", FCPATH) . 'files/user_download/';
@@ -192,20 +221,15 @@ class Imagens_model extends CI_Model {
 		$zip->open(($caminho_pasta . $zip_name), ZipArchive::CREATE);
 
 
-		foreach ($imagesDb as $imagem)
-		{
+		foreach ($imagesDb as $imagem) {
 
-			if (! ($handle = opendir($caminho_imgs)))
-			{
+			if (! ($handle = opendir($caminho_imgs))) {
 				return array('status' => 'error', 'mensagem' => "Erro ao preparar imagens para download.", 'link' => null);
 			}
 
-			while (false !== ($entry = readdir($handle)))
-			{
-				if ($entry == $imagem->nome)
-				{
-					if (! file_exists($caminho_imgs . $entry))
-					{
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry == $imagem->nome) {
+					if (! file_exists($caminho_imgs . $entry)) {
 						return array('status' => 'error', 'mensagem' => "Erro ao preparar imagens para download.", 'link' => null);
 					}
 
@@ -230,8 +254,7 @@ class Imagens_model extends CI_Model {
 		$data['dataDownload'] = time();
 		$data['idUsuario'] = $_SESSION['id'];
 
-		if (! $this->db->insert('arquivos_download', $data))
-		{
+		if (! $this->db->insert('arquivos_download', $data)) {
 			return false;
 		}
 
@@ -242,8 +265,7 @@ class Imagens_model extends CI_Model {
 
 	private function uploadImg ($path=null, $field=null)
 	{
-		if (! $path)
-		{
+		if (! $path) {
 			return false;
 		}
 
@@ -251,7 +273,7 @@ class Imagens_model extends CI_Model {
 			$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
 			$config_upload['upload_path'] = $caminho_pasta . $path;
 			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
-			$config_upload['max_size'] = '5120';
+			$config_upload['max_size'] = '0';
 			$config_upload['max_width'] = '0';
 			$config_upload['max_height'] = '0';
 			$config_upload['encrypt_name'] = true;
@@ -274,8 +296,7 @@ class Imagens_model extends CI_Model {
 
 	private function getImgs ($id=null)
 	{
-		if ($id)
-		{
+		if ($id) {
 			$this->db->where('imagens.id = ' . $id);
 		}
 
@@ -286,13 +307,11 @@ class Imagens_model extends CI_Model {
 
 	private function replaceImg ($prevImg=null, $newImg=null, $path=null)
 	{
-		if (! $prevImg || ! $path)
-		{
+		if (! $prevImg || ! $path) {
 			return false;
 		}
 
-		if ($newImg)
-		{
+		if ($newImg) {
 			$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
 			unlink($caminho_pasta . $prevImg->caminho);
 
@@ -301,8 +320,7 @@ class Imagens_model extends CI_Model {
 			$retorno['caminho'] = $newImg['file_name'] != null ? ($path . '/' . $newImg['file_name']) : null;
 		}
 
-		if (! $newImg)
-		{
+		if (! $newImg) {
 			$retorno['nome'] = null;
 			$retorno['tamanho'] = 0;
 			$retorno['caminho'] = null;
@@ -314,7 +332,6 @@ class Imagens_model extends CI_Model {
 		$update_img = $this->db->update('imagens', $data_insert);
 
 		if ( ! $update_img) {
-			// $info_retorno['error']['count']++;
 			return false;
 		}
 
@@ -325,22 +342,19 @@ class Imagens_model extends CI_Model {
 
 	private function insertImg ($imgInfo=null)
 	{
-		if (! $imgInfo)
-		{
+		if (! $imgInfo) {
 			return false;
 		}
 
 		$query = $this->db->insert('imagens', $imgInfo);
 
-		if (! $query)
-		{
+		if (! $query) {
 			return false;
 		}
 
 		$idImg = $this->db->insert_id();
 
-		if (! $idImg)
-		{
+		if (! $idImg) {
 			return false;
 		}
 

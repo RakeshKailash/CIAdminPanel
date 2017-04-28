@@ -45,7 +45,7 @@ foreach ($comentarios as $comentario) {
 							<h3>Painel de Administração</h3>
 						</div>
 						<div class="title_right">
-							<h4><?=$_SESSION['tipoUsuario'] == 1 ? 'Gerenciar' : 'Visualizar'?> Comentários</h4>
+							<h4>Gerenciar Comentários</h4>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -71,60 +71,60 @@ foreach ($comentarios as $comentario) {
 											<strong>Atenção!</strong> <?=$warning; ?>
 										</div>
 									<?php endif; ?>
-									<div class="col-md-12">
-										<h2>Configurar Comentários</h2>
-										<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/setSectionStatus')?>" method="post">
-											<div class="container">
-												<div class="row">
-													<div class="col-md-4">
-														<div class="form-group">
-															<label class="control-label col-md-6 col-sm-6 col-xs-12">Habilitar Comentário nas Seções</label>
-															<div class="container">
-																<div class="col-md-6 col-sm-6 col-xs-12">
-																	<div class="checkbox">
-																		<label><input type="checkbox" name="secoes_valores[]" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
-																	</div>
-																	<div class="checkbox">
-																		<label><input type="checkbox" name="secoes_valores[]" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
-																	</div>
-																	<div class="checkbox">
-																		<label><input type="checkbox" name="secoes_valores[]" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
-																	</div>
-																	<div class="checkbox">
-																		<label><input type="checkbox" name="secoes_valores[]" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="form-group">
-															<label class="control-label col-md-4 col-sm-4 col-xs-12">Aprovação de Comentários</label>
-															<div class="container">
-																<div class="col-md-8 col-sm-8 col-xs-12">
-																	<div class="radio">
-																		<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovY" value="1" required <?=!!$auto_approve->valor ? 'checked' : '' ?> /> Auto-aprovar
-																	</div>
-																	<div class="radio">
-																		<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovN" value="0" <?=!!$auto_approve->valor ? '' : 'checked' ?> /> Aguardar Aprovação Manual
+									<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+										<div class="col-md-12">
+											<h2>Configurar Comentários</h2>
+											<form class="form-horizontal form-label-left" action="<?=base_url('sistema/comentarios/setSectionStatus')?>" method="post">
+												<div class="container">
+													<div class="row">
+														<div class="col-md-4">
+															<div class="form-group">
+																<label class="control-label col-md-6 col-sm-6 col-xs-12">Habilitar Comentário nas Seções</label>
+																<div class="container">
+																	<div class="col-md-6 col-sm-6 col-xs-12">
+																		<div class="checkbox">
+																			<label><input type="checkbox" name="secoes_valores[]" value="2" class="flat" <?=$statusSections[1]->comentarios?> /> Serviços</label>
+																		</div>
+																		<div class="checkbox">
+																			<label><input type="checkbox" name="secoes_valores[]" value="3" class="flat" <?=$statusSections[2]->comentarios?> /> Empresa</label>
+																		</div>
+																		<div class="checkbox">
+																			<label><input type="checkbox" name="secoes_valores[]" value="4" class="flat" <?=$statusSections[3]->comentarios?> /> Imagens</label>
+																		</div>
+																		<div class="checkbox">
+																			<label><input type="checkbox" name="secoes_valores[]" value="5" class="flat" <?=$statusSections[4]->comentarios?> /> Contato</label>
+																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-													<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+														<div class="col-md-4">
+															<div class="form-group">
+																<label class="control-label col-md-4 col-sm-4 col-xs-12">Aprovação de Comentários</label>
+																<div class="container">
+																	<div class="col-md-8 col-sm-8 col-xs-12">
+																		<div class="radio">
+																			<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovY" value="1" required <?=!!$auto_approve->valor ? 'checked' : '' ?> /> Auto-aprovar
+																		</div>
+																		<div class="radio">
+																			<input type="radio" class="flat" name="aprovacao_comentarios" id="aprovN" value="0" <?=!!$auto_approve->valor ? '' : 'checked' ?> /> Aguardar Aprovação Manual
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
 														<div class="col-md-4">
 															<div class="form-group col-md-12">
 																<button type="submit" class="btn btn-default btn_atualizar_comentario_secao">Salvar</button>
 																<button type="button" class="btn btn-warning btn_limpar_comentario_secao">Limpar</button>
 															</div>
 														</div>
-													<?php endif ?>
+													</div>
 												</div>
-											</div>
-										</form>
-										<div class="ln_solid"></div>
-									</div>
+											</form>
+											<div class="ln_solid"></div>
+										</div>
+									<?php endif ?>
 									<div class="col-md-12 col-xs-12">
 										<h2>
 											Administrar Comentários
@@ -138,7 +138,7 @@ foreach ($comentarios as $comentario) {
 										<?php endif ?>
 										<div class="container">
 											<div class="col-md-12">
-												<?php if ($totalComments > 0 && $_SESSION['tipoUsuario'] == 1): ?>
+												<?php if ($totalComments > 0): ?>
 													<div class="checkbox" id="select_all_comments">
 														<label style="padding-left: 0;" for="select_all_comments"><input type="checkbox" name="select_all_comments" value="0" class="flat" /> Selecionar todos</label>
 													</div>
@@ -169,32 +169,28 @@ foreach ($comentarios as $comentario) {
 											<tbody>
 												<?php foreach ($comentarios as $comentario): ?>
 													<tr>
-														<td class="hidden-xs">
-															<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-																<div class="checkbox check_comentarios">
-																	<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
-																</div>
-															<?php endif ?>
+														<td>
+															<div class="checkbox check_comentarios">
+																<input type="checkbox" name="select_all_comments" value="0" class="flat" data-id="<?=$comentario->idComentario;?>" />
+															</div>
 														</td>
 														<td class="hidden-xs"><?=$comentario->idComentario;?></td>
-														<td class="hidden-xs"><?=$comentario->textoComentario;?></td>
+														<td><?=$comentario->textoComentario;?></td>
 														<td class="hidden-xs"><?=date('d/m/Y\ \à\s H:i\h', strtotime($comentario->dataComentario));?></td>
 														<td class="hidden-xs"><?=$comentario->nomeSecao;?></td>
 														<td class="hidden-xs"><?=$comentario->nomeAutor;?></td>
 														<td class="hidden-xs"><?=empty($comentario->emailAutor) ? "<i>Não informado<i>" : $comentario->emailAutor;?></td>
-														<td class="hidden-xs">
+														<td>
 															<i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?>
 														</td>
-														<td class="hidden-xs">
-															<?php if ($_SESSION['tipoUsuario'] == 1): ?>
-																<?php if (!$comentario->aprovado): ?>
-																	<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
-																<?php endif ?>
-																<?php if ($comentario->aprovado): ?>
-																	<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
-																<?php endif ?>
-																<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
+														<td>
+															<?php if (!$comentario->aprovado): ?>
+																<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
 															<?php endif ?>
+															<?php if ($comentario->aprovado): ?>
+																<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
+															<?php endif ?>
+															<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
 														</td>
 													</tr>
 												<?php endforeach ?>

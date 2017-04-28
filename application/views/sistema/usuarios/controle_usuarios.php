@@ -332,10 +332,15 @@ $usuarios = $this->usuario_model->getUser();
 											<h2>Gerenciar Usuários</h2>
 											<?php if ($_SESSION['tipoUsuario'] == 1): ?>
 												<button type="button" class="btn btn-success create_user"><i class="fa fa-plus" aria-hidden="true"></i> Novo Usuário</button>
+												<div id="excluir_multiplas_div" style="display: none;">
+													<label class="excluir_multiplas_legenda"></label> <br>
+													<a href="javascript:void(0)" class="excluir_multiplas_link" style="text-decoration: none; color: #fff;"><button type="button" class="btn btn-default" id="botao_delete_multiple"><span class="glyphicon glyphicon-remove icon_inline icone_delete"></span> Excluir Múltiplos</button></a>
+												</div>
 											<?php endif; ?>
 											<table class="table">
 												<thead>
 													<tr>
+														<th></th>
 														<th></th>
 														<th>Nome Completo</th>
 														<th class="hidden-xs">Data de Nascimento</th>
@@ -349,6 +354,13 @@ $usuarios = $this->usuario_model->getUser();
 													<?php foreach ($usuarios as $usuario): ?>
 														<?php if ($usuario->id != $_SESSION['id']): ?>
 															<tr class="linha_usuario" data-userid="<?=$usuario->id?>">
+																<td>
+																	<?php if ($_SESSION['tipoUsuario'] == 1): ?>
+																		<div class="checkbox check_usuarios">
+																			<input type="checkbox" name="select_all_users" value="<?=$usuario->id?>" class="flat usuario_check" />
+																		</div>
+																	<?php endif ?>
+																</td>
 																<td style="position: relative;">
 																	<span class="status_span"></span>
 																	<img class="mini-thumb" src="<?=base_url('images/uploads/profile/' . $usuario->imagem)?>" alt="Não foi possível localizar a imagem">
@@ -447,8 +459,6 @@ $usuarios = $this->usuario_model->getUser();
 					badge_color = 'green';
 				}
 
-				// $(".linha_usuario[data-userid~='"+id+"'] > .user_status > span").html(retorno[i].status);
-
 				$(".linha_usuario[data-userid~='"+id+"'] > td > span.status_span").removeClass('bg-red');
 				$(".linha_usuario[data-userid~='"+id+"'] > td > span.status_span").removeClass('bg-green');
 
@@ -456,42 +466,6 @@ $usuarios = $this->usuario_model->getUser();
 			}
 		})
 	}
-
-	// $(".anim_icon.icone_delete").click(function () {
-	// 	console.log("abc");
-	// 	var user_id = $(this).parent("tr").data('userid');
-
-	// 	if(!user_id || user_id.length < 1) {
-	// 		return false;
-	// 	}
-
-	// 	window.location('sistema/usuarios/delete'+user_id);
-	// });
-
-	// function createSelectWith (options, selectedItem) {
-	// 	var htmlOptions = []
-	// 	, htmlSelect = "<select class='form-control' id='select_user_type' name='tipo_usuario'>"
-	// 	, value
-	// 	, selected = ""
-	// 	;
-
-	// 	for (var i = 0; i < options.length; i++) {
-	// 		if (options[i] == selectedItem) {
-	// 			selected = "selected";
-	// 		}
-
-	// 		value = i + 1;
-	// 		htmlOptions.push("<option "+selected+" value='"+value+"'>"+options[i]+"</option>");
-
-	// 		selected = "";
-	// 	}
-
-	// 	htmlSelect += htmlOptions.join('');
-	// 	htmlSelect += "</select>";
-
-	// 	return htmlSelect;
-
-	// }
 </script>
 
 <?php $this->load->view('footer') ?>
