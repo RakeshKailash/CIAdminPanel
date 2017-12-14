@@ -8,7 +8,7 @@ $countImg = 0;
 $commentInfo['comentarios'] = $comentarios;
 ?>
 
-<div class="container_secao" id="secao_servicos">
+<div class="container_secao" id="secao_imagens">
 	<section class="global-page-header">
 		<div class="container">
 			<div class="row">

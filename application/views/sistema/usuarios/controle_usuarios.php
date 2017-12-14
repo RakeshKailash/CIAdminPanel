@@ -370,7 +370,7 @@ $usuarios = $this->usuario_model->getUser();
 																<td class="hidden-xs"><?=$usuario->email?></td>
 																<td class="hidden-xs"><?=$usuario->login?></td>
 																<td class="hidden-xs"><?=$usuario->ultimoAcesso?></td>
-																<td class="delete_user_td" style="vertical-align: middle;"><a href="<?=base_url('sistema/usuarios/delete/'.$usuario->id);?>" title="Excluir usuário"><span class="glyphicon glyphicon-remove anim_icon icone_delete" style="font-size: 18pt;"></span></a></td>
+																<td class="delete_user_td" style="vertical-align: middle;"><a href="javascript:void(0)" data-userid="<?=$usuario->id?>" title="Excluir usuário"><span class="glyphicon glyphicon-remove anim_icon icone_delete" style="font-size: 18pt;"></span></a></td>
 															</tr>
 														<?php endif ?>
 													<?php endforeach ?>
@@ -392,6 +392,29 @@ $usuarios = $this->usuario_model->getUser();
 	var curUserProps = <?=json_encode($_SESSION) ?>;
 
 	getOnlineUsers();
+
+	$(".delete_user_td > a, .excluir_multiplas_link").on('click', function () {
+		var id = $(this).data('userid');
+
+		if (! id) {
+			return false;
+		}
+
+		swal({
+			title: 'Deseja excluir o(s) usuário(s)?',
+			text: "Essa ação não pode ser desfeita!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Sim, excluir'
+		}).then((result) => {
+			if (result.value) {
+				window.location = base_url + 'sistema/usuarios/delete/' + id;
+			}
+		});
+	});
 
 	$(".linha_usuario").click(function (e) {
 		var target = e.target || e.srcElement;

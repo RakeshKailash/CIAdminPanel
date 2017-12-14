@@ -51,6 +51,7 @@
 <script src="<?=base_url('js/echart/green.js')?>"></script>
 
 <script type="text/javascript" src="<?=base_url('js/site/graficos.js');?>"></script>
+<script type="text/javascript" src="<?=base_url('js/sweetalert2.all.js');?>"></script>
 
 <!-- /Importar JS Aqui -->
 
@@ -273,12 +274,12 @@
 		if ( $(".flat:checked").length > 1 ) {
 			var imagens = getMultipleImages();
 
-			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+			$(".excluir_multiplas_link").attr('data-imgid', imagens['ids']);
 			$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
 			$(".excluir_multiplas_legenda").html(imagens['mensagem']);
 			$("#excluir_multiplas_div").css('display', 'block');
 		} else {
-			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+			$(".excluir_multiplas_link").attr('data-imgid', null);
 			$(".download_multiplas_link").prop('href', 'javascript:void(0)');
 			$("#excluir_multiplas_div").css('display', 'none');
 		}
@@ -290,7 +291,7 @@
 
 		var imagens = getMultipleImages();
 
-		$(".excluir_multiplas_link").prop('href', base_url + 'sistema/imagens/excluir/' + imagens['ids']);
+		$(".excluir_multiplas_link").attr('data-imgid', imagens['ids']);
 		$(".download_multiplas_link").prop('href', base_url + 'sistema/imagens/download/' + imagens['ids']);
 		$(".excluir_multiplas_legenda").html(imagens['mensagem']);
 		$("#excluir_multiplas_div").css('display', 'block');
@@ -300,26 +301,39 @@
 		$(".flat").prop('checked', false);
 		$(".icheckbox_flat-green").removeClass('checked');
 
-		$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+		$(".excluir_multiplas_link").attr('data-imgid', null);
 		$(".download_multiplas_link").prop('href', 'javascript:void(0)');
 		$("#excluir_multiplas_div").css('display', 'none');
 	});
 
 
 	$("#remove_img").click(function () {
-		$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
-		$("#has_img").val("0");
+		swal({
+			title: 'Deseja remover a capa da seção?',
+			text: "A seção exibirá apenas o texto, enquanto não houver uma capa selecionada",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Sim, remover'
+		}).then((result) => {
+			if (result.value) {
+				$("#img_selecionada").html("<label id='img_selecionada' for='imagem'>Ainda não existe uma imagem para esta categoria</label>");
+				$("#has_img").val("0");
+			}
+		});
 	});
 
 	$(".flat.usuario_check").on('ifChanged', function () {
 		if ( $(".flat:checked").length > 1 ) {
 			var usuarios = getMultipleUsers();
 
-			$(".excluir_multiplas_link").prop('href', base_url + 'sistema/usuarios/delete/' + usuarios['ids']);
+			$(".excluir_multiplas_link").attr('data-userid', usuarios['ids']);
 			$(".excluir_multiplas_legenda").html(usuarios['mensagem']);
 			$("#excluir_multiplas_div").css('display', 'block');
 		} else {
-			$(".excluir_multiplas_link").prop('href', 'javascript:void(0)');
+			$(".excluir_multiplas_link").attr('data-userid', null);
 			$("#excluir_multiplas_div").css('display', 'none');
 		}
 	});

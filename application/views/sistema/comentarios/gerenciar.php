@@ -102,6 +102,36 @@ foreach ($comentarios as $comentario) {
 						</div><!-- /.modal-dialog -->
 					</div><!-- /.modal -->
 
+					<div class="modal" tabindex="-1" role="dialog" id="dialog_modal" data-action="javascript:void(0)">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title">Excluir Comentário</h4>
+								</div>
+								<div class="modal-body" id="dialog_modal_body">
+									<div class="tools_modal_inside">
+										<div class="row">
+											Deseja realmente excluir o comentário?
+										</div>
+										<div class="row" style="margin-top: 20px;">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<form action="javascript:void(0)" method="post" accept-charset="utf-8" data-parsley-validate class="form-horizontal form-label-left">
+													<div class="form-group">
+														<div class="col-md-12 col-sm-12 col-xs-12">
+															<button type="button" class="btn btn-default btn_confirm_dialog btn_modal">Sim</button>
+															<button type="button" class="btn btn-danger btn_cancel_dialog btn_modal">Cancelar</button>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
@@ -233,22 +263,23 @@ foreach ($comentarios as $comentario) {
 														<td class="hidden-xs"><?=$comentario->nomeSecao;?></td>
 														<td class="hidden-xs"><?=$comentario->nomeAutor;?></td>
 														<td class="hidden-xs"><?=empty($comentario->emailAutor) ? "<i>Não informado<i>" : $comentario->emailAutor;?></td>
-														<td>
-															<i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?>
-														</td>
-														<td>
-															<?php if (!$comentario->aprovado): ?>
-																<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
-															<?php endif ?>
-															<?php if ($comentario->aprovado): ?>
-																<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
-															<?php endif ?>
-															<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
-														</td>
-													</tr>
-												<?php endforeach ?>
-											</tbody>
-										</table>
+															<td>
+																<i class="fa fa-<?=!!$comentario->aprovado ? 'check' : 'times'?>"></i> <?=!!$comentario->aprovado ? "Aprovado para Exibição" : "Aguardando Aprovação";?>
+															</td>
+															<td>
+																<?php if (!$comentario->aprovado): ?>
+																	<button type="button" class="btn btn-default btn_aprovar_comentario"  data-id="<?=$comentario->idComentario;?>">Aprovar</button>
+																<?php endif ?>
+																<?php if ($comentario->aprovado): ?>
+																	<button type="button" class="btn btn-warning btn_desativar_comentario" data-id="<?=$comentario->idComentario;?>">Desativar</button>
+																<?php endif ?>
+																<button type="button" class="btn btn-danger btn_deletar_comentario" data-id="<?=$comentario->idComentario;?>">Excluir</button>
+															</td>
+														</tr>
+													<?php endforeach ?>
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -257,165 +288,209 @@ foreach ($comentarios as $comentario) {
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<script type="text/javascript">
-		$(".linha_comentarios").click(function (e) {
-			var target = e.target || e.srcElement;
-			if (isNotAButton(target.className)) {
+		<script type="text/javascript">
+			$(".linha_comentarios").click(function (e) {
+				var target = e.target || e.srcElement;
+				if (isNotAButton(target.className)) {
 
-				var id = $(this).data('id');
-				var url = base_url + 'sistema/comentarios/getInfo/'+id;
-				$.get(url, function(retorno) {
-					retorno = JSON.parse(retorno);
+					var id = $(this).data('id');
+					var url = base_url + 'sistema/comentarios/getInfo/'+id;
+					$.get(url, function(retorno) {
+						retorno = JSON.parse(retorno);
 
-					var situacao = "<span class='badge bg-orange'><i class='fa fa-times-circle'></i> Aguardando Aprovação</span>";
+						var situacao = "<span class='badge bg-orange'><i class='fa fa-times-circle'></i> Aguardando Aprovação</span>";
 
-					$(".nome_autor").html(retorno.nomeAutor);
-					$(".data_comentario").html(retorno.dataComentario);
-					$(".secao_comentario").html(retorno.nomeSecao);
-					$(".email_autor").html(retorno.emailAutor);
-					$(".texto_comentario").html("<i>"+retorno.textoComentario+"</i>");
+						$(".nome_autor").html(retorno.nomeAutor);
+						$(".data_comentario").html(retorno.dataComentario);
+						$(".secao_comentario").html(retorno.nomeSecao);
+						$(".email_autor").html(retorno.emailAutor);
+						$(".texto_comentario").html("<i>"+retorno.textoComentario+"</i>");
 
-					$(".btn_modal").attr('data-id', retorno.idComentario);
+						$(".btn_modal").attr('data-id', retorno.idComentario);
 
-					if (retorno.aprovado == 1) {
-						$(".btn_aprovar_comentario.btn_modal").css('display', 'none');
-						$(".btn_desativar_comentario.btn_modal").css('display', 'inline-block');
-						situacao = "<span class='badge bg-green'><i class='fa fa-check-circle'></i> Aprovado para Exibição</span>";
+						if (retorno.aprovado == 1) {
+							$(".btn_aprovar_comentario.btn_modal").css('display', 'none');
+							$(".btn_desativar_comentario.btn_modal").css('display', 'inline-block');
+							situacao = "<span class='badge bg-green'><i class='fa fa-check-circle'></i> Aprovado para Exibição</span>";
+						}
+
+						if (retorno.aprovado == 0) {
+							$(".btn_aprovar_comentario.btn_modal").css('display', 'inline-block');
+							$(".btn_desativar_comentario.btn_modal").css('display', 'none');
+						}
+
+						$(".modal-title").html("Visualizar comentário "+situacao);
+						$("#comment_modal").modal('show');
+					});
+				}
+			});
+
+			function isNotAButton ($className)
+			{
+				if ($className == "btn btn-default btn_aprovar_comentario") {
+					return false;
+				}
+
+				if ($className == "btn btn-danger btn_deletar_comentario") {
+					return false;
+				}
+
+				if ($className == "btn btn-warning btn_desativar_comentario") {
+					return false;
+				}
+
+				return true;
+			}
+
+			$(".btn_deletar_comentario").click(function () {
+				var url = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
+
+				swal({
+					title: 'Deseja excluir o(s) comentários(s)?',
+					text: "Essa ação não pode ser desfeita!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					cancelButtonText: 'Cancelar',
+					confirmButtonText: 'Sim, excluir'
+				}).then((result) => {
+					if (result.value) {
+						window.location = url;
 					}
-
-					if (retorno.aprovado == 0) {
-						$(".btn_aprovar_comentario.btn_modal").css('display', 'inline-block');
-						$(".btn_desativar_comentario.btn_modal").css('display', 'none');
-					}
-
-					$(".modal-title").html("Visualizar comentário "+situacao);
-					$("#comment_modal").modal('show');
 				});
-			}
+			// $("#dialog_modal").attr('data-action', url);
+			// $("#dialog_modal").modal('show');
 		});
 
-		function isNotAButton ($className)
-		{
-			if ($className == "btn btn-default btn_aprovar_comentario") {
-				return false;
-			}
+			$(".btn_confirm_dialog").click(function () {
+				var action = $("#dialog_modal").data('action');
 
-			if ($className == "btn btn-danger btn_deletar_comentario") {
-				return false;
-			}
+				if (! action || action === null) {
+					return false;
+				}
 
-			if ($className == "btn btn-warning btn_desativar_comentario") {
-				return false;
-			}
+				window.location = action;
+			});
 
-			return true;
-		}
+			$(".btn_cancel_dialog").click(function () {
+				$("#dialog_modal").modal("hide");
+			});
 
-		$(".btn_deletar_comentario").click(function () {
-			window.location = base_url + 'sistema/Comentarios/deletar/' + $(this).data('id');
-		});
+			$(".btn_aprovar_comentario").click(function () {
+				window.location = base_url + 'sistema/Comentarios/aprovar/' + $(this).data('id');
+			});
 
-		$(".btn_aprovar_comentario").click(function () {
-			window.location = base_url + 'sistema/Comentarios/aprovar/' + $(this).data('id');
-		});
+			$(".btn_desativar_comentario").click(function () {
+				window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
+			});
 
-		$(".btn_desativar_comentario").click(function () {
-			window.location = base_url + 'sistema/Comentarios/desativar/' + $(this).data('id');
-		});
+			$("#select_all_comments .flat").on('ifChecked', function () {
+				checkboxControl.check(".checkbox.check_comentarios");
 
-		$("#select_all_comments .flat").on('ifChecked', function () {
-			checkboxControl.check(".checkbox.check_comentarios");
+				$(".checkbox.check_comentarios").parents("tr").css("background", "#eee");
 
-			$(".checkbox.check_comentarios").parents("tr").css("background", "#eee");
+				if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
+					$(".buttons_comments").css('display', 'inline-block');
+				}
 
-			if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
-				$(".buttons_comments").css('display', 'inline-block');
-			}
+			});
 
-		});
-
-		$("#select_all_comments .flat").on('ifUnchecked', function () {
-			checkboxControl.uncheck(".checkbox.check_comentarios");
-			$(".checkbox.check_comentarios").parents("tr").css("background", "#fff");
-			$(".buttons_comments").css('display', 'none');
-		});
-
-		$(".checkbox.check_comentarios .flat").on('ifChanged', function () {
-			if ($(".checkbox.check_comentarios .flat:checked").length != $(".checkbox.check_comentarios .flat").length) {
-				checkboxControl.uncheck("#select_all_comments");
-			} else {
-				checkboxControl.check("#select_all_comments");
-			}
-
-			if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
-				$(".buttons_comments").css('display', 'inline-block');
-			} else {
+			$("#select_all_comments .flat").on('ifUnchecked', function () {
+				checkboxControl.uncheck(".checkbox.check_comentarios");
+				$(".checkbox.check_comentarios").parents("tr").css("background", "#fff");
 				$(".buttons_comments").css('display', 'none');
-			}
-		});
-
-		$(".checkbox.check_comentarios .flat").on('ifChecked', function () {
-			$(this).parents("tr").css("background", "#eee");
-		});
-
-		$(".checkbox.check_comentarios .flat").on('ifUnchecked', function () {
-			$(this).parents("tr").css("background", "#fff");
-		});
-
-		$("#btn_delete_multiple").click(function () {
-			var idsDeletar = [];
-			$(".checkbox.check_comentarios .flat:checked").each(function () {
-				idsDeletar.push($(this).data('id'));
 			});
 
-			idsDeletar = idsDeletar.join("_");
+			$(".checkbox.check_comentarios .flat").on('ifChanged', function () {
+				if ($(".checkbox.check_comentarios .flat:checked").length != $(".checkbox.check_comentarios .flat").length) {
+					checkboxControl.uncheck("#select_all_comments");
+				} else {
+					checkboxControl.check("#select_all_comments");
+				}
 
-			window.location = base_url + 'sistema/Comentarios/deletar/' + idsDeletar;
-		});
-
-		$("#btn_desativar_multiple").click(function () {
-			var idsDesativar = [];
-			$(".checkbox.check_comentarios .flat:checked").each(function () {
-				idsDesativar.push($(this).data('id'));
+				if ($(".checkbox.check_comentarios .flat:checked").length > 1) {
+					$(".buttons_comments").css('display', 'inline-block');
+				} else {
+					$(".buttons_comments").css('display', 'none');
+				}
 			});
 
-			idsDesativar = idsDesativar.join("_");
-
-			window.location = base_url + 'sistema/Comentarios/desativar/' + idsDesativar;
-		});
-
-		$("#btn_aprovar_multiple").click(function () {
-			var idsAprovar = [];
-			$(".checkbox.check_comentarios .flat:checked").each(function () {
-				idsAprovar.push($(this).data('id'));
+			$(".checkbox.check_comentarios .flat").on('ifChecked', function () {
+				$(this).parents("tr").css("background", "#eee");
 			});
 
-			idsAprovar = idsAprovar.join("_");
+			$(".checkbox.check_comentarios .flat").on('ifUnchecked', function () {
+				$(this).parents("tr").css("background", "#fff");
+			});
 
-			window.location = base_url + 'sistema/Comentarios/aprovar/' + idsAprovar;
-		});
+			$("#btn_delete_multiple").click(function () {
+				var idsDeletar = [];
+				$(".checkbox.check_comentarios .flat:checked").each(function () {
+					idsDeletar.push($(this).data('id'));
+				});
 
-		var checkboxControl = {};
-		checkboxControl.check = function (nomeDiv) {
-			if (nomeDiv == null) {
-				nomeDiv = ".checkbox";
+				idsDeletar = idsDeletar.join("_");
+
+				swal({
+					title: 'Deseja excluir o(s) comentários(s)?',
+					text: "Essa ação não pode ser desfeita!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					cancelButtonText: 'Cancelar',
+					confirmButtonText: 'Sim, excluir'
+				}).then((result) => {
+					if (result.value) {
+						window.location = base_url + 'sistema/Comentarios/deletar/' + idsDeletar;
+					}
+				});
+
+			});
+
+			$("#btn_desativar_multiple").click(function () {
+				var idsDesativar = [];
+				$(".checkbox.check_comentarios .flat:checked").each(function () {
+					idsDesativar.push($(this).data('id'));
+				});
+
+				idsDesativar = idsDesativar.join("_");
+
+				window.location = base_url + 'sistema/Comentarios/desativar/' + idsDesativar;
+			});
+
+			$("#btn_aprovar_multiple").click(function () {
+				var idsAprovar = [];
+				$(".checkbox.check_comentarios .flat:checked").each(function () {
+					idsAprovar.push($(this).data('id'));
+				});
+
+				idsAprovar = idsAprovar.join("_");
+
+				window.location = base_url + 'sistema/Comentarios/aprovar/' + idsAprovar;
+			});
+
+			var checkboxControl = {};
+			checkboxControl.check = function (nomeDiv) {
+				if (nomeDiv == null) {
+					nomeDiv = ".checkbox";
+				}
+
+				$(nomeDiv + " .flat").prop('checked', true);
+				$(nomeDiv + " .icheckbox_flat-green").addClass('checked');
+
+			};
+
+			checkboxControl.uncheck = function (nomeDiv) {
+				if (nomeDiv == null) {
+					nomeDiv = ".checkbox";
+				}
+
+				$(nomeDiv + " .flat").prop('checked', false);
+				$(nomeDiv + " .icheckbox_flat-green").removeClass('checked');
 			}
+		</script>
 
-			$(nomeDiv + " .flat").prop('checked', true);
-			$(nomeDiv + " .icheckbox_flat-green").addClass('checked');
-
-		};
-
-		checkboxControl.uncheck = function (nomeDiv) {
-			if (nomeDiv == null) {
-				nomeDiv = ".checkbox";
-			}
-
-			$(nomeDiv + " .flat").prop('checked', false);
-			$(nomeDiv + " .icheckbox_flat-green").removeClass('checked');
-		}
-	</script>
-
-	<?php $this->load->view('footer') ?>
+		<?php $this->load->view('footer') ?>

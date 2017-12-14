@@ -177,7 +177,7 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 												<div class="col-xs-12 col-md-3">
 													<a class="thumbnail miniatura_galeria_sistema" href="javascript:void(0)" data-id="<?=$imagem_galeria->id; ?>">
 														<img src="<?=base_url($imagem_galeria->caminho); ?>" alt="Não foi possível carregar">
-														<a href="<?=base_url('sistema/imagens/excluir/' . $imagem_galeria->id)?>">
+														<a class="delete_img_link" data-imgid="<?=$imagem_galeria->id?>" href="javascript:void(0)">
 															<span class="glyphicon glyphicon-remove icon_img_gallery icon_img_delete"></span>
 														</a>
 														<a href="<?=base_url('sistema/imagens/download/'. $imagem_galeria->id)?>">
@@ -199,5 +199,30 @@ $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 			</div>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		$(".delete_img_link, .excluir_multiplas_link").on('click', function () {
+			var id = $(this).data('imgid');
+
+		if (! id) {
+			return false;
+		}
+
+		swal({
+			title: 'Deseja excluir a(s) imagem(ns)?',
+			text: "Essa ação não pode ser desfeita!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Sim, excluir'
+		}).then((result) => {
+			if (result.value) {
+				window.location = base_url + 'sistema/imagens/excluir/' + id;
+			}
+		});
+		});
+	</script>
 
 	<?php $this->load->view('footer') ?>

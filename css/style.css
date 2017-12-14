@@ -1135,3 +1135,16 @@ span.comment-badge.bg-red {
 .texto_comentario {
 	font-size: 12pt;
 }
+
+.delete_user_td a, .excluir_multiplas_link {
+	display: inline-block;
+}
+
+.excluir_multiplas_link {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+#botao_delete_multiple {
+	margin: 0;
+}

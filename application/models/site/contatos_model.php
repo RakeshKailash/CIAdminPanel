@@ -39,8 +39,8 @@ class Contatos_model extends CI_Model {
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
 			'smtp_port' => 465,
-			'smtp_user' => 'marcelo.boemeke@gmail.com',
-			'smtp_pass' => 'rakesh72Mark',
+			'smtp_user' => 'marcelo.boemekeci@gmail.com',
+			'smtp_pass' => 'markonoha031098',
 			'mailtype' => 'html',
 			'charset' => 'utf8',
 			'wordwrap' => TRUE);

@@ -342,8 +342,12 @@ class Usuarios extends CI_Controller {
 		// return redirect('sistema/usuarios');
 
 		if($ids == null) {
-			$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");
-			return redirect('sistema/usuarios');
+			if (! isset($_POST['id_usuario_modal'])) {
+				$this->session->set_flashdata('error', "<p>Erro desconhecido. Tente novamente!</p>");
+				return redirect('sistema/usuarios');
+			}
+
+			$ids = $_POST['id_usuario_modal'];
 		}
 
 		if (strpos($ids, "_") !== false) {
