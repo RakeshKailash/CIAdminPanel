@@ -5,7 +5,7 @@ class Imagens_model extends CI_Model {
 	function __construct() {
 		parent::__construct();
 		$this->load->database();
-		$this->load->library('ImageCompress', '', 'img_compress');
+		$this->load->library('ImageManipulation', '', 'img_manipulation');
 	}
 
 	public function replaceSectionImg ($secao=1, $campo=null)
@@ -185,7 +185,7 @@ class Imagens_model extends CI_Model {
 			$destino = $caminho_pasta.'images/uploads/gallery/'.$this->upload->data('file_name');
 			$origem = $caminho_upload.$this->upload->data('file_name');
 
-			$this->img_compress->compress($origem, $destino, 80);
+			$this->img_manipulation->compress($origem, $destino, 80);
 
 			$data['nome'] = $this->upload->data('file_name');
 			$data['caminho'] = 'images/uploads/gallery/' . $this->upload->data('file_name');
@@ -313,7 +313,7 @@ class Imagens_model extends CI_Model {
 			$origem = $caminho_upload.$info_img['file_name'];
 			$destino = $caminho_pasta.$path.$info_img['file_name'];
 
-			$this->img_compress->compress($origem, $destino, 80);
+			$this->img_manipulation->compress($origem, $destino, 80);
 
 		} else {
 			$info_img = array('file_name' => null, 'file_size' => 0);

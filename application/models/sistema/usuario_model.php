@@ -514,7 +514,7 @@ class Usuario_model extends CI_Model {
 
 		$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
 		if ($field) {
-			$this->load->library('ImageCompress', '', 'img_compress');
+			$this->load->library('ImageManipulation', '', 'img_manipulation');
 
 			$caminho_upload = $caminho_pasta . 'images/uploads/profile/temp/';
 
@@ -540,7 +540,8 @@ class Usuario_model extends CI_Model {
 			$origem = $caminho_upload.$info_img['file_name'];
 			$destino = $caminho_pasta.'images/uploads/profile/'.$info_img['file_name'];
 
-			$this->img_compress->compress($origem, $destino, 80);
+			$this->img_manipulation->compress($origem, $destino, 80);
+			$this->img_manipulation->squareCrop($destino, $destino);
 
 		} else {
 			$info_img = array('file_name' => 'user.png', 'file_size' => 0);
