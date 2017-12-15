@@ -25,7 +25,7 @@ class Uploads_model extends CI_Model {
 			mkdir($path);
 		}
 
-		$config_upload['upload_path'] = $this->caminho_pasta().$path;
+		$config_upload['upload_path'] = $this->caminho_pasta()."/temp/".$path;
 		$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
 		$config_upload['max_size'] = '0';
 		$config_upload['max_width'] = '0';
@@ -52,94 +52,122 @@ class Uploads_model extends CI_Model {
 				return false;
 			}
 
-			$info_file = $this->upload->data();
+			// Testando compressão de imagem
+			$imagename = $_FILES['imagem_up']['name'];
+			$target = $this->caminho_pasta().$path;
 
-			$file['nome'] = $info_file['file_name'];
-			$file['tamanho'] = $info_file['file_size'];
-			$file['autor'] = $_SESSION['id'];
-			$file['caminho'] = $path.'/'.$info_file['file_name'];
-			$file['data_upload'] = time();
+			$imagepath = $imagename;
+          $save = $target."/". $imagepath; //This is the new file you saving
+          $file = $this->caminho_pasta()."/temp/".$path."/".$imagepath; //This is the original file
 
-			$insert = $this->db->insert('uploads', $file);
+          list($width, $height) = getimagesize($file); 
 
-			if (! $insert)
-			{
-				return false;
-			}
+          $tn = imagecreatetruecolor($width, $height);
 
-			array_push($idsInsert, $this->db->insert_id());
-		}
+          //$image = imagecreatefromjpeg($file);
+          $info = getimagesize($target);
+          if ($info['mime'] == 'image/jpeg'){
+          	$image = imagecreatefromjpeg($file);
+          }elseif ($info['mime'] == 'image/gif'){
+          	$image = imagecreatefromgif($file);
+          }elseif ($info['mime'] == 'image/png'){
+          	$image = imagecreatefrompng($file);
+          }
 
-		return $idsInsert;
-	}
+          imagecopyresampled($tn, $image, 0, 0, 0, 0, $width, $height, $width, $height);
+          imagejpeg($tn, $save, 60);
 
-	public function deleteFiles ($ids=null)
-	{
-		if (! $ids)
-		{
-			return false;
-		}
+          echo "Large image: ".$imagepath;die;
+			// Fim dos testes
 
-		$userId = $_SESSION['id'];
+          $info_file = $this->upload->data();
 
-		if (! is_array($ids))
-		{
-			$this->db->select('caminho');
-			$this->db->where("uploads.`id` = $ids AND uploads.`autor` = $userId");
+          $file['nome'] = $info_file['file_name'];
+          $file['tamanho'] = $info_file['file_size'];
+          $file['autor'] = $_SESSION['id'];
+          $file['caminho'] = $path.'/'.$info_file['file_name'];
+          $file['data_upload'] = time();
 
-			$file = $this->db->get('uploads')->result()[0];
-			if (! unlink($this->caminho_pasta() . $file->caminho))
-			{
-				return false;
-			}
+          $insert = $this->db->insert('uploads', $file);
 
-			$this->db->where("uploads.`id` = $ids AND uploads.`autor` = $userId");
-			if (! $this->db->delete('uploads'))
-			{
-				return false;
-			}
+          if (! $insert)
+          {
+          	return false;
+          }
 
-			return true;
-		}
+          array_push($idsInsert, $this->db->insert_id());
+      }
 
-		foreach ($ids as $fileId) {
-			$this->db->select('caminho');
-			$this->db->where("uploads.`id` = $fileId AND uploads.`autor` = $userId");
+      return $idsInsert;
+  }
 
-			$file = $this->db->get('uploads')->result()[0];
-			if (! unlink($this->caminho_pasta() . $file->caminho))
-			{
-				return false;
-			}
+  public function deleteFiles ($ids=null)
+  {
+  	if (! $ids)
+  	{
+  		return false;
+  	}
 
-			$this->db->where("uploads.`id` = $fileId AND uploads.`autor` = $userId");
-			if (! $this->db->delete('uploads'))
-			{
-				return false;
-			}
-		}
+  	$userId = $_SESSION['id'];
 
-		return true;
-	}
+  	if (! is_array($ids))
+  	{
+  		$this->db->select('caminho');
+  		$this->db->where("uploads.`id` = $ids AND uploads.`autor` = $userId");
 
-	public function getFiles ($fileId=null)
-	{
-		$this->db->select('uploads.`id`, uploads.`nome`, uploads.`tamanho`, uploads.`autor` AS id_autor, usuarios.`nome` AS autor, uploads.`caminho`, uploads.`data_upload`');
-		$this->db->join('usuarios', 'usuarios.`id` = uploads.`autor`');
+  		$file = $this->db->get('uploads')->result()[0];
+  		if (! unlink($this->caminho_pasta() . $file->caminho))
+  		{
+  			return false;
+  		}
 
-		if ($fileId)
-		{
-			$this->db->where("uploads.`id` = $fileId");
-		}
+  		$this->db->where("uploads.`id` = $ids AND uploads.`autor` = $userId");
+  		if (! $this->db->delete('uploads'))
+  		{
+  			return false;
+  		}
 
-		$query = $this->db->get('uploads');
+  		return true;
+  	}
 
-		if (! $query)
-		{
-			return false;
-		}
+  	foreach ($ids as $fileId) {
+  		$this->db->select('caminho');
+  		$this->db->where("uploads.`id` = $fileId AND uploads.`autor` = $userId");
 
-		return $query->result();
-	}
+  		$file = $this->db->get('uploads')->result()[0];
+  		if (! unlink($this->caminho_pasta() . $file->caminho))
+  		{
+  			return false;
+  		}
+
+  		$this->db->where("uploads.`id` = $fileId AND uploads.`autor` = $userId");
+  		if (! $this->db->delete('uploads'))
+  		{
+  			return false;
+  		}
+  	}
+
+  	return true;
+  }
+
+  public function getFiles ($fileId=null)
+  {
+  	$this->db->select('uploads.`id`, uploads.`nome`, uploads.`tamanho`, uploads.`autor` AS id_autor, usuarios.`nome` AS autor, uploads.`caminho`, uploads.`data_upload`');
+  	$this->db->join('usuarios', 'usuarios.`id` = uploads.`autor`');
+
+  	if ($fileId)
+  	{
+  		$this->db->where("uploads.`id` = $fileId");
+  	}
+
+  	$query = $this->db->get('uploads');
+
+  	if (! $query)
+  	{
+  		return false;
+  	}
+
+  	return $query->result();
+  }
 
 }

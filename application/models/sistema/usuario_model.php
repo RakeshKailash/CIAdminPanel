@@ -156,12 +156,18 @@ class Usuario_model extends CI_Model {
 
 		if (! $hasImg)
 		{
-			$this->replaceUserImage($id, null);
+			if (! $this->replaceUserImage($id, null)) {
+				$result = array('error' => '<p>Ocorreu um erro. Tente novamente.</p>');
+				return $result;
+			}
 		}
 
 		if ($hasImg && $changeImg)
 		{
-			$this->replaceUserImage($id, $imgUsuario);
+			if (! $this->replaceUserImage($id, $imgUsuario)) {
+				$result = array('error' => '<p>Ocorreu um erro. Tente novamente.</p>');
+				return $result;
+			}
 		}
 
 		$this->db->where('id', $id);
@@ -508,9 +514,17 @@ class Usuario_model extends CI_Model {
 
 		$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
 		if ($field) {
-			$config_upload['upload_path'] = $caminho_pasta . 'images/uploads/profile/';
+			$this->load->library('ImageCompress', '', 'img_compress');
+
+			$caminho_upload = $caminho_pasta . 'images/uploads/profile/temp/';
+
+			if (!is_dir($caminho_upload)) {
+				mkdir($caminho_upload, 0777);
+			}
+
+			$config_upload['upload_path'] = $caminho_upload;
 			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
-			$config_upload['max_size'] = '5120';
+			$config_upload['max_size'] = '0';
 			$config_upload['max_width'] = '0';
 			$config_upload['max_height'] = '0';
 			$config_upload['encrypt_name'] = true;
@@ -518,10 +532,16 @@ class Usuario_model extends CI_Model {
 			$this->load->library('upload', $config_upload);
 
 			if (! $this->upload->do_upload($field)) {
-				throw new Exception($this->upload->display_errors());
+				return false;
 			}
 
 			$info_img = $this->upload->data();
+
+			$origem = $caminho_upload.$info_img['file_name'];
+			$destino = $caminho_pasta.'images/uploads/profile/'.$info_img['file_name'];
+
+			$this->img_compress->compress($origem, $destino, 80);
+
 		} else {
 			$info_img = array('file_name' => 'user.png', 'file_size' => 0);
 		}

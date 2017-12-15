@@ -5,6 +5,7 @@ class Imagens_model extends CI_Model {
 	function __construct() {
 		parent::__construct();
 		$this->load->database();
+		$this->load->library('ImageCompress', '', 'img_compress');
 	}
 
 	public function replaceSectionImg ($secao=1, $campo=null)
@@ -80,7 +81,7 @@ class Imagens_model extends CI_Model {
 		return $this->insertImg($imgData);
 	}
 
-	public function update ($imgId=null, $path='images/uploads', $field=null)
+	public function update ($imgId=null, $path='images/uploads/', $field=null)
 	{
 		if (! $imgId) {
 			return false;
@@ -149,8 +150,13 @@ class Imagens_model extends CI_Model {
 	public function fillGallery ($campo=null)
 	{
 		$caminho_pasta = str_replace('\\', "/", FCPATH);
+		$caminho_upload = $caminho_pasta . 'images/uploads/gallery/temp/';
 
-		$config_upload['upload_path'] = $caminho_pasta . 'images/uploads/gallery';
+		if (!is_dir($caminho_upload)) {
+			mkdir($caminho_upload, 0777);
+		}
+
+		$config_upload['upload_path'] = $caminho_upload;
 		$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
 		$config_upload['max_size'] = '50000';
 		$config_upload['max_width'] = '0';
@@ -176,9 +182,14 @@ class Imagens_model extends CI_Model {
 				return array('status' => 'error', 'mensagem' => $this->upload->display_errors());
 			}
 
+			$destino = $caminho_pasta.'images/uploads/gallery/'.$this->upload->data('file_name');
+			$origem = $caminho_upload.$this->upload->data('file_name');
+
+			$this->img_compress->compress($origem, $destino, 80);
+
 			$data['nome'] = $this->upload->data('file_name');
 			$data['caminho'] = 'images/uploads/gallery/' . $this->upload->data('file_name');
-			$data['tamanho'] = $this->upload->data('file_size');
+			$data['tamanho'] = filesize($destino);
 
 			$this->db->insert('galeria', $data);
 		}
@@ -269,9 +280,21 @@ class Imagens_model extends CI_Model {
 			return false;
 		}
 
+		$path_last_char = substr($path, -1);
+
+		if ($path_last_char != '/' && $path_last_char != "\\") {
+			$path = $path.'/';
+		}
+
 		if ($field) {
 			$caminho_pasta = str_replace('\\', DIRECTORY_SEPARATOR, FCPATH);
-			$config_upload['upload_path'] = $caminho_pasta . $path;
+			$caminho_upload = $caminho_pasta . $path . 'temp/';
+
+			if (!is_dir($caminho_upload)) {
+				mkdir($caminho_upload, 0777);
+			}
+
+			$config_upload['upload_path'] = $caminho_upload;
 			$config_upload['allowed_types'] = 'gif|jpg|jpeg|png';
 			$config_upload['max_size'] = '0';
 			$config_upload['max_width'] = '0';
@@ -286,6 +309,11 @@ class Imagens_model extends CI_Model {
 			}
 
 			$info_img = $this->upload->data();
+
+			$origem = $caminho_upload.$info_img['file_name'];
+			$destino = $caminho_pasta.$path.$info_img['file_name'];
+
+			$this->img_compress->compress($origem, $destino, 80);
 
 		} else {
 			$info_img = array('file_name' => null, 'file_size' => 0);

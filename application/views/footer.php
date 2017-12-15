@@ -564,6 +564,7 @@
 
 	function formatSizeNumber (num) {
 		var retorno;
+		num = num / 1024;
 		num = parseFloat(num);
 		if (num > 1024) {
 			retorno = (num / 1024).toFixed(2) + "Mb";
