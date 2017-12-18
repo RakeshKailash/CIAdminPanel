@@ -4,7 +4,7 @@ $info['cabecalho'] = array('menu' => 'site/menu', 'header' => 'site');
 $info['itens'] = $itens;
 $this->load->view('header', $info);
 ?>
-<section id="hero-area" style="height: 100%; background-image: url(<?=base_url('images/uploads/sections/mountain.jpg');?>);">
+<section id="hero-area" style="height: 100%; background-size: cover; background-position: center; background-image: url(<?=base_url($secao_info->caminho);?>);">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 text-center">
@@ -25,7 +25,7 @@ $this->load->view('header', $info);
 					<h2 class="wow fadeInUp animated" data-wow-delay=".6s" >
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...
 					</h2>
-					<a class="btn-lines dark light wow fadeInUp animated smooth-scroll btn btn-default btn-green" data-wow-delay=".9s" href="#works" data-section="#works" >Saiba Mais</a>
+					<a class="btn-lines dark light wow fadeInUp animated btn btn-default btn-green" data-wow-delay=".9s" href="<?=base_url('site/servicos')?>">Saiba Mais</a>
 
 				</div>
 			</div>

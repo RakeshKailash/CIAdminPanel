@@ -27,7 +27,7 @@
 			<div class="menu_section">
 				<h3>Sistema</h3>
 				<ul class="nav side-menu">
-					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Home </a></li>
+					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Início </a></li>
 					<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>"><i class="fa fa-comment"></i> Comentários </a></li>
 				</ul>
 			</div>
@@ -37,13 +37,11 @@
 				<ul class="nav side-menu">
 					<?php
 					foreach ($secoes as $secao_info):
-						if ($secao_info->nome == 'Contato') {
-							if ($_SESSION['tipoUsuario'] == 1) { ?>
+						if ($secao_info->nome == 'Contato' && $_SESSION['tipoUsuario'] == 1) { ?>
 							<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
 							<?
 						}
-					}
-					else if ($secao_info->nome != 'Home' && $secao_info->nome != 'Postagens') : ?>
+					else if ($secao_info->nome != 'Postagens') : ?>
 
 					<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
 
