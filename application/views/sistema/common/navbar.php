@@ -1,5 +1,4 @@
 <div class="top_nav">
-
 	<div class="nav_menu">
 		<nav class="" role="navigation">
 			<div class="nav toggle">
@@ -31,10 +30,14 @@
 							<li class="atualizacao-visualizada-<?=$atualizacao->status;?>" data-id="<?=$atualizacao->id;?>">
 								<a>
 									<span class="image">
-										<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
+										<?php if ($atualizacao->usuario != 0): ?>
+											<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />
+										<?php else: ?>
+											<span><i class="fa fa-comment"></i></span>
+										<?php endif ?>
 									</span>
 									<span>
-										<span><?php echo $atualizacao->nome; ?></span>
+										<span><?=!empty($atualizacao->nome) ? $atualizacao->nome : "Site";?></span>
 										<span class="time"><?php echo date('d/m/Y\, \à\s H:i\h', strtotime($atualizacao->data)); ?></span>
 									</span>
 									<span class="message">

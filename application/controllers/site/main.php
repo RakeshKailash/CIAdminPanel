@@ -43,13 +43,24 @@ class Main extends CI_Controller {
 
 		$data['secaoComentario'] = !empty($this->input->post('id_secao')) ? $this->input->post('id_secao') : null;
 
-		if ($this->secoes_site->getSitePreferences('auto_approve_comments')[0]->valor)
+		$auto_approve = !!$this->secoes_site->getSitePreferences('auto_approve_comments')[0]->valor;
+		if ($auto_approve)
 		{
 			$data['aprovado'] = 1;
 			$successMessage = "<p>Comentário publicado! A página será atualizada para exibi-lo.</p>";
 		}
 
 		$this->secoes_site->insertComment($data);
+
+		$titulo_atualizacao = ($auto_approve ? "Novo comentário" : "Novo comentário | Aguardando Aprovação");
+
+		$this->load->model('sistema/atualizacoes_model');
+
+		$atualizacao['titulo'] = $titulo_atualizacao;
+		$atualizacao['usuario'] = 0;
+		$atualizacao['tipo'] = "Comentário Publicado";
+		$this->atualizacoes_model->insert($atualizacao);
+
 		$retorno = array('status' => 'success', 'message' => $successMessage, 'aprovado' => $data['aprovado']);
 
 		echo json_encode($retorno);

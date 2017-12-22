@@ -24,7 +24,7 @@ class Atualizacoes_model extends CI_Model {
 	{
 		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
-		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
+		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario', 'left');
 		$this->db->order_by('id', 'DESC');
 
 		if ($limit != null) 
@@ -55,16 +55,15 @@ class Atualizacoes_model extends CI_Model {
 	{
 		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
-		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario');
+		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario', 'left');
 		$this->db->order_by('atualizacoes.id', 'DESC');
 
-		if ($limit != null) 
+		if ($limit != null)
 		{
 			$this->db->limit($limit);
 		}
 
-		// $this->db->where('atualizacoes.visualizada', 'false');
-		$this->db->where('atualizacoes.data >', $_SESSION['ultimaVerifNotif']);
+		$this->db->where('atualizacoes.data > "'.$_SESSION['ultimaVerifNotif'].'"');
 		$this->db->where_not_in('atualizacoes.usuario', $_SESSION['id']);
 
 		$atualizacoes = $this->db->get()->result();
