@@ -105,6 +105,8 @@ class Usuarios extends CI_Controller {
 		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" alterou suas informações";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Conta de Usuário";
+		$atualizacao['link'] = "usuarios";
+
 		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata($result);
@@ -177,6 +179,8 @@ class Usuarios extends CI_Controller {
 		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" criou o usuário \"".$usuario->nome."\"";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Criação de Usuário";
+		$atualizacao['link'] = "usuarios";
+
 		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$result = array('success' => '<p>Usuário criado com sucesso.</p>');
@@ -366,6 +370,7 @@ class Usuarios extends CI_Controller {
 		$atualizacao['titulo'] = "Usuário \"".$_SESSION['nome']."\" excluiu um ou mais usuários";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Exclusão de Usuários";
+		$atualizacao['link'] = "usuarios";
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 

@@ -75,6 +75,8 @@ class Home extends CI_Controller {
 		$atualizacao['titulo'] = "Seção 'Home' alterada";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Conteúdo";
+		$atualizacao['link'] = "home/editar";
+
 		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");

@@ -28,7 +28,7 @@
 					<ul class="dropdown-menu list-unstyled msg_list animated fadeInDown atualizacoes_site_lista" role="menu">
 						<?php if ($atualizacoes['limitadas']) : foreach ($atualizacoes['limitadas'] as $atualizacao) : ?>
 							<li class="atualizacao-visualizada-<?=$atualizacao->status;?>" data-id="<?=$atualizacao->id;?>">
-								<a>
+								<a <?=!empty($atualizacao->link) ? "href='".base_url('sistema/'.$atualizacao->link)."'" : "";?>>
 									<span class="image">
 										<?php if ($atualizacao->usuario != 0): ?>
 											<img src="<?php echo base_url("images/uploads/profile/$atualizacao->imagem"); ?>" alt="Imagem de Perfil" />

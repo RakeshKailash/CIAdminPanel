@@ -69,6 +69,8 @@ class Servicos extends CI_Controller {
 		$atualizacao['titulo'] = "Seção 'Serviços' alterada";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Conteúdo";
+		$atualizacao['link'] = "servicos/editar";
+
 		$this->atualizacoes_sistema->insert($atualizacao);
 
 		$this->session->set_flashdata('success', "<p>Seção atualizada com sucesso!</p>");

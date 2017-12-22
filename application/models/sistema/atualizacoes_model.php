@@ -22,7 +22,7 @@ class Atualizacoes_model extends CI_Model {
 
 	function retrieve ($id=null, $limit=null)
 	{
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.link, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario', 'left');
 		$this->db->order_by('id', 'DESC');
@@ -53,7 +53,7 @@ class Atualizacoes_model extends CI_Model {
 
 	function retrieveUnviewed ($limit=null)
 	{
-		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
+		$this->db->select('atualizacoes.id, atualizacoes.titulo, atualizacoes.tipo, atualizacoes.data, atualizacoes.link, atualizacoes.usuario, usuarios.nome, usuarios.imagem');
 		$this->db->from('atualizacoes');
 		$this->db->join('usuarios', 'usuarios.id = atualizacoes.usuario', 'left');
 		$this->db->order_by('atualizacoes.id', 'DESC');

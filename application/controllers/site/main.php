@@ -59,6 +59,7 @@ class Main extends CI_Controller {
 		$atualizacao['titulo'] = $titulo_atualizacao;
 		$atualizacao['usuario'] = 0;
 		$atualizacao['tipo'] = "Comentário Publicado";
+		$atualizacao['link'] = "Comentarios/gerenciar";
 		$this->atualizacoes_model->insert($atualizacao);
 
 		$retorno = array('status' => 'success', 'message' => $successMessage, 'aprovado' => $data['aprovado']);

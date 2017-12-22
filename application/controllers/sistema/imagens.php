@@ -50,6 +50,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['titulo'] = "Seção 'Imagens' alterada";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Acréscimo de novas Imagens";
+		$atualizacao['link'] = "imagens/editar";
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 
@@ -76,6 +77,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['titulo'] = "Seção 'Imagens' alterada";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Alteração de Informações de Imagem | ID: " . $id;
+		$atualizacao['link'] = "imagens/editar";
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 
@@ -106,6 +108,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['titulo'] = "Seção 'Imagens' alterada";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Exclusão de Imagens| ID: $ids";
+		$atualizacao['link'] = "imagens/editar";
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 
@@ -132,6 +135,7 @@ class Imagens extends CI_Controller {
 		$atualizacao['titulo'] = "Arquivo de download gerado";
 		$atualizacao['usuario'] = $_SESSION['id'];
 		$atualizacao['tipo'] = "Gerado arquivo '.rar' de Download para seção 'Imagens'";
+		$atualizacao['link'] = "imagens/editar";
 
 		$this->atualizacoes_sistema->insert($atualizacao);
 	}
