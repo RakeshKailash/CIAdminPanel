@@ -29,6 +29,16 @@
 				<ul class="nav side-menu">
 					<li><a href="<?=base_url('sistema'); ?>"><i class="fa fa-home"></i> Início </a></li>
 					<li><a href="<?=base_url('sistema/Comentarios/gerenciar'); ?>"><i class="fa fa-comment"></i> Comentários </a></li>
+					<li>
+						<a><i class="fa fa-wrench"></i> Ferramentas <span class="fa fa-chevron-down"></span></a>
+						<ul class="nav child_menu">
+							<li><a href="<?=base_url('sistema/ferramentas/enquetes')?>">Enquetes</a></li>
+							<!-- <li><a href="#">Projects</a></li>
+							<li><a href="#">Project Detail</a></li>
+							<li><a href="#">Contacts</a></li>
+							<li><a href="#">Profile</a></li> -->
+						</ul>
+					</li>
 				</ul>
 			</div>
 
@@ -38,9 +48,9 @@
 					<?php
 					foreach ($secoes as $secao_info):
 						if ($secao_info->nome == 'Contato' && $_SESSION['tipoUsuario'] == 1) { ?>
-							<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
-							<?
-						}
+						<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
+						<?
+					}
 					else if ($secao_info->nome != 'Postagens') : ?>
 
 					<li><a href="<?=base_url('sistema/' . $secao_info->link . '/editar'); ?>"><i class="fa fa-<?php echo $secao_info->icone; ?>"> </i> <?php echo $secao_info->nome ?> </a></li>
