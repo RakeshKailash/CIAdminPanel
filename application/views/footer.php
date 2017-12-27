@@ -9,7 +9,8 @@
 <!-- input mask -->
 <script src="<?php echo base_url('js/input_mask/jquery.inputmask.js'); ?>"></script>
 <!-- daterangepicker -->
-<script type="text/javascript" src="<?php echo base_url('js/moment/moment.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/moment/moment.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/moment/moment-with-locales.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('js/datepicker/daterangepicker.js'); ?>"></script>
 <!-- richtext editor -->
 <script src="<?php echo base_url('js/editor/bootstrap-wysiwyg.js'); ?>"></script>

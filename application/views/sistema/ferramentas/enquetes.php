@@ -8,6 +8,12 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
+$check_state = isset($enquete_edit) ? "value='".$enquete_edit->status."'" : 1;
+
+if (isset($enquete_edit) && $enquete_edit->status == 2) {
+	$check_state .= " checked";
+}
+
 $usuarios = $this->usuario_model->getUser();
 
 $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check-circle listed_post true', 3 => 'clock-o listed_post false');
@@ -83,6 +89,12 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 													<textarea name="descricao" id="descricao" class="form-control"><?=isset($enquete_edit) ? $enquete_edit->descricao : ''?></textarea>
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3 col-sm-3 col-xs-12">Duração: <span class="required">*</span></label>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="text" name="datas" id="data_selector" class="form-control" required="required" value="<?=isset($enquete_edit) ? $enquete_edit->data_inicio . ' - ' .$enquete_edit->data_final : ''?>">
+												</div>
+											</div>
 											<div class="form-group opcoes">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Opções<span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
@@ -108,9 +120,8 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 												<label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<div>
-														<label>
-															<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post" value="<?=isset($enquete_edit) ? $enquete_edit->status : 1?>"> Publicar
-														</label>
+														<input type="checkbox" class="js-switch" id="status_post_modal" name="status_post" <?=$check_state?>>
+														Publicar
 													</div>
 												</div>
 											</div>
@@ -204,6 +215,24 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 
 <script type="text/javascript" charset="utf-8" async defer>
 
+	$(document).ready(function () {
+		moment.locale("pt-br");
+		var cur_date = moment().format('l');
+
+		$('input[name="datas"]').daterangepicker({
+			startDate: cur_date,
+			endDate: cur_date,
+			format: 'DD/MM/YYYY',
+			minDate: cur_date,
+			alwaysShowCalendars: true,
+			ranges: {
+				"Hoje" : [cur_date, cur_date],
+				"Amanhã" : [moment().add(1, 'days').format("l"), moment().add(1, 'days').format("l")],
+				"Uma semana" : [cur_date, moment().add(7, 'days').format("l")]
+			}
+		});
+	});
+
 	$("#salvar_rascunho_enquete").click(function () {
 		$("#save_type").val(1);
 		$("#form_criar_enquete").submit();
@@ -261,32 +290,11 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 		$(".opcoes_form_container").append(div);
 		$(".nova_opcao").val("").focus();
 
-		var data = []
-		, enqueteid = $("#form_criar_enquete").data('enqueteid')
-		;
+		var enqueteid = $("#form_criar_enquete").data('enqueteid');
 
-		$("input[name='opcoes[]']").each(function() {
-			data.push({'descricao' : $(this).val(), 'numero' : $(this).data('pos')});
-		})
-
-		var post_url = base_url+"sistema/ferramentas/updateSurveyOptions";
-
-		$.post(post_url, {'options' : data, 'survey_id' : enqueteid}, function (result) {
-			if (JSON.parse(result) === false) {
-				swal({
-					title: 'Ops...',
-					text: 'Não foi possível adicionar a opção. A página será atualizada em alguns segundos...',
-					type: "error",
-					timer: 5000,
-					allowOutsideClick: false,
-					onOpen: () => {
-						swal.showLoading()
-					}
-				}).then((result) => {
-					location.reload();
-				})
-			}
-		});
+		if ($("#form_criar_enquete").attr("data-enqueteid")) {
+			updateSurveyOptions(enqueteid);
+		}
 	});
 
 	$(".opcoes_form_container").on("click", ".remover_opcao", function () {
@@ -295,11 +303,21 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 		$(".opcao_adicionada[data-pos='"+pos+"']").remove();
 		$(this).parent('.acoes_opcoes').remove();
 
-		var data = []
-		, enqueteid = $("#form_criar_enquete").data('enqueteid')
-		;
+		var enqueteid = $("#form_criar_enquete").data('enqueteid');
 
 		updateInputData();
+
+		if ($("#form_criar_enquete").attr("data-enqueteid")) {
+			updateSurveyOptions(enqueteid);
+		}
+	});
+
+	function updateSurveyOptions(enqueteid) {
+		if (! enqueteid) {
+			return false;
+		}
+
+		var data = [];
 
 		$("input[name='opcoes[]']").each(function() {
 			data.push({'descricao' : $(this).val(), 'numero' : $(this).data('pos')});
@@ -311,7 +329,7 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 			if (JSON.parse(result) === false) {
 				swal({
 					title: 'Ops...',
-					text: 'Não foi possível remover a opção. A página será atualizada em alguns segundos...',
+					text: 'Não foi possível atualizar as opções. A página será atualizada em alguns segundos...',
 					type: "error",
 					timer: 5000,
 					allowOutsideClick: false,
@@ -323,7 +341,7 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 				})
 			}
 		});
-	});
+	}
 
 	function updateInputData() {
 		var pos = 1
