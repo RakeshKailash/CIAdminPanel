@@ -63,9 +63,11 @@ class Ferramentas extends CI_Controller {
 
 		if ($id != 0)
 		{
-			// $enquete = $this->ferramentas_model->getSurvey($id)[0];
-			echo json_encode(true);
-			return true;
+			$enquete = $this->ferramentas_model->getSurvey($id)[0];
+
+
+			$this->session->set_flashdata('success', "<p>Enquete salva com sucesso!</p>");
+			return redirect('sistema/ferramentas/enquetes');
 		}
 
 
