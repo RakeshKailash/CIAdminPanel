@@ -55,7 +55,7 @@ class Ferramentas extends CI_Controller {
 
 		$data['titulo'] = $this->input->post('titulo');
 		$data['descricao'] = $this->input->post('descricao');
-		$data['status'] = $this->input->post('status_post');
+		$data['status'] = empty($this->input->post('status_post')) ? 1 : 2;
 		$data['data_inicio'] = $datas[0];
 		$data['data_final'] = $datas[1];
 

@@ -49,7 +49,7 @@ class Ferramentas_model extends CI_Model
 
 	public function saveSurvey($data=null, $idEnquete=null, $options=null)
 	{
-		if (! $data || ! $options) {
+		if (empty($data) || (! $idEnquete && empty($options))) {
 			return false;
 		}
 
@@ -62,7 +62,11 @@ class Ferramentas_model extends CI_Model
 				return false;
 			}
 
-			return $this->insertSurveyOptions($options, $insert);
+			if ($options) {
+				return $this->insertSurveyOptions($options, $insert);
+			}
+
+			return true;
 		}
 
 		if (! $this->updateSurvey($data, $idEnquete))
@@ -113,6 +117,7 @@ class Ferramentas_model extends CI_Model
 	private function updateSurvey ($data=null, $id=null)
 	{
 		$this->db->set($data);
+		$this->db->set('ultima_modif', date("Y-m-d H:i:s", time()));
 		$this->db->where('id', $id);
 
 		if (! $this->db->update('enquetes'))
