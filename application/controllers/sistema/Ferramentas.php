@@ -37,6 +37,48 @@ class Ferramentas extends CI_Controller {
 		$this->load->view('sistema/ferramentas/enquetes', $info);
 	}
 
+	public function saveSurvey ()
+	{
+		$validate = $this->validateSurvey();
+
+		if (! $validate)
+		{
+			$this->session->set_flashdata('error', "<p>Erro ao inserir Enquete! Verifique as informações preenchidas</p>");
+			return redirect('sistema/ferramentas/enquetes');
+		}
+
+		$id = $this->input->post('id_enquete');
+		$datas = $this->input->post('datas');
+		$datas = explode("-", str_replace(" ", "", $datas));
+		$datas[0] = implode("-", array_reverse(explode("/", $datas[0])));
+		$datas[1] = implode("-", array_reverse(explode("/", $datas[1])));
+
+		$data['titulo'] = $this->input->post('titulo');
+		$data['descricao'] = $this->input->post('descricao');
+		$data['status'] = $this->input->post('status_post');
+		$data['data_inicio'] = $datas[0];
+		$data['data_final'] = $datas[1];
+
+		$options = $this->input->post('opcoes');
+
+		if ($id != 0)
+		{
+			// $enquete = $this->ferramentas_model->getSurvey($id)[0];
+			echo json_encode(true);
+			return true;
+		}
+
+
+		if (! $this->ferramentas_model->saveSurvey($data, $id, $options))
+		{
+			$this->session->set_flashdata('error', "<p>Erro ao inserir Enquete!</p>");
+			return redirect('sistema/ferramentas/enquetes');
+		}
+
+		$this->session->set_flashdata('success', "<p>Enquete salva com sucesso!</p>");
+		return redirect('sistema/ferramentas/enquetes');
+	}
+
 	public function updateSurveyOptions ($options=null, $survey_id=null) {
 		if ((! $options && ! isset($_POST['options'])) || (!$survey_id && ! isset($_POST['survey_id']))) {
 			echo json_encode(false);
@@ -82,6 +124,21 @@ class Ferramentas extends CI_Controller {
 
 		$result = array(0 => true);
 		echo json_encode($result);
+		return true;
+	}
+
+	private function validateSurvey ()
+	{
+		$this->form_validation->set_rules("titulo", "Título", "required|max_length[200]");
+		$this->form_validation->set_rules("descricao", "Descrição", "required|max_length[1000]");
+		$this->form_validation->set_rules("datas", "Duração", "required");
+
+		if ($this->form_validation->run() == false)
+		{
+			$this->session->set_flashdata('error', validation_errors('<p>','<p>'));
+			return false;
+		}
+
 		return true;
 	}
 

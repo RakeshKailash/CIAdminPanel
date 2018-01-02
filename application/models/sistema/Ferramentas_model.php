@@ -47,22 +47,22 @@ class Ferramentas_model extends CI_Model
 		return $results;
 	}
 
-	public function saveSurvey($data=null, $idEnquete=null)
+	public function saveSurvey($data=null, $idEnquete=null, $options=null)
 	{
-		if (! $data)
-		{
+		if (! $data || ! $options) {
 			return false;
 		}
 
 		if (! $idEnquete || $idEnquete < 1)
 		{
 			$data['autor'] = $_SESSION['id'];
-			if (! $this->insertSurvey($data))
-			{
+			$insert = $this->insertSurvey($data);
+
+			if (! $insert) {
 				return false;
 			}
 
-			return true;
+			return $this->insertSurveyOptions($options, $insert);
 		}
 
 		if (! $this->updateSurvey($data, $idEnquete))
@@ -74,6 +74,32 @@ class Ferramentas_model extends CI_Model
 
 	}
 
+	private function insertSurveyOptions ($options=null, $survey_id=null) {
+		if (!$options || !$survey_id) {
+			return false;
+		}
+
+		$number = 1;
+		$inserted_list = array();
+		$option_insert = array('id_enquete' => $survey_id);
+
+		foreach ($options as &$option) {
+			$option_insert['numero'] = $number;
+			$option_insert['descricao'] = $option;
+
+			$query = $this->db->insert('opcoes_enquetes', $option_insert);
+
+			if (!$query) {
+				return false;
+			}
+
+			$inserted_list[] = $this->db->insert_id();
+			$number++;
+		}
+
+		return $inserted_list;
+	}
+
 	private function insertSurvey ($data=null)
 	{
 		if (! $this->db->insert('enquetes', $data))
@@ -81,7 +107,7 @@ class Ferramentas_model extends CI_Model
 			return false;
 		}
 
-		return true;
+		return $this->db->insert_id();
 	}
 
 	private function updateSurvey ($data=null, $id=null)

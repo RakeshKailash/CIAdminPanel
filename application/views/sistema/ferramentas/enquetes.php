@@ -8,7 +8,7 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
 $warning = isset($_SESSION['warning']) ? $_SESSION['warning'] : null;
 
-$check_state = isset($enquete_edit) ? "value='".$enquete_edit->status."'" : 1;
+$check_state = isset($enquete_edit) ? "value='".$enquete_edit->status."'" : "value='1'";
 
 if (isset($enquete_edit) && $enquete_edit->status == 2) {
 	$check_state .= " checked";
@@ -76,7 +76,7 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 												</div>
 											<?php endif; ?>
 										</div>
-										<form class="form-horizontal form-label-left" id="form_criar_enquete" action="<?=base_url('sistema/enquetes/save');?>" <?=isset($enquete_edit) ? "data-enqueteid='".$enquete_edit->id."'" : null?> method="post" enctype="multipart/form-data">
+										<form class="form-horizontal form-label-left" id="form_criar_enquete" action="<?=base_url('sistema/ferramentas/saveSurvey');?>" <?=isset($enquete_edit) ? "data-enqueteid='".$enquete_edit->id."'" : null?> method="post" enctype="multipart/form-data">
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Título: <span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
@@ -128,7 +128,7 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 													<input type="hidden" name="save_type" id="save_type" value="1">
-													<input type="hidden" id="id_enquete" name="id_enquete" value="0">
+													<input type="hidden" id="id_enquete" name="id_enquete" value="<?=isset($enquete_edit) ? $enquete_edit->id : '0' ?>">
 													<button type="reset" class="btn btn-warning">Limpar</button>
 													<button type="button" id="salvar_postar_enquete" class="btn btn-success">Salvar Enquete</button>
 													<?php if (isset($enquete_edit)): ?>
@@ -233,14 +233,31 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 		});
 	});
 
-	$("#salvar_rascunho_enquete").click(function () {
-		$("#save_type").val(1);
-		$("#form_criar_enquete").submit();
-	});
-
 	$("#salvar_postar_enquete").click(function () {
-		$("#save_type").val(2);
 		$("#form_criar_enquete").submit();
+		// var data = []
+		// , idEnquete = $("#form_criar_enquete").data('enqueteid')
+		// ;
+
+		// data['titulo'] = $("#titulo").val();
+		// data['descricao'] = $("#descricao").val();
+		// data['status'] = $("#save_type").val();
+		// data['datas'] = $("#data_selector").val();
+		// data['opcoes'] = [];
+
+		// if (!data['titulo'] || !data['descricao'] || !data['datas']) {
+		// 	return false;
+		// }
+
+		// $("input[name='opcoes[]']").each(function() {
+		// 	data['opcoes'].push({'descricao' : $(this).val(), 'numero' : $(this).data('pos')});
+		// });
+
+		// var url = base_url+"sistema/ferramentas/saveSurvey";
+
+		// $.post(url, {'survey_id' : idEnquete, 'survey_data' : data}, function(retorno) {
+
+		// });
 	});
 
 	$("#cancelar_edit").click(function () {
@@ -311,6 +328,22 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 			updateSurveyOptions(enqueteid);
 		}
 	});
+
+	function configResults (data) {
+		
+	}
+
+	function getRandomColor () {
+		var color = ('#' + (function co(lor){   return (lor +=
+			[0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)])
+		&& (lor.length == 6) ?  lor : co(lor); })(''));
+
+		if (color.length != 7) {
+			return false;
+		}
+
+		return color;
+	}
 
 	function updateSurveyOptions(enqueteid) {
 		if (! enqueteid) {
@@ -425,7 +458,7 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 
 	});
 
-	$("#status_post_modal").click(function () {
+	$("#status_post_modal").on("change", function () {
 		$("#status_post_modal").val($("#status_post_modal").val() == 1 ? 2 : 1);
 	});
 
