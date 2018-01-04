@@ -17,7 +17,7 @@ class EmailBase
 	{
 
         $this->ci = & get_instance();
-		$this->ci->load->model('Sistema/Email_model');
+		$this->ci->load->model('sistema/Email_model');
 
 		$this->init();
 	}
@@ -31,10 +31,10 @@ class EmailBase
 			$this->email->CharSet = 'UTF-8';
 			$this->email->isSMTP();                                      // Set mailer to use SMTP
 			$this->email->SMTPAuth = true;                               // Enable SMTP authentication
-			$this->email->Host = $this->config->host;  // Specify main and backup SMTP servers
-			$this->email->Username = $this->config->email;                 // SMTP username
-			$this->email->Password = $this->config->password;                           // SMTP password
-			$this->email->Port = $this->config->port;                                    // TCP port to connect to
+			$this->email->Host = $this->config['default_email_host'];  // Specify main and backup SMTP servers
+			$this->email->Username = $this->config['default_email'];                 // SMTP username
+			$this->email->Password = $this->config['default_email_password'];                           // SMTP password
+			$this->email->Port = $this->config['default_email_port'];                                    // TCP port to connect to
 			$this->email->SMTPSecure = '';
 
 		} catch (Exception $e) {
@@ -46,12 +46,12 @@ class EmailBase
 	{
 		try {
 			// $this->email->SMTPDebug = 2;                                 // Enable verbose debug output
-			$this->email->setFrom($this->config->email, $this->config->sender);
+			$this->email->setFrom($this->config['default_email'], $this->config['default_email_sender']);
 			$this->email->addAddress($emailAddress);     // Add a recipient            // Name is optional
 
 		    //Content
 		    $this->email->isHTML(true);                                  // Set email format to HTML
-		    $this->email->Subject = $this->config->sender;
+		    $this->email->Subject = $this->config['default_email_sender'];
 		    $this->email->Body    = $emailBody;
 		    $this->email->AltBody = strip_tags($emailBody);
 

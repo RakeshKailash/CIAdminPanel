@@ -11,12 +11,12 @@ class EmailContato extends EmailBase
 
 	public function sendEmail($user_name, $user_email, $subject, $message)
 	{
-		$info = compact($user_name, $user_email, $subject, $message);
+		$info = compact("user_name", "user_email", "subject", "message");
 		$emailBody = $this->ci->load->view('Emails/contato', $info, true);
 		
 		try {
-			$this->email->setFrom($this->config->email, $this->config->remetente);
-			$this->email->AddAddress($this->config->receiver);
+			$this->email->setFrom($this->config['default_email'], $this->config['default_email_sender']);
+			$this->email->AddAddress($this->config['default_email_receiver']);
 
 		    //Content
 		    $this->email->isHTML(true);
