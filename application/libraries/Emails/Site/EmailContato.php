@@ -20,6 +20,7 @@ class EmailContato extends EmailBase
 
 		    //Content
 		    $this->email->isHTML(true);
+		    $this->email->Subject = $this->config['default_email_sender'] . " - Nova Mensagem";
 		    $this->email->Body    = $emailBody;
 		    $this->email->AltBody = strip_tags($emailBody);
 		    $this->email->send();

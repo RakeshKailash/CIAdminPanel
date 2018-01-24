@@ -30,14 +30,16 @@ class Contato extends CI_Controller {
 		$assunto = $this->input->post('assunto') ? $this->input->post('assunto') : "";
 		$mensagem = $this->input->post('mensagem') ? $this->input->post('mensagem') : "";
 
-		if ($this->email_contato->sendEmail($nome, $email, $assunto, $mensagem)) {
+		if ($this->email_contato->sendEmail($nome, $email, $assunto, $mensagem) == false) {
 			$retorno = array('status' => "error", 'message' => "Erro ao enviar a mensagem");
-			echo json_encode($retorno);			
+			echo json_encode($retorno);	
+			return false;
 		}
 
 		// $result = $this->contatos_model->sendMail($data);
 
 		$retorno = array('status' => "success", 'message' => "Mensagem enviada com sucesso!");
 		echo json_encode($retorno);
+		return true;
 	}
 }
