@@ -32,18 +32,32 @@ class Ferramentas_model extends CI_Model
 		$results = $query->result();
 
 		foreach ($results as &$result) {
-			$this->db->select('descricao, numero');
-			$this->db->where('id_enquete', $result->id);
-			$this->db->order_by('numero', 'ASC');
 
-			$query = $this->db->get('opcoes_enquetes');
+			$sql = "SELECT 
+			o.`id`,
+			o.`descricao`,
+			o.`numero`,
+			COUNT(r.`num_opcao`) AS votos
+			FROM
+			opcoes_enquetes AS o 
+			LEFT JOIN respostas_enquetes AS r 
+			ON r.`id_enquete` = ".$result->id." AND r.`num_opcao` = o.`numero`
+			WHERE o.id_enquete = ".$result->id." 
+			GROUP BY o.`numero`
+			ORDER BY o.`id`, o.`numero`";
 
-			if (!$query) {
-				return false;
-			}
-
-			$opcoes = $query->result();
+			$opcoes = $this->db->query($sql)->result();
 			$result->opcoes = $opcoes;
+
+			$sql = "SELECT 
+			COUNT(num_opcao) AS total_resp 
+			FROM
+			respostas_enquetes 
+			WHERE id_enquete = ".$result->id." 
+			AND num_opcao > 0 ";
+
+			$total_resp = $this->db->query($sql)->result()[0];
+			$result->total_resp = $total_resp->total_resp;
 		}
 
 		return $results;

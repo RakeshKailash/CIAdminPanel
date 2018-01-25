@@ -157,35 +157,22 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 													Clique nos ícones para alterar o status das enquetes (<i class="fa fa-check-circle" aria-hidden="true" style="color: #3FC1A5"></i>/<i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #F4A72D"></i>)</label>
 												</p>
 											</div>
-										<!-- <div class="posts_gallery_filters col-md-12" style="margin-bottom: 20px; text-align: center;">
-											<div class="col-md-3 col-xs-12 gallery_filters">
-												<select class="form-control" name="order_by_enquetes" id="order_by_enquetes">
-													<option value="default" selected>-- Ordenar Por --</option>
-													<option value="newest">Mais Recentes</option>
-													<option value="oldest">Mais Antigas</option>
-													<option value="updated">Recentemente Alteradas</option>
-													<option value="author">Autor</option>
-													<option value="status">Status</option>
-												</select>
-											</div> -->
-											<!-- <div class="col-md-2 col-xs-12 gallery_filters">
-												<button type="button" class="btn btn-success">Refinar Seleção</button>
-											</div> -->
-											<!-- </div> -->
 											<div class="gallery_posts">
 												<?php foreach ($enquetes as $enquete): ?>
 													<div class="container_gallery_nc_display no_cover">
 														<div class="container_content_gallery_item_display">
-															<div class="gallery_item_display" data-enqueteid="<?=$enquete->id?>">
+															<div class="gallery_item_display" data-enqueteid="<?=$enquete->id?>" data-totalr="<?=$enquete->total_resp?>">
 																<div class="author_gallery_item_display">
 																	<span>Por: <?=$enquete->autor?></span>
+																	<span> | </span>
+																	<span>Respostas: <?=$enquete->total_resp?></span>
 																</div>
 																<div class="info_gallery_item_display">
 																	<p class="title_gallery_item_display"><?=$enquete->titulo;?></p>
 																	<p class="description_gallery_item_display"><?=sizeof($enquete->descricao) > 98 ? strip_tags(mb_substr($enquete->descricao, 0, 97)) . '...' : $enquete->descricao?></p>
 																	<div class="options_gallery_item_display">
 																		<?php foreach ($enquete->opcoes as $opcao): ?>
-																			<p><?=$opcao->descricao?></p>
+																			<div class="option" data-votes="<?=$opcao->votos?>"><span class="option_label"><?=$opcao->descricao?></span><div class="percent_answers"><span><?=$opcao->votos?></span></div></div>
 																		<?php endforeach ?>
 																	</div>
 																</div>
@@ -231,7 +218,39 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 				"Uma semana" : [cur_date, moment().add(7, 'days').format("l")]
 			}
 		});
+
+		fillAnswersBars();
 	});
+
+	function fillAnswersBars () {
+		var hue = 10;
+
+		$(".option").each(function () {
+			var votos = $(this).data('votes')
+			, total = $(this).parents('.gallery_item_display').data('totalr')
+			, percent
+			;
+
+			if (votos > total || (votos == 0 && total == 0)) {
+				percent = "0%";
+			} else {
+				percent = (Math.floor((votos / total) * 100)) + "%";
+			}
+
+			if (percent == "0%") {
+				$(this).find('.percent_answers').css('display', 'none');
+				return;
+			}
+
+			$(this).find('.percent_answers').css('width', percent);
+			$(this).find('.percent_answers').css('background', 'hsl('+hue+', 90%, 60%)');
+			$(this).find('.percent_answers').css('borderBottomColor', 'hsl('+hue+', 90%, 40%)');
+
+			hue = hue * 3;
+		});
+
+		// hue = 0;
+	}
 
 	$("#salvar_postar_enquete").click(function () {
 		$("#form_criar_enquete").submit();

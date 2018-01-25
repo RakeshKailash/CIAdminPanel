@@ -684,9 +684,10 @@ span.comment-badge.bg-red {
 	width: 250px;
 	height: 250px;
 	background: #fff;
-	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
 	position: relative;
 	display: inline-table;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 10px;
 	transition: all linear 0.2s;
 }
 
@@ -855,16 +856,53 @@ span.comment-badge.bg-red {
 	transition: all linear 0.1s;
 }
 
-.options_gallery_item_display p {
+.options_gallery_item_display .option {
 	padding: 3px 5px;
 	background: #ddd;
 	border-radius: 3px;
 	display: block;
 	margin-bottom: 5px;
+	position: relative;
+	height: 25px;
 }
 
-.options_gallery_item_display p:last-child {
+.options_gallery_item_display .option:last-child {
 	margin-bottom: 0;
+}
+
+.options_gallery_item_display .option .percent_answers {
+	content: "";
+	height: 100%;
+	border-radius: 3px;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-bottom: 2px solid #aa4e00;
+	z-index: 3;
+	width: 0%;
+	transition: all linear 0.3s;
+}
+
+.options_gallery_item_display .option .percent_answers span {
+	display: inline-block;
+	position: absolute;
+	left: 5px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #fff;
+	font-weight: 500;
+}
+
+.options_gallery_item_display .option .option_label {
+	position: absolute;
+	top: 50%;
+	right: 5px;
+	transform: translateY(-50%);
+	vertical-align: middle;
+	color: #fff;
+	font-weight: 500;
+	z-index: 4;
 }
 
 .options_gallery_item_display::-webkit-scrollbar-track {
@@ -888,7 +926,6 @@ span.comment-badge.bg-red {
 	background: #222;
 	color: #fff;
 	cursor: pointer;
-	box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.6);
 }
 
 .opcoes_form {
@@ -904,8 +941,8 @@ span.comment-badge.bg-red {
 
 .acoes_opcoes {
 	display: inline-block;
-    max-width: 30%;
-    vertical-align: bottom;
+	max-width: 30%;
+	vertical-align: bottom;
 }
 
 .acoes_opcoes button {
@@ -930,7 +967,7 @@ span.comment-badge.bg-red {
 
 
 
-.container_gallery_nc_display .gallery_item_display:hover .options_gallery_item_display p {
+.container_gallery_nc_display .gallery_item_display:hover .options_gallery_item_display .option {
 	background: #444;
 	color: #e0e0e0;
 }
