@@ -63,3 +63,4 @@ $route['sistema/login'] = 'sistema/Main/login';
 $route['sistema/logout'] = 'sistema/Main/logout';
 $route['sistema/(:any)'] = 'sistema/$1';
 $route['sistema/(:any)/(:any)'] = 'sistema/$1/$2';
+$route['sistema/ferramentas/enquetes/delete/(:any)'] = 'sistema/Ferramentas/deleteSurvey/$1';

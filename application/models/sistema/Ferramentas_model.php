@@ -144,6 +144,16 @@ class Ferramentas_model extends CI_Model
 		return true;
 	}
 
+	public function deleteSurvey($id=null)
+	{
+		if (!$id) {
+			return false;
+		}
+
+		$this->db->where('id', $id);
+		return !!$this->db->delete('enquetes');
+	}
+
 	public function updateSurveyOptions ($options=null, $survey_id=null) {
 		if (!$options || !$survey_id) {
 			return false;

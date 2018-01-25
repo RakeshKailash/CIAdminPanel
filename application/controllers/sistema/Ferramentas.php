@@ -129,6 +129,22 @@ class Ferramentas extends CI_Controller {
 		return true;
 	}
 
+	public function deleteSurvey($id=null)
+	{
+		if (!$id || !is_numeric($id)) {
+			$this->session->set_flashdata('error', "<p>Erro ao excluir Enquete!</p>");
+			return redirect('sistema/ferramentas/enquetes');
+		}
+
+		if (! $this->ferramentas_model->deleteSurvey($id)) {
+			$this->session->set_flashdata('error', "<p>Erro ao excluir Enquete!</p>");
+			return redirect('sistema/ferramentas/enquetes');
+		}
+
+		$this->session->set_flashdata('success', "<p>Enquete excluída com sucesso!</p>");
+			return redirect('sistema/ferramentas/enquetes');
+	}
+
 	private function validateSurvey ()
 	{
 		$this->form_validation->set_rules("titulo", "Título", "required|max_length[200]");

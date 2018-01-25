@@ -14,6 +14,8 @@ if (isset($enquete_edit) && $enquete_edit->status == 2) {
 	$check_state .= " checked";
 }
 
+$cur_date = date('d/m/Y', time());
+
 $usuarios = $this->usuario_model->getUser();
 
 $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check-circle listed_post true', 3 => 'clock-o listed_post false');
@@ -182,7 +184,11 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 																$this->load->view('sistema/ferramentas/survey_menu');
 															}
 															?>
-															<i class="fa fa-<?=$status_classes[$enquete->status]?>" aria-hidden='true' data-status="<?=$enquete->status?>"></i>
+															<?php if ($enquete->data_final < $cur_date): ?>
+																<i class="fa fa-<?=$status_classes[3]?>" aria-hidden='true'></i>
+															<?php else: ?>
+																<i class="fa fa-<?=$status_classes[$enquete->status]?>" aria-hidden='true' data-status="<?=$enquete->status?>"></i>
+															<?php endif ?>
 														</div>
 													</div>
 												<?php endforeach ?>
@@ -201,6 +207,17 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 </div>
 
 <script type="text/javascript" charset="utf-8" async defer>
+
+	var color_list = [
+	'#F55C3D',
+	'#F5993D',
+	'#99F53D',
+	'#FCDC31',
+	'#0183BD',
+	'#993DF5',
+	'#FF8DA2',
+	'#966A4F'
+	];
 
 	$(document).ready(function () {
 		moment.locale("pt-br");
@@ -222,31 +239,60 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 		fillAnswersBars();
 	});
 
+	function shadeColor(color, percent) {
+
+		var R = parseInt(color.substring(1,3),16);
+		var G = parseInt(color.substring(3,5),16);
+		var B = parseInt(color.substring(5,7),16);
+
+		R = parseInt(R * (100 + percent) / 100);
+		G = parseInt(G * (100 + percent) / 100);
+		B = parseInt(B * (100 + percent) / 100);
+
+		R = (R<255)?R:255;  
+		G = (G<255)?G:255;  
+		B = (B<255)?B:255;  
+
+		var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+		var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+		var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+		return "#"+RR+GG+BB;
+	}
+
 	function fillAnswersBars () {
-		var hue = 10;
+		var cont = 0;
 
-		$(".option").each(function () {
-			var votos = $(this).data('votes')
-			, total = $(this).parents('.gallery_item_display').data('totalr')
-			, percent
-			;
+		$(".container_gallery_nc_display").each(function () {
 
-			if (votos > total || (votos == 0 && total == 0)) {
-				percent = "0%";
-			} else {
-				percent = (Math.floor((votos / total) * 100)) + "%";
-			}
+			$(this).find(".option").each(function () {
+				var votos = $(this).data('votes')
+				, total = $(this).parents('.gallery_item_display').data('totalr')
+				, percent
+				;
 
-			if (percent == "0%") {
-				$(this).find('.percent_answers').css('display', 'none');
-				return;
-			}
+				if (votos > total || (votos == 0 && total == 0)) {
+					percent = "0%";
+				} else {
+					percent = (Math.floor((votos / total) * 100)) + "%";
+				}
 
-			$(this).find('.percent_answers').css('width', percent);
-			$(this).find('.percent_answers').css('background', 'hsl('+hue+', 90%, 60%)');
-			$(this).find('.percent_answers').css('borderBottomColor', 'hsl('+hue+', 90%, 40%)');
+				if (percent == "0%") {
+					$(this).find('.percent_answers').css('display', 'none');
+					return;
+				}
 
-			hue = hue * 3;
+				if (cont > color_list.length) {
+					cont = 0;
+				}
+
+				$(this).find('.percent_answers').css('width', percent);
+				$(this).find('.percent_answers').css('background', color_list[cont]);
+				$(this).find('.percent_answers').css('borderBottomColor', shadeColor(color_list[cont], -20));
+
+				cont++;
+			});
+			cont = 0;
 		});
 
 		// hue = 0;

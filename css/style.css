@@ -753,7 +753,7 @@ span.comment-badge.bg-red {
 	max-height: 220px;
 	background: rgba(255, 255, 255, 0.8);
 	list-style-type: none;
-	z-index: 1;
+	z-index: 5;
 	transition: all linear 0.1s;
 	overflow: hidden;
 }
@@ -844,7 +844,7 @@ span.comment-badge.bg-red {
 }
 
 .options_gallery_item_display {
-	max-height: 60%;
+	max-height: 50%;
 	overflow-y: auto;
 	width: 100%;
 	text-align: left;
