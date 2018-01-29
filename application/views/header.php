@@ -82,5 +82,6 @@
 
 	if ($cabecalho['menu'] != null && $cabecalho['header'] == 'site') {
 		$this->load->view($cabecalho['menu']);
+		$this->load->view('site/common/enquetes');
 	}
 	?>

@@ -54,6 +54,8 @@ $commentInfo['comentarios'] = $comentarios;
 	}
 	?>
 
+	<?=$enquetes?>
+
 </div>
 
 <?php $this->load->view('footer'); ?>

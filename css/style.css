@@ -856,7 +856,7 @@ span.comment-badge.bg-red {
 	transition: all linear 0.1s;
 }
 
-.options_gallery_item_display .option {
+.options_gallery_item_display .option, #enquete_modal .option {
 	padding: 3px 5px;
 	background: #ddd;
 	border-radius: 3px;
@@ -866,11 +866,15 @@ span.comment-badge.bg-red {
 	height: 25px;
 }
 
-.options_gallery_item_display .option:last-child {
+#enquete_modal .option.nofill {
+	background: transparent;
+}
+
+.options_gallery_item_display .option:last-child, #enquete_modal .option:last-child {
 	margin-bottom: 0;
 }
 
-.options_gallery_item_display .option .percent_answers {
+.options_gallery_item_display .option .percent_answers, #enquete_modal .option .percent_answers {
 	content: "";
 	height: 100%;
 	border-radius: 3px;
@@ -884,7 +888,7 @@ span.comment-badge.bg-red {
 	transition: all linear 0.3s;
 }
 
-.options_gallery_item_display .option .percent_answers span {
+.options_gallery_item_display .option .percent_answers span, #enquete_modal .option .percent_answers span {
 	display: inline-block;
 	position: absolute;
 	left: 5px;
@@ -894,7 +898,7 @@ span.comment-badge.bg-red {
 	font-weight: 500;
 }
 
-.options_gallery_item_display .option .option_label {
+.options_gallery_item_display .option .option_label, #enquete_modal .option .option_label {
 	position: absolute;
 	top: 50%;
 	right: 5px;
@@ -903,6 +907,28 @@ span.comment-badge.bg-red {
 	color: #fff;
 	font-weight: 500;
 	z-index: 4;
+}
+
+#enquete_modal .option.nofill .option_label {
+	color: #444;
+	right: auto;
+	left: 5px;
+	font-size: 14pt;
+	cursor: pointer;
+	transition: all linear 0.2s;
+}
+
+#enquete_modal .option.nofill .option_label:hover {
+	color: #999;
+}
+
+#enquete_modal .option.nofill .option_label i {
+	margin-right: 5px;
+	transition: all linear 0.2s;
+}
+
+#enquete_modal .option.nofill .option_label i.fa-check-circle {
+	color: #3FC1A5;
 }
 
 .options_gallery_item_display::-webkit-scrollbar-track {
@@ -920,6 +946,36 @@ span.comment-badge.bg-red {
 	border-radius: 10px;
 	background-color: #ddd;
 	transition: all linear 0.1s;
+}
+
+.container_survey_options {
+	width: 100%;
+	height: auto;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+#enquete_modal, #enquete_modal .modal-lg {
+	width: 300px;
+	overflow: hidden;
+}
+
+#enquete_modal.modal {
+	height: auto;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	bottom: auto;
+	transform: translate(-50%, -50%);
+}
+
+#enquete_modal.modal .modal-content {
+	box-shadow: none;
+	border: none;
+}
+
+#enquete_modal.modal .modal-footer {
+	text-align: center;
 }
 
 .gallery_item_display:hover {

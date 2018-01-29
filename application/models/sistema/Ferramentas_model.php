@@ -15,7 +15,7 @@ class Ferramentas_model extends CI_Model
 			$this->db->where('enquetes.`id`', $id);
 		}
 
-		$date = $datetime ? "enquetes.data_criacao, enquetes.data_inicio, enquetes.data_final" : "DATE_FORMAT(enquetes.data_criacao, '%d/%m/%Y') AS data_criacao, DATE_FORMAT(enquetes.data_inicio, '%d/%m/%Y') AS data_inicio, DATE_FORMAT(enquetes.data_final, '%d/%m/%Y') AS data_final";
+		$date = $datetime ? "enquetes.data_criacao, enquetes.data_inicio, enquetes.data_final" : "DATE_FORMAT(enquetes.data_criacao, '%Y-%m-%d') AS data_criacao, DATE_FORMAT(enquetes.data_inicio, '%Y-%m-%d') AS data_inicio, DATE_FORMAT(enquetes.data_final, '%Y-%m-%d') AS data_final";
 
 		$this->db->order_by('enquetes.`data_criacao`', 'DESC');
 		$this->db->select("enquetes.id, enquetes.titulo, enquetes.descricao, usuarios.nome AS autor, usuarios.imagem AS img_autor, $date, enquetes.ultima_modif, enquetes.status");

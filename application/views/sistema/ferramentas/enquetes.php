@@ -14,7 +14,7 @@ if (isset($enquete_edit) && $enquete_edit->status == 2) {
 	$check_state .= " checked";
 }
 
-$cur_date = date('d/m/Y', time());
+$cur_date = date('Y-m-d');
 
 $usuarios = $this->usuario_model->getUser();
 
@@ -94,7 +94,7 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 											<div class="form-group">
 												<label class="control-label col-md-3 col-sm-3 col-xs-12">Duração: <span class="required">*</span></label>
 												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" name="datas" id="data_selector" class="form-control" required="required" value="<?=isset($enquete_edit) ? $enquete_edit->data_inicio . ' - ' .$enquete_edit->data_final : ''?>">
+													<input type="text" name="datas" id="data_selector" class="form-control" required="required" value="<?=isset($enquete_edit) ? $this->dh->dateShowPrepare($enquete_edit->data_inicio) . ' - ' .$this->dh->dateShowPrepare($enquete_edit->data_final) : ''?>">
 												</div>
 											</div>
 											<div class="form-group opcoes">
@@ -145,11 +145,11 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 											<div class="posts_gallery_subtitle col-md-12">
 												<p class="subtitle">
 													<i class="fa fa-check-circle" aria-hidden="true" style="color: #3FC1A5"></i>
-													<label class="control-label">Publicada</label>
+													<label class="control-label">Ativa</label>
 												</p>
 												<p class="subtitle">
 													<i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #F4A72D"></i>
-													<label class="control-label">Rascunho</label>
+													<label class="control-label">Rascunho/Pausada</label>
 												</p>
 												<p class="subtitle">
 													<i class="fa fa-clock-o" aria-hidden="true" style="color: #D33734"></i>
@@ -181,7 +181,15 @@ $status_classes = array(1 => 'exclamation-circle listed_post false', 2 => 'check
 															</div>
 															<?php
 															if ($_SESSION['tipoUsuario'] == 1) {
-																$this->load->view('sistema/ferramentas/survey_menu');
+																$info_menu = array();
+
+																if ($enquete->data_final < $cur_date) {
+																	$info_menu['running'] = 0;
+																} else {
+																	$info_menu['running'] = 1;
+																}
+
+																$this->load->view('sistema/ferramentas/survey_menu', $info_menu);
 															}
 															?>
 															<?php if ($enquete->data_final < $cur_date): ?>

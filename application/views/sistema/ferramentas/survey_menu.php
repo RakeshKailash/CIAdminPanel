@@ -5,10 +5,12 @@
 			<i class="fa fa-info-circle icon_menu_gallery_item" aria-hidden="true"></i>
 			<span class="text_menu_gallery_item">Detalhes</span>
 		</li>
-		<li class="item_menu_gallery_item_display" data-item="edit">
-			<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
-			<span class="text_menu_gallery_item">Editar</span>
-		</li>
+		<?php if (!!$running): ?>
+			<li class="item_menu_gallery_item_display" data-item="edit">
+				<i class="fa fa-pencil-square-o icon_menu_gallery_item" aria-hidden="true"></i>
+				<span class="text_menu_gallery_item">Editar</span>
+			</li>
+		<?php endif ?>
 		<li class="item_menu_gallery_item_display" data-item="delete">
 			<i class="fa fa-times icon_menu_gallery_item" aria-hidden="true"></i>
 			<span class="text_menu_gallery_item">Excluir</span>

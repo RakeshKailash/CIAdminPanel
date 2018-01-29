@@ -49,9 +49,7 @@ class Ferramentas extends CI_Controller {
 
 		$id = $this->input->post('id_enquete');
 		$datas = $this->input->post('datas');
-		$datas = explode("-", str_replace(" ", "", $datas));
-		$datas[0] = implode("-", array_reverse(explode("/", $datas[0])));
-		$datas[1] = implode("-", array_reverse(explode("/", $datas[1])));
+		$datas = $this->dh->splitDateRange($datas);
 
 		$data['titulo'] = $this->input->post('titulo');
 		$data['descricao'] = $this->input->post('descricao');
@@ -65,8 +63,12 @@ class Ferramentas extends CI_Controller {
 		{
 			$enquete = $this->ferramentas_model->getSurvey($id)[0];
 
+			if ( !$this->ferramentas_model->saveSurvey($data, $id)) {
+				$this->session->set_flashdata('error', "<p>Erro ao atualizar Enquete!</p>");
+				return redirect('sistema/ferramentas/enquetes');		
+			}
 
-			$this->session->set_flashdata('success', "<p>Enquete salva com sucesso!</p>");
+			$this->session->set_flashdata('success', "<p>Enquete atualizada com sucesso!</p>");
 			return redirect('sistema/ferramentas/enquetes');
 		}
 
@@ -142,7 +144,7 @@ class Ferramentas extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('success', "<p>Enquete excluída com sucesso!</p>");
-			return redirect('sistema/ferramentas/enquetes');
+		return redirect('sistema/ferramentas/enquetes');
 	}
 
 	private function validateSurvey ()

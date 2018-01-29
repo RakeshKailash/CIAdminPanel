@@ -7,10 +7,7 @@ class Test extends CI_Controller {
 	}
 
 	public function index() {
-		// $caminho_pasta = str_replace('\\', "/", FCPATH);
-		// $caminho_pasta = $caminho_pasta . 'images/uploads/city - Copia.jpeg';
+		var_dump($this->dh->splitDateRange("26/01/2018 - 02/03/2018"));
 
-		// $this->load->library('ImageManipulation', '', 'img');
-		// $this->img->squareCrop($caminho_pasta, $caminho_pasta);
 	}
 }

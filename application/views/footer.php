@@ -269,6 +269,26 @@
 		if (($(".count-update-badge-modal").html()) == null) {
 			$(".count-update-badge-modal").css('display', 'none');
 		}
+
+		$("#enquete_modal").modal("show");
+
+		$("#enquete_modal").on('click', '.nofill', function () {
+			var icon = $(this).find('i');
+
+			if ($(icon).hasClass('fa-circle-o')) {
+
+				var checked = $(".checked_option")
+				, has_icon = $(".nofill").find(".fa-check-circle")
+				;
+
+				$(checked).removeClass('checked_option');
+				$(has_icon).addClass('fa-circle-o');
+				$(".nofill").find(".fa-circle-o").removeClass('fa-check-circle');
+				$(icon).addClass('fa-check-circle');
+				$(this).addClass('checked_option');
+				$(icon).removeClass('fa-circle-o');
+			}
+		})
 	});
 
 	$(".flat.imagem_galeria_check").on('ifChanged', function () {
